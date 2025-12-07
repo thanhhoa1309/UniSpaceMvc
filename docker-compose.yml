@@ -1,0 +1,52 @@
+services:
+  unispace.mvc.presentation:
+    build:
+      context: .
+      dockerfile: UniSpace.MVC.Presentation/Dockerfile
+    image: ${DOCKER_REGISTRY-}unispacemvcpresentation
+    container_name: unispace-mvc-app
+    depends_on:
+      unispace.database:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings__DefaultConnection=Host=unispace.database;Port=5432;Database=UnispaceDb;Username=postgres;Password=postgres;Pooling=true"
+      - "JWT__SecretKey=Unispace_SECRETKEY_SIEUCAPBAOMAT_VAYMACHUADU16KYTU"
+      - "JWT__Issuer=Unispace_Issuer"
+      - "JWT__Audience=Unispace_Audience"
+      - AppSettings__BaseUrl=http://localhost:5000
+      - ASPNETCORE_URLS=http://+:5000
+    ports:
+      - "5000:5000"
+    networks:
+      - unispace-network
+    restart: unless-stopped
+
+  unispace.database:
+    image: postgres:15
+    container_name: unispace-postgres
+    environment:
+      - POSTGRES_DB=UnispaceDb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - unispace-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d UnispaceDb"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+    driver: local
+
+networks:
+  unispace-network:
+    driver: bridge

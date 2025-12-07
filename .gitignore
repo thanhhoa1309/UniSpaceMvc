@@ -1,0 +1,94 @@
+## .NET Core / Visual Studio files
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+nupkg/
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+**/[Bb]in/
+**/[Oo]bj/
+**/obj/**
+*.obj
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Dependencies
+node_modules/
+wwwroot/lib/
+bower_components/
+
+# Build output (custom)
+dist/
+
+# IDE
+*.swp
+*.swo
+*.idea/
+*.vscode/
+*.ntvs*
+*.njsproj
+*.sln.iml
+
+# User-specific files
+*.rsuser
+*.dtbcache
+*.dtbcache.json
+
+# .NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Sensitive files
+appsettings.Development.json
+appsettings.Production.json
+*.pfx
+*.key
+*.publishsettings
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Local development settings
+Properties/launchSettings.json
+
+# Database files
+*.mdf
+*.ldf
+*.ndf
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
