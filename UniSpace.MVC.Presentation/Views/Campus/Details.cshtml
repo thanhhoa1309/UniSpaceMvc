@@ -1,0 +1,28 @@
+@model UniSpace.Bo.DTOs.CampusDTOs.CampusDto
+@{
+    ViewData["Title"] = "Campus Details";
+}
+
+<h1>Campus Details</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">Name</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+
+        <dt class="col-sm-2">Address</dt>
+        <dd class="col-sm-10">@Model.Address</dd>
+
+        <dt class="col-sm-2">Total Rooms</dt>
+        <dd class="col-sm-10">@Model.TotalRooms</dd>
+
+        <dt class="col-sm-2">Created At</dt>
+        <dd class="col-sm-10">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+</div>
+
