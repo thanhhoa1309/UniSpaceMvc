@@ -1,13 +1,13 @@
 @model UniSpace.Bo.DTOs.CampusDTOs.CampusDto
 @{
-    ViewData["Title"] = "Chi tiết Campus";
+    ViewData["Title"] = "Campus Details";
 }
 
 <link rel="stylesheet" href="~/css/campus-cyber.css" />
 
 <div class="campus-hero small-hero">
-    <h1 class="hero-title">Chi tiết Campus</h1>
-    <p class="hero-sub">Xem thông tin chi tiết về cơ sở</p>
+    <h1 class="hero-title">Campus Details</h1>
+    <p class="hero-sub">View detailed information about the campus</p>
 </div>
 
 <div class="details-wrapper">
@@ -18,30 +18,30 @@
 
         <div class="details-grid">
             <div class="details-row">
-                <label class="details-label">Tên:</label>
+                <label class="details-label">Name:</label>
                 <div class="details-value">@Model.Name</div>
             </div>
 
             <div class="details-row">
-                <label class="details-label">Địa chỉ:</label>
+                <label class="details-label">Address:</label>
                 <div class="details-value">@Model.Address</div>
             </div>
 
             <div class="details-row">
-                <label class="details-label">Số phòng:</label>
+                <label class="details-label">Total Rooms:</label>
                 <div class="details-value">@Model.TotalRooms</div>
             </div>
 
             <div class="details-row">
-                <label class="details-label">Ngày tạo:</label>
+                <label class="details-label">Created Date:</label>
                 <div class="details-value">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
             </div>
         </div>
 
         <div class="details-actions">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary">Sửa</a>
-            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-danger">Xóa</a>
-            <a asp-action="Index" class="btn-soft">Quay lại</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-danger">Delete</a>
+            <a asp-action="Index" class="btn-soft">Back</a>
         </div>
 
     </div>

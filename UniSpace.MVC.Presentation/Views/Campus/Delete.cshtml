@@ -1,28 +1,28 @@
 @model UniSpace.Bo.DTOs.CampusDTOs.CampusDto
 @{
-    ViewData["Title"] = "Xóa Campus";
+    ViewData["Title"] = "Delete Campus";
 }
 <link rel="stylesheet" href="~/css/campus-cyber.css" />
 
-<header>Xóa Campus</header>
+<header>Delete Campus</header>
 
 <div class="page-wrapper">
     <div class="glass-box delete-box">
-        <h2 class="danger-text">Bạn có chắc muốn xóa?</h2>
-        <p class="muted">Hành động này sẽ ẩn campus khỏi hệ thống.</p>
+        <h2 class="danger-text">Are you sure you want to delete?</h2>
+        <p class="muted">This action will hide the campus from the system.</p>
 
         <dl class="row mb-3">
-            <dt class="col-sm-3">Tên</dt>
+            <dt class="col-sm-3">Name</dt>
             <dd class="col-sm-9">@Model.Name</dd>
 
-            <dt class="col-sm-3">Địa chỉ</dt>
+            <dt class="col-sm-3">Address</dt>
             <dd class="col-sm-9">@Model.Address</dd>
         </dl>
 
         <form asp-action="Delete" method="post" class="form-actions">
             <input type="hidden" asp-for="Id" />
-            <button type="submit" class="btn-danger strong w100">Xóa</button>
-            <a asp-action="Index" class="btn-soft w100">Hủy</a>
+            <button type="submit" class="btn-danger strong w100">Delete</button>
+            <a asp-action="Index" class="btn-soft w100">Cancel</a>
         </form>
     </div>
 </div>

@@ -6,14 +6,14 @@
             <span class="badge-rooms">Rooms: @Model.TotalRooms</span>
         </div>
         <div class="meta">@Model.Address</div>
-        <div class="meta">Tạo lúc @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+        <div class="meta">Created at @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
     </div>
 
     <div class="actions" role="group" aria-label="Campus actions">
-        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-soft" title="Chi tiết">Chi tiết</a>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary" title="Sửa">Sửa</a>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-soft" title="Details">Details</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary" title="Edit">Edit</a>
         <form asp-action="Delete" asp-route-id="@Model.Id" method="get" style="margin:0">
-            <button type="submit" class="btn btn-danger" title="Xóa">Xóa</button>
+            <button type="submit" class="btn btn-danger" title="Delete">Delete</button>
         </form>
     </div>
 </div>

@@ -16,12 +16,12 @@
     </div>
     <div class="room-footer">
         <a class="btn btn-sm btn-primary" asp-action="Details" asp-route-id="@Model.Id"><i class="fa fa-eye"></i>
-            Xem</a>
+            View</a>
         @if (User.IsInRole("Admin"))
         {
-            <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@Model.Id"><i class="fa fa-edit"></i> Sửa</a>
+            <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@Model.Id"><i class="fa fa-edit"></i> Edit</a>
             <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@Model.Id"><i class="fa fa-trash"></i>
-                Xóa</a>
+                Delete</a>
         }
     </div>
 </div>

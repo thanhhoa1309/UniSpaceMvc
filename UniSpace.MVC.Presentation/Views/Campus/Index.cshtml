@@ -11,18 +11,18 @@
         <div class="hero-left">
             <div class="badges mb-1">
                 <span class="badge">Campus</span>
-                <span class="small" style="opacity:.95">Quản lý cơ sở và phòng học</span>
+                <span class="small" style="opacity:.95">Manage campuses and classrooms</span>
             </div>
-            <h1>Danh sách Campuses</h1>
-            <p class="sub-text">Xem toàn bộ danh sách cơ sở và thao tác nhanh.</p>
+            <h1>Campus List</h1>
+            <p class="sub-text">View all campuses and quick actions.</p>
         </div>
 
         <div class="hero-right">
-            <div class="badge-soft shimmer">Tổng: @Model.TotalCount</div>
-            <div class="badge-soft">Trang: @ViewBag.CurrentPage / @ViewBag.TotalPages</div>
+            <div class="badge-soft shimmer">Total: @Model.TotalCount</div>
+            <div class="badge-soft">Page: @ViewBag.CurrentPage / @ViewBag.TotalPages</div>
             @if (User.IsInRole("Admin"))
             {
-                <a class="btn neon-btn" asp-action="Create">+ Thêm campus</a>
+                <a class="btn neon-btn" asp-action="Create">+ Add Campus</a>
             }
         </div>
     </div>
@@ -32,17 +32,17 @@
 <div class="search-bar-hero search-floating">
     <form asp-action="Index" method="get" class="search-flex">
         <i class="fa fa-search"></i>
-        <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm theo tên hoặc địa chỉ campus..." />
-        <button type="submit" class="btn-search">Tìm kiếm</button>
+        <input type="text" name="search" value="@ViewBag.Search" placeholder="Search by name or address..." />
+        <button type="submit" class="btn-search">Search</button>
     </form>
 </div>
 
 <!-- TAGS -->
 <div class="tag-strip mt-3">
-    <span class="pill active">Tất cả</span>
-    <span class="pill">Nhiều phòng</span>
-    <span class="pill">Đang hoạt động</span>
-    <span class="pill">Mới tạo</span>
+    <span class="pill active">All</span>
+    <span class="pill">Many Rooms</span>
+    <span class="pill">Active</span>
+    <span class="pill">New</span>
 </div>
 
 <!-- CAMPUS LIST - NOW VERTICAL + CENTER -->
@@ -59,9 +59,7 @@
 
         <!-- PREVIOUS -->
         <li class="pg-item @(ViewBag.CurrentPage <= 1 ? "disabled" : "")">
-            <a asp-action="Index"
-               asp-route-page="@(ViewBag.CurrentPage - 1)"
-               asp-route-search="@ViewBag.Search">
+            <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-search="@ViewBag.Search">
                 <i class="fa fa-chevron-left"></i> Previous
             </a>
         </li>
@@ -76,9 +74,7 @@
 
         <!-- NEXT -->
         <li class="pg-item @(ViewBag.CurrentPage >= (int)(ViewBag.TotalPages ?? 1) ? "disabled" : "")">
-            <a asp-action="Index"
-               asp-route-page="@(ViewBag.CurrentPage + 1)"
-               asp-route-search="@ViewBag.Search">
+            <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-search="@ViewBag.Search">
                 Next <i class="fa fa-chevron-right"></i>
             </a>
         </li>

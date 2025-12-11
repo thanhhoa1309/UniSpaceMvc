@@ -11,18 +11,18 @@
         <div class="hero-left">
             <div class="badges mb-1">
                 <span class="badge">Room</span>
-                <span class="small" style="opacity:.95">Quản lý phòng học & cơ sở</span>
+                <span class="small" style="opacity:.95">Manage classrooms & campus</span>
             </div>
-            <h1>Danh sách phòng</h1>
-            <p class="sub-text">Xem và quản lý tất cả phòng trong hệ thống</p>
+            <h1>Room List</h1>
+            <p class="sub-text">View and manage all rooms in the system</p>
         </div>
 
         <div class="hero-right">
-            <div class="badge-soft shimmer">Tổng: @Model.TotalCount</div>
-            <div class="badge-soft">Trang: @ViewBag.CurrentPage / @ViewBag.TotalPages</div>
+            <div class="badge-soft shimmer">Total: @Model.TotalCount</div>
+            <div class="badge-soft">Page: @ViewBag.CurrentPage / @ViewBag.TotalPages</div>
             @if (User.IsInRole("Admin"))
             {
-                <a class="btn neon-btn" asp-action="Create">+ Thêm phòng</a>
+                <a class="btn neon-btn" asp-action="Create">+ Add Room</a>
             }
         </div>
     </div>
@@ -32,10 +32,10 @@
 <div class="search-bar-hero search-floating">
     <form asp-action="Index" method="get" class="search-flex">
         <i class="fa fa-search"></i>
-        <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm theo tên phòng..." />
+        <input type="text" name="search" value="@ViewBag.Search" placeholder="Search by name..." />
 
         <select name="campusId">
-            <option value="">Chọn campus</option>
+            <option value="">Select Campus</option>
             @if (ViewBag.Campuses != null)
             {
                 @foreach (var campus in ViewBag.Campuses)
@@ -48,7 +48,7 @@
         </select>
 
         <select name="type">
-            <option value="">Loại phòng</option>
+            <option value="">Room Type</option>
             @{
                 var currentType = ViewBag.Type as UniSpace.Bo.Enums.RoomType?;
             }
@@ -61,7 +61,7 @@
         </select>
 
         <select name="status">
-            <option value="">Trạng thái</option>
+            <option value="">Status</option>
             @{
                 var currentStatus = ViewBag.Status as UniSpace.Bo.Enums.BookingStatus?;
             }
@@ -73,7 +73,7 @@
             }
         </select>
 
-        <button type="submit" class="btn-search">Tìm kiếm</button>
+        <button type="submit" class="btn-search">Search</button>
     </form>
 </div>
 

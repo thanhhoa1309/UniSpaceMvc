@@ -1,0 +1,80 @@
+@model UniSpace.Bo.DTOs.RoomDTOs.CreateRoomDto
+@using UniSpace.Bo.DTOs.CampusDTOs
+@{
+    ViewData["Title"] = "Create Room";
+    var campuses = ViewBag.Campuses as IEnumerable<CampusDto>;
+}
+<link rel="stylesheet" href="~/css/campus-cyber.css" />
+
+<header>Create New Room</header>
+
+<div class="page-wrapper form-wrapper">
+    <div class="glass-box">
+        <h2>Add New Room</h2>
+        <p class="muted">Fill in the information below to add a new room</p>
+
+        <form asp-action="Create" method="post" class="cyber-form">
+            <div class="mb-3">
+                <label asp-for="CampusId" class="form-label">Select Campus</label>
+                <select asp-for="CampusId" class="form-control">
+                    <option value="">-- Select Campus --</option>
+                    @if (campuses != null)
+                    {
+                        foreach (var c in campuses)
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CampusId" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Room Name</label>
+                <input asp-for="Name" class="form-control" placeholder="e.g. Room 101, Hall A..." />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Type" class="form-label">Room Type</label>
+                    <select asp-for="Type" class="form-control"
+                        asp-items="Html.GetEnumSelectList<UniSpace.Bo.Enums.RoomType>()">
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Capacity" class="form-label">Capacity</label>
+                    <input asp-for="Capacity" type="number" class="form-control" min="1" />
+                    <span asp-validation-for="Capacity" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="RoomStatus" class="form-label">Room Status</label>
+                <select asp-for="RoomStatus" class="form-control"
+                    asp-items="Html.GetEnumSelectList<UniSpace.Bo.Enums.RoomStatus>()">
+                </select>
+                <span asp-validation-for="RoomStatus" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="3"
+                    placeholder="Detailed description of the room..."></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-strong">Save</button>
+                <a asp-action="Index" class="btn-soft">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/css/campus-cyber.js"></script>
+}

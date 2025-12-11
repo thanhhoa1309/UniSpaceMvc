@@ -1,34 +1,34 @@
 @model UniSpace.Bo.DTOs.CampusDTOs.UpdateCampusDto
 @{
-    ViewData["Title"] = "Chỉnh sửa Campus";
+    ViewData["Title"] = "Edit Campus";
 }
 <link rel="stylesheet" href="~/css/campus-cyber.css" />
 
-<header>Chỉnh sửa Campus</header>
+<header>Edit Campus</header>
 
 <div class="page-wrapper form-wrapper">
     <div class="glass-box">
-        <h2>Cập nhật thông tin</h2>
-        <p class="muted">Điều chỉnh nội dung campus tại đây</p>
+        <h2>Update Information</h2>
+        <p class="muted">Adjust campus details here</p>
 
         <form asp-action="Edit" method="post" class="cyber-form">
             <input type="hidden" asp-for="Id" />
 
             <div class="mb-3">
-                <label asp-for="Name" class="form-label">Tên campus</label>
-                <input asp-for="Name" class="form-control" placeholder="Nhập tên campus..." />
+                <label asp-for="Name" class="form-label">Campus Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Enter campus name..." />
                 <span asp-validation-for="Name" class="text-danger small"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Address" class="form-label">Địa chỉ</label>
-                <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ..." />
+                <label asp-for="Address" class="form-label">Address</label>
+                <input asp-for="Address" class="form-control" placeholder="Enter address..." />
                 <span asp-validation-for="Address" class="text-danger small"></span>
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn-strong">Cập nhật</button>
-                <a asp-action="Index" class="btn-soft">Hủy</a>
+                <button type="submit" class="btn-strong">Update</button>
+                <a asp-action="Index" class="btn-soft">Cancel</a>
             </div>
         </form>
     </div>

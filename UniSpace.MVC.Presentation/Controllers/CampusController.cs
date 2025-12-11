@@ -56,7 +56,7 @@ namespace UniSpace.MVC.Presentation.Controllers
             }
             catch
             {
-                TempData["ErrorMessage"] = "Campus không tồn tại.";
+                TempData["ErrorMessage"] = "Campus does not exist.";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -68,7 +68,7 @@ namespace UniSpace.MVC.Presentation.Controllers
         {
             if (!User.IsInRole("Admin"))
             {
-                TempData["ErrorMessage"] = "❌ Bạn không phải Admin.";
+                TempData["ErrorMessage"] = "❌ You are not an Admin.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -81,7 +81,7 @@ namespace UniSpace.MVC.Presentation.Controllers
         {
             if (!User.IsInRole("Admin"))
             {
-                TempData["ErrorMessage"] = "❌ Bạn không phải Admin.";
+                TempData["ErrorMessage"] = "❌ You are not an Admin.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -93,7 +93,7 @@ namespace UniSpace.MVC.Presentation.Controllers
             try
             {
                 var campus = await _campusService.CreateCampusAsync(createDto);
-                TempData["SuccessMessage"] = "Tạo campus thành công!";
+                TempData["SuccessMessage"] = "Campus created successfully!";
                 return RedirectToAction(nameof(Details), new { id = campus.Id });
             }
             catch (Exception ex)
@@ -111,7 +111,7 @@ namespace UniSpace.MVC.Presentation.Controllers
         {
             if (!User.IsInRole("Admin"))
             {
-                TempData["ErrorMessage"] = "❌ Bạn không có quyền chỉnh sửa.";
+                TempData["ErrorMessage"] = "❌ You do not have permission to edit.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -130,7 +130,7 @@ namespace UniSpace.MVC.Presentation.Controllers
             }
             catch
             {
-                TempData["ErrorMessage"] = "Không tìm thấy campus.";
+                TempData["ErrorMessage"] = "Campus not found.";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -141,13 +141,13 @@ namespace UniSpace.MVC.Presentation.Controllers
         {
             if (!User.IsInRole("Admin"))
             {
-                TempData["ErrorMessage"] = "❌ Bạn không phải Admin.";
+                TempData["ErrorMessage"] = "❌ You are not an Admin.";
                 return RedirectToAction(nameof(Index));
             }
 
             if (id != updateDto.Id)
             {
-                TempData["ErrorMessage"] = "ID không hợp lệ.";
+                TempData["ErrorMessage"] = "Invalid ID.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -159,7 +159,7 @@ namespace UniSpace.MVC.Presentation.Controllers
             try
             {
                 await _campusService.UpdateCampusAsync(updateDto);
-                TempData["SuccessMessage"] = "Cập nhật campus thành công!";
+                TempData["SuccessMessage"] = "Campus updated successfully!";
                 return RedirectToAction(nameof(Details), new { id = updateDto.Id });
             }
             catch (Exception ex)
@@ -176,7 +176,7 @@ namespace UniSpace.MVC.Presentation.Controllers
         {
             if (!User.IsInRole("Admin"))
             {
-                TempData["ErrorMessage"] = "❌ Bạn không có quyền xóa.";
+                TempData["ErrorMessage"] = "❌ You do not have permission to delete.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -187,7 +187,7 @@ namespace UniSpace.MVC.Presentation.Controllers
             }
             catch
             {
-                TempData["ErrorMessage"] = "Không tìm thấy campus.";
+                TempData["ErrorMessage"] = "Campus not found.";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -198,14 +198,14 @@ namespace UniSpace.MVC.Presentation.Controllers
         {
             if (!User.IsInRole("Admin"))
             {
-                TempData["ErrorMessage"] = "❌ Bạn không có quyền xóa.";
+                TempData["ErrorMessage"] = "❌ You do not have permission to delete.";
                 return RedirectToAction(nameof(Index));
             }
 
             try
             {
                 await _campusService.SoftDeleteCampusAsync(id);
-                TempData["SuccessMessage"] = "Xóa campus thành công!";
+                TempData["SuccessMessage"] = "Campus deleted successfully!";
             }
             catch (Exception ex)
             {

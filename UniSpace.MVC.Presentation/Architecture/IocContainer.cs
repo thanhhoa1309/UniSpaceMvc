@@ -62,7 +62,7 @@ namespace UniSpace.Presentation.Architecture
 
         public static IServiceCollection SetupBusinessServicesLayer(this IServiceCollection services)
         {
-            // Inject service vào DI container
+            // Inject services into DI container
             services.AddHttpContextAccessor();
 
             // Register UnitOfWork
@@ -103,8 +103,8 @@ namespace UniSpace.Presentation.Architecture
                     x.SaveToken = true;
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,   // Bật kiểm tra Issuer
-                        ValidateAudience = true, // Bật kiểm tra Audience
+                        ValidateIssuer = true,   // Enable Issuer validation
+                        ValidateAudience = true, // Enable Audience validation
                         ValidateLifetime = true,
                         ValidIssuer = configuration["JWT:Issuer"],
                         ValidAudience = configuration["JWT:Audience"],

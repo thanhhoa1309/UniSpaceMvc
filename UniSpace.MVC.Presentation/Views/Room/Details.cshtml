@@ -1,7 +1,7 @@
 @model UniSpace.Bo.DTOs.RoomDTOs.RoomDto
 
 @{
-    ViewData["Title"] = "Chi tiết phòng - " + Model.Name;
+    ViewData["Title"] = "Room Details - " + Model.Name;
 }
 
 <div class="container py-5">
@@ -44,51 +44,51 @@
         <div class="col-lg-8">
             <div class="card cyber-card h-100">
                 <div class="card-header bg-transparent border-bottom border-secondary">
-                    <h4 class="card-title text-cyber-info mb-0">Thông tin chi tiết</h4>
+                    <h4 class="card-title text-cyber-info mb-0">Detailed Information</h4>
                 </div>
                 <div class="card-body">
                     <div class="row g-4">
                         <div class="col-sm-6">
                             <div class="info-item">
-                                <label class="text-muted small">Sức chứa</label>
+                                <label class="text-muted small">Capacity</label>
                                 <div class="fs-4 fw-bold">@Model.Capacity <span
-                                        class="fs-6 fw-normal text-muted">người</span></div>
+                                        class="fs-6 fw-normal text-muted">people</span></div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="info-item">
-                                <label class="text-muted small">Trạng thái phòng</label>
+                                <label class="text-muted small">Room Status</label>
                                 <div class="d-flex align-items-center gap-2 mt-1">
                                     @if (Model.RoomStatus == UniSpace.Bo.Enums.RoomStatus.Active)
                                     {
                                         <i class="fas fa-check-circle text-success fs-4"></i>
-                                        <span class="fs-5 text-success">Hoạt động</span>
+                                        <span class="fs-5 text-success">Active</span>
                                     }
                                     else
                                     {
                                         <i class="fas fa-times-circle text-danger fs-4"></i>
-                                        <span class="fs-5 text-danger">Bảo trì/Đóng</span>
+                                        <span class="fs-5 text-danger">Maintenance/Closed</span>
                                     }
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="info-item">
-                                <label class="text-muted small">Trạng thái đặt</label>
+                                <label class="text-muted small">Booking Status</label>
                                 <div class="fs-5">@Model.CurrentStatus</div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="info-item">
-                                <label class="text-muted small">Báo cáo chờ xử lý</label>
+                                <label class="text-muted small">Pending Reports</label>
                                 <div class="fs-5 ms-3">
                                     @if (Model.PendingReports > 0)
                                     {
-                                        <span class="badge bg-danger rounded-pill">@Model.PendingReports vấn đề</span>
+                                        <span class="badge bg-danger rounded-pill">@Model.PendingReports issues</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-success rounded-pill">Không có</span>
+                                        <span class="badge bg-success rounded-pill">None</span>
                                     }
                                 </div>
                             </div>
@@ -96,9 +96,9 @@
 
                         <div class="col-12">
                             <div class="info-item mt-3">
-                                <label class="text-muted small mb-2">Mô tả</label>
+                                <label class="text-muted small mb-2">Description</label>
                                 <p class="p-3 bg-dark bg-opacity-50 rounded border border-secondary text-light">
-                                    @(string.IsNullOrEmpty(Model.Description) ? "Chưa có mô tả cho phòng này." :
+                                    @(string.IsNullOrEmpty(Model.Description) ? "No description available for this room." :
                                         Model.Description)
                                 </p>
                             </div>
@@ -112,18 +112,18 @@
         <div class="col-lg-4">
             <div class="card cyber-card mb-4">
                 <div class="card-header bg-transparent border-bottom border-secondary">
-                    <h5 class="card-title text-cyber-info mb-0">Thống kê nhanh</h5>
+                    <h5 class="card-title text-cyber-info mb-0">Quick Stats</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush bg-transparent">
                         <li
                             class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center px-0">
-                            <span><i class="fas fa-calendar-check me-2 text-primary"></i> Tổng lượt đặt</span>
+                            <span><i class="fas fa-calendar-check me-2 text-primary"></i> Total Bookings</span>
                             <span class="badge bg-primary rounded-pill">@Model.TotalBookings</span>
                         </li>
                         <li
                             class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center px-0">
-                            <span><i class="fas fa-clock me-2 text-info"></i> Ngày tạo</span>
+                            <span><i class="fas fa-clock me-2 text-info"></i> Created Date</span>
                             <span class="small font-monospace">@Model.CreatedAt.ToString("dd/MM/yyyy")</span>
                         </li>
                     </ul>
@@ -133,11 +133,11 @@
             <!-- Booking Action -->
             <div class="card cyber-card border-cyber-primary">
                 <div class="card-body text-center">
-                    <h5 class="card-title mb-3">Bạn muốn đặt phòng này?</h5>
-                    <p class="small text-muted mb-4">Kiểm tra lịch trống và đặt phòng ngay cho sự kiện của bạn.</p>
+                    <h5 class="card-title mb-3">Want to book this room?</h5>
+                    <p class="small text-muted mb-4">Check availability and book for your event instantly.</p>
                     <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@Model.Id"
                         class="btn btn-lg btn-cyber-primary w-100 neon-shadow">
-                        <i class="fas fa-calendar-plus me-2"></i> Đặt phòng ngay
+                        <i class="fas fa-calendar-plus me-2"></i> Book Now
                     </a>
                 </div>
             </div>

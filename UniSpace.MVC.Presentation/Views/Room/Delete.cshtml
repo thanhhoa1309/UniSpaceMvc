@@ -1,0 +1,38 @@
+@model UniSpace.Bo.DTOs.RoomDTOs.RoomDto
+@{
+    ViewData["Title"] = "Delete Room";
+}
+<link rel="stylesheet" href="~/css/campus-cyber.css" />
+
+<header>Delete Room</header>
+
+<div class="page-wrapper">
+    <div class="glass-box delete-box">
+        <h2 class="danger-text">Are you sure you want to delete this room?</h2>
+        <p class="muted">This action will hide the room from the system and cannot be undone.</p>
+
+        <dl class="row mb-3">
+            <dt class="col-sm-3">Room Name</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Campus</dt>
+            <dd class="col-sm-9">@Model.CampusName</dd>
+
+            <dt class="col-sm-3">Type</dt>
+            <dd class="col-sm-9">@Model.TypeDisplay</dd>
+
+            <dt class="col-sm-3">Capacity</dt>
+            <dd class="col-sm-9">@Model.Capacity</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post" class="form-actions">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn-danger strong w100">Delete</button>
+            <a asp-action="Index" class="btn-soft w100">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/css/campus-cyber.js"></script>
+}
