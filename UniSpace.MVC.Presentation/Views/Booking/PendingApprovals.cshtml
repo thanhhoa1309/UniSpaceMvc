@@ -1,0 +1,443 @@
+@model IEnumerable<UniSpace.Bo.DTOs.BookingDTOs.BookingDto>
+@using UniSpace.Bo.Enums
+@{
+    ViewData["Title"] = "Pending Approvals";
+}
+
+<style>
+    /* Page Container */
+    .pending-approvals-container {
+        min-height: 100vh;
+        padding: 40px 0;
+    }
+
+    /* Glass Card */
+    .glass-card-pending {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .glass-card-pending:hover {
+        border: 1px solid rgba(255, 138, 0, 0.4);
+        box-shadow: 0 12px 40px 0 rgba(255, 138, 0, 0.15);
+    }
+
+    /* Card Header */
+    .glass-card-header-pending {
+        background: rgba(255, 138, 0, 0.15);
+        border-bottom: 2px solid rgba(255, 138, 0, 0.3);
+        padding: 20px 24px;
+    }
+
+    .glass-card-header-pending h6 {
+        color: #ff8a00;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    /* Card Body */
+    .glass-card-body-pending {
+        padding: 24px;
+    }
+
+    /* Booking Card */
+    .booking-approval-card {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(100, 116, 139, 0.2);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .booking-approval-card:hover {
+        border-color: rgba(255, 138, 0, 0.4);
+        box-shadow: 0 8px 24px rgba(255, 138, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .booking-approval-card h5 {
+        color: #ea580c;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    .booking-approval-card .info-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        color: #475569;
+    }
+
+    .booking-approval-card .info-row i {
+        width: 24px;
+        color: #64748b;
+        margin-right: 8px;
+    }
+
+    .booking-approval-card .info-row strong {
+        color: #0c4a6e;
+        margin-right: 8px;
+    }
+
+    /* Status Badge */
+    .badge-pending {
+        background: rgba(245, 158, 11, 0.25);
+        border: 1px solid rgba(245, 158, 11, 0.5);
+        color: #92400e;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+
+    /* Purpose Box */
+    .purpose-box {
+        background: rgba(6, 182, 212, 0.1);
+        border: 1px solid rgba(6, 182, 212, 0.3);
+        border-radius: 8px;
+        padding: 12px;
+        margin: 12px 0;
+    }
+
+    .purpose-box strong {
+        color: #0284c7;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .purpose-box p {
+        color: #334155;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    /* Action Buttons */
+    .action-section {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(100, 116, 139, 0.2);
+    }
+
+    .btn-approve {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border: 2px solid #10b981;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-approve:hover {
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-reject {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        border: 2px solid #ef4444;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-reject:hover {
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-view-details {
+        background: rgba(100, 116, 139, 0.1);
+        border: 2px solid rgba(100, 116, 139, 0.3);
+        color: #334155;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-view-details:hover {
+        border-color: rgba(255, 138, 0, 0.5);
+        color: #ea580c;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+    }
+
+    /* Admin Note Input */
+    .admin-note-section {
+        margin-top: 12px;
+    }
+
+    .admin-note-input {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(100, 116, 139, 0.3);
+        border-radius: 8px;
+        padding: 10px 12px;
+        width: 100%;
+        color: #1e293b;
+        font-size: 0.9rem;
+        margin-top: 8px;
+    }
+
+    .admin-note-input:focus {
+        border-color: rgba(255, 138, 0, 0.5);
+        outline: none;
+        box-shadow: 0 0 10px rgba(255, 138, 0, 0.2);
+    }
+
+    .admin-note-label {
+        color: #475569;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 40px;
+        color: #64748b;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #94a3b8;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h5 {
+        color: #334155;
+        margin-bottom: 12px;
+    }
+
+    /* Alert Messages */
+    .alert-glass-success {
+        background: rgba(16, 185, 129, 0.25);
+        border: 1px solid rgba(16, 185, 129, 0.5);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #065f46;
+        margin-bottom: 20px;
+    }
+
+    .alert-glass-danger {
+        background: rgba(239, 68, 68, 0.25);
+        border: 1px solid rgba(239, 68, 68, 0.5);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #991b1b;
+        margin-bottom: 20px;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .action-section {
+            flex-direction: column;
+        }
+
+        .action-section button,
+        .action-section a {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="pending-approvals-container">
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="glass-card-pending">
+                    <div class="glass-card-header-pending">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h6>
+                                <i class="fas fa-clock"></i> Pending Bookings for Approval
+                            </h6>
+                            <a asp-controller="Booking" asp-action="Index" class="btn btn-view-details btn-sm">
+                                <i class="fas fa-list"></i> All Bookings
+                            </a>
+                        </div>
+                    </div>
+                    <div class="glass-card-body-pending">
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert-glass-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle"></i> <strong>Success!</strong> @TempData["SuccessMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert-glass-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-circle"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+
+                        @if (Model != null && Model.Any())
+                        {
+                            <div class="row">
+                                @foreach (var booking in Model)
+                                {
+                                    <div class="col-lg-6 mb-3">
+                                        <div class="booking-approval-card">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <h5>
+                                                    <i class="fas fa-door-open"></i> @booking.RoomName
+                                                </h5>
+                                                <span class="badge-pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                            </div>
+
+                                            <div class="info-row">
+                                                <i class="fas fa-building"></i>
+                                                <strong>Campus:</strong> @booking.CampusName
+                                            </div>
+
+                                            <div class="info-row">
+                                                <i class="fas fa-user"></i>
+                                                <strong>Requested by:</strong> @booking.UserName
+                                            </div>
+
+                                            <div class="info-row">
+                                                <i class="fas fa-envelope"></i>
+                                                <strong>Email:</strong> @booking.UserEmail
+                                            </div>
+
+                                            <div class="info-row">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <strong>Start:</strong> @booking.StartTime.ToString("MMM dd, yyyy HH:mm")
+                                            </div>
+
+                                            <div class="info-row">
+                                                <i class="fas fa-calendar-check"></i>
+                                                <strong>End:</strong> @booking.EndTime.ToString("MMM dd, yyyy HH:mm")
+                                            </div>
+
+                                            <div class="info-row">
+                                                <i class="fas fa-hourglass-half"></i>
+                                                <strong>Duration:</strong> @((booking.EndTime - booking.StartTime).TotalHours.ToString("F1")) hours
+                                            </div>
+
+                                            <div class="purpose-box">
+                                                <strong><i class="fas fa-comment"></i> Purpose:</strong>
+                                                <p>@booking.Purpose</p>
+                                            </div>
+
+                                            <div class="action-section">
+                                                <button type="button" class="btn btn-approve flex-fill" 
+                                                        onclick="approveBooking('@booking.Id')">
+                                                    <i class="fas fa-check"></i> Approve
+                                                </button>
+                                                <button type="button" class="btn btn-reject flex-fill" 
+                                                        onclick="showRejectModal('@booking.Id', '@booking.RoomName')">
+                                                    <i class="fas fa-times"></i> Reject
+                                                </button>
+                                                <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" 
+                                                   class="btn btn-view-details">
+                                                    <i class="fas fa-eye"></i> Details
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <i class="fas fa-check-circle"></i>
+                                <h5>No Pending Bookings</h5>
+                                <p>All bookings have been processed. Great job!</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background: rgba(30, 41, 59, 0.95); color: #e0e0e0; border: 1px solid rgba(255, 138, 0, 0.3);">
+            <div class="modal-header" style="border-bottom: 1px solid rgba(255, 138, 0, 0.3);">
+                <h5 class="modal-title" id="rejectModalLabel" style="color: #ff8a00;">
+                    <i class="fas fa-times-circle"></i> Reject Booking
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="rejectForm" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <p style="color: #d1d5db;">
+                        You are about to reject the booking for <strong id="rejectRoomName" style="color: #ff8a00;"></strong>.
+                    </p>
+                    <div class="admin-note-section">
+                        <label for="rejectNote" class="admin-note-label">
+                            <i class="fas fa-comment"></i> Reason for Rejection <span class="text-danger">*</span>
+                        </label>
+                        <textarea id="rejectNote" name="adminNote" class="admin-note-input" rows="4" 
+                                  placeholder="Please provide a reason for rejecting this booking..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid rgba(255, 138, 0, 0.3);">
+                    <button type="button" class="btn btn-view-details" data-bs-dismiss="modal">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-reject">
+                        <i class="fas fa-times"></i> Confirm Rejection
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function approveBooking(bookingId) {
+            if (confirm('Are you sure you want to approve this booking?')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '@Url.Action("Approve", "Booking")';
+
+                const idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                idInput.value = bookingId;
+
+                const tokenInput = document.createElement('input');
+                tokenInput.type = 'hidden';
+                tokenInput.name = '__RequestVerificationToken';
+                tokenInput.value = $('input[name="__RequestVerificationToken"]').val();
+
+                form.appendChild(idInput);
+                form.appendChild(tokenInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        function showRejectModal(bookingId, roomName) {
+            document.getElementById('rejectRoomName').textContent = roomName;
+            document.getElementById('rejectForm').action = '@Url.Action("Reject", "Booking")' + '?id=' + bookingId;
+            const modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+            modal.show();
+        }
+    </script>
+}

@@ -54,6 +54,11 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-controller="Booking" asp-action="SearchRooms"><i class="fas fa-search"></i> Search Rooms</a></li>
                                     <li><a class="dropdown-item" asp-controller="Booking" asp-action="MyBookings"><i class="fas fa-list"></i> My Bookings</a></li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item" asp-controller="Booking" asp-action="PendingApprovals"><i class="fas fa-clock"></i> Pending Approvals</a></li>
+                                    }
                                 </ul>
                             </li>
                         }
