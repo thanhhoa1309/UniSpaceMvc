@@ -1,0 +1,439 @@
+@model UniSpace.Bo.DTOs.BookingDTOs.BookingDto
+@using UniSpace.Bo.Enums
+@{
+    ViewData["Title"] = "Booking Details";
+}
+
+<style>
+    /* Page Container */
+    .details-page-container {
+        min-height: 100vh;
+        padding: 40px 0;
+    }
+
+    /* Glass Card */
+    .glass-card-details {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .glass-card-details:hover {
+        border: 1px solid rgba(255, 138, 0, 0.4);
+        box-shadow: 0 12px 40px 0 rgba(255, 138, 0, 0.15);
+    }
+
+    /* Card Header */
+    .glass-card-header-details {
+        background: rgba(255, 138, 0, 0.15);
+        border-bottom: 2px solid rgba(255, 138, 0, 0.3);
+        padding: 20px 24px;
+    }
+
+    .glass-card-header-details h6 {
+        color: #ff8a00;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    /* Card Body */
+    .glass-card-body-details {
+        padding: 24px;
+        color: #e0e0e0;
+    }
+
+    /* Status Badge */
+    .status-badge-large {
+        font-size: 1.2rem;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .badge-glass-pending {
+        background: rgba(245, 158, 11, 0.2);
+        border: 2px solid rgba(245, 158, 11, 0.4);
+        color: #f59e0b;
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+    }
+
+    .badge-glass-approved {
+        background: rgba(16, 185, 129, 0.2);
+        border: 2px solid rgba(16, 185, 129, 0.4);
+        color: #10b981;
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .badge-glass-rejected {
+        background: rgba(239, 68, 68, 0.2);
+        border: 2px solid rgba(239, 68, 68, 0.4);
+        color: #f87171;
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+    }
+
+    .badge-glass-completed {
+        background: rgba(6, 182, 212, 0.2);
+        border: 2px solid rgba(6, 182, 212, 0.4);
+        color: #06b6d4;
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    }
+
+    .badge-glass-cancelled {
+        background: rgba(156, 163, 175, 0.2);
+        border: 2px solid rgba(156, 163, 175, 0.4);
+        color: #9ca3af;
+        box-shadow: 0 0 20px rgba(156, 163, 175, 0.4);
+    }
+
+    /* Info Cards */
+    .info-card-glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 12px;
+        box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        margin-bottom: 16px;
+    }
+
+    .info-card-glass:hover {
+        border: 1px solid rgba(255, 138, 0, 0.4);
+        box-shadow: 0 8px 30px 0 rgba(255, 138, 0, 0.15);
+    }
+
+    .info-card-header {
+        background: rgba(255, 138, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 138, 0, 0.3);
+        padding: 16px 20px;
+    }
+
+    .info-card-header h6 {
+        color: #ff8a00;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .info-card-body {
+        padding: 20px;
+        color: #e0e0e0;
+    }
+
+    .info-card-body p {
+        margin-bottom: 12px;
+    }
+
+    .info-card-body p:last-child {
+        margin-bottom: 0;
+    }
+
+    .info-card-body strong {
+        color: #ff8a00;
+    }
+
+    .text-primary-glass {
+        color: #06b6d4 !important;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .text-secondary-glass {
+        color: #d1d5db !important;
+        line-height: 1.6;
+    }
+
+    /* Alert Glass */
+    .alert-glass-danger {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #fca5a5;
+        margin-bottom: 20px;
+    }
+
+    .alert-glass-info {
+        background: rgba(6, 182, 212, 0.15);
+        border: 1px solid rgba(6, 182, 212, 0.4);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #22d3ee;
+        margin-bottom: 20px;
+    }
+
+    .alert-glass-info strong {
+        color: #06b6d4;
+    }
+
+    /* Timestamp Card */
+    .timestamp-card-glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.3);
+        padding: 16px 20px;
+        color: #9ca3af;
+    }
+
+    .timestamp-card-glass strong {
+        color: #e0e0e0;
+    }
+
+    /* Action Buttons */
+    .btn-neon-warning {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        border: 2px solid #f59e0b;
+        color: #fff;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-neon-warning:hover {
+        box-shadow: 0 0 30px rgba(245, 158, 11, 0.7);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-neon-danger {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        border: 2px solid #ef4444;
+        color: #fff;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-neon-danger:hover {
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.7);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-glass-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-glass-secondary:hover {
+        border: 2px solid rgba(255, 138, 0, 0.5);
+        color: #ff8a00;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+
+        .glass-card-body-details,
+        .info-card-body {
+            padding: 16px;
+        }
+
+        .status-badge-large {
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+    }
+</style>
+
+<div class="details-page-container">
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="glass-card-details">
+                    <div class="glass-card-header-details">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h6>
+                                <i class="fas fa-file-alt"></i> Booking Details
+                            </h6>
+                            <a asp-controller="Booking" asp-action="MyBookings" class="btn btn-glass-secondary btn-sm">
+                                <i class="fas fa-arrow-left"></i> Back to My Bookings
+                            </a>
+                        </div>
+                    </div>
+                    <div class="glass-card-body-details">
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert-glass-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-circle"></i> <strong>Error!</strong> @TempData["Error"]
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
+                                    aria-label="Close" style="filter: brightness(0) invert(1);"></button>
+                            </div>
+                        }
+
+                        @if (Model != null)
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- Status Badge -->
+                                    <div class="mb-4 text-center">
+                                        @{
+                                            var badgeClass = Model.Status switch
+                                            {
+                                                BookingStatus.Pending => "badge-glass-pending",
+                                                BookingStatus.Approved => "badge-glass-approved",
+                                                BookingStatus.Rejected => "badge-glass-rejected",
+                                                BookingStatus.Completed => "badge-glass-completed",
+                                                BookingStatus.Cancelled => "badge-glass-cancelled",
+                                                _ => "badge-glass-cancelled"
+                                            };
+                                        }
+                                        <span class="status-badge-large @badgeClass">
+                                            @Model.StatusDisplay
+                                        </span>
+                                    </div>
+
+                                    <!-- Room Information -->
+                                    <div class="info-card-glass">
+                                        <div class="info-card-header">
+                                            <h6><i class="fas fa-door-open"></i> Room Information</h6>
+                                        </div>
+                                        <div class="info-card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>Room:</strong> @Model.RoomName</p>
+                                                    <p><strong>Campus:</strong> @Model.CampusName</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><strong>Type:</strong> @Model.RoomTypeDisplay</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Booking Information -->
+                                    <div class="info-card-glass">
+                                        <div class="info-card-header">
+                                            <h6><i class="fas fa-calendar"></i> Booking Information</h6>
+                                        </div>
+                                        <div class="info-card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p>
+                                                        <strong>Start Time:</strong><br>
+                                                        @Model.StartTime.ToString("dddd, MMMM dd, yyyy")<br>
+                                                        <span
+                                                            class="text-primary-glass">@Model.StartTime.ToString("HH:mm")</span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p>
+                                                        <strong>End Time:</strong><br>
+                                                        @Model.EndTime.ToString("dddd, MMMM dd, yyyy")<br>
+                                                        <span
+                                                            class="text-primary-glass">@Model.EndTime.ToString("HH:mm")</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>
+                                                        <strong>Duration:</strong>
+                                                        @{
+                                                            var duration = Model.EndTime - Model.StartTime;
+                                                            <span class="text-primary-glass">@($"{duration.TotalHours:F1}        hours")</span>
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p><strong>Purpose:</strong></p>
+                                                    <p class="text-secondary-glass">@Model.Purpose</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- User Information -->
+                                    <div class="info-card-glass">
+                                        <div class="info-card-header">
+                                            <h6><i class="fas fa-user"></i> User Information</h6>
+                                        </div>
+                                        <div class="info-card-body">
+                                            <p><strong>Name:</strong> @Model.UserName</p>
+                                            <p><strong>Email:</strong> @Model.UserEmail</p>
+                                        </div>
+                                    </div>
+
+                                    @if (!string.IsNullOrEmpty(Model.AdminNote))
+                                    {
+                                        <div class="alert-glass-info">
+                                            <strong><i class="fas fa-info-circle"></i> Admin Note:</strong><br>
+                                            @Model.AdminNote
+                                        </div>
+                                    }
+
+                                    <!-- Timestamps -->
+                                    <div class="timestamp-card-glass">
+                                        <small>
+                                            <p class="mb-1">
+                                                <strong>Created:</strong> @Model.CreatedAt.ToString("MMM dd, yyyy HH:mm")
+                                            </p>
+                                            @if (Model.UpdatedAt.HasValue)
+                                            {
+                                                <p class="mb-0">
+                                                    <strong>Last Updated:</strong> @Model.UpdatedAt.Value.ToString("MMM dd, yyyy                         HH:mm")
+                                                </p>
+                                            }
+                                        </small>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="mt-4 d-flex justify-content-end gap-2 flex-wrap">
+                                        @if (Model.Status == BookingStatus.Pending)
+                                        {
+                                            <a asp-controller="Booking" asp-action="Edit" asp-route-id="@Model.Id"
+                                                class="btn btn-neon-warning">
+                                                <i class="fas fa-edit"></i> Edit Booking
+                                            </a>
+                                        }
+
+                                        @if (Model.Status == BookingStatus.Pending || Model.Status ==
+                                                                            BookingStatus.Approved)
+                                        {
+                                            <form asp-controller="Booking" asp-action="Cancel" method="post"
+                                                onsubmit="return confirm('Are you sure you want to cancel this booking?');"
+                                                class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@Model.Id" />
+                                                <button type="submit" class="btn btn-neon-danger">
+                                                    <i class="fas fa-times"></i> Cancel Booking
+                                                </button>
+                                            </form>
+                                        }
+
+                                        @if (Model.Status == BookingStatus.Completed)
+                                        {
+                                            <a asp-controller="RoomReport" asp-action="Create" asp-route-bookingId="@Model.Id"
+                                                class="btn btn-neon-warning">
+                                                <i class="fas fa-exclamation-triangle"></i> Report Issue
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
