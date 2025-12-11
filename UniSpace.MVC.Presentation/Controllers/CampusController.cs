@@ -5,7 +5,6 @@ using UniSpace.Service.Interfaces;
 
 namespace UniSpace.MVC.Presentation.Controllers
 {
-    [Authorize(Policy = "AdminPolicy")]
     public class CampusController : Controller
     {
         private readonly ICampusService _campusService;
@@ -17,7 +16,9 @@ namespace UniSpace.MVC.Presentation.Controllers
             _logger = logger;
         }
 
-        // GET: Campus
+        // ============================================================
+        // INDEX (Public)
+        // ============================================================
         [AllowAnonymous]
         public async Task<IActionResult> Index(int page = 1, string? search = null)
         {
@@ -37,12 +38,14 @@ namespace UniSpace.MVC.Presentation.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading campuses");
-                TempData["ErrorMessage"] = "Error loading campuses: " + ex.Message;
+                TempData["ErrorMessage"] = "Error loading campuses.";
                 return View(new List<CampusDto>());
             }
         }
 
-        // GET: Campus/Details/5
+        // ============================================================
+        // DETAILS (Public)
+        // ============================================================
         [AllowAnonymous]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -51,25 +54,37 @@ namespace UniSpace.MVC.Presentation.Controllers
                 var campus = await _campusService.GetCampusByIdAsync(id);
                 return View(campus);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, $"Error loading campus details: {id}");
-                TempData["ErrorMessage"] = "Campus not found";
+                TempData["ErrorMessage"] = "Campus không tồn tại.";
                 return RedirectToAction(nameof(Index));
             }
         }
 
-        // GET: Campus/Create
+        // ============================================================
+        // CREATE (Admin only)
+        // ============================================================
         public IActionResult Create()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                TempData["ErrorMessage"] = "❌ Bạn không phải Admin.";
+                return RedirectToAction(nameof(Index));
+            }
+
             return View();
         }
 
-        // POST: Campus/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCampusDto createDto)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                TempData["ErrorMessage"] = "❌ Bạn không phải Admin.";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(createDto);
@@ -78,49 +93,62 @@ namespace UniSpace.MVC.Presentation.Controllers
             try
             {
                 var campus = await _campusService.CreateCampusAsync(createDto);
-                TempData["SuccessMessage"] = "Campus created successfully";
+                TempData["SuccessMessage"] = "Tạo campus thành công!";
                 return RedirectToAction(nameof(Details), new { id = campus.Id });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating campus");
-                ModelState.AddModelError(string.Empty, ex.Message);
+                ModelState.AddModelError("", ex.Message);
                 return View(createDto);
             }
         }
 
-        // GET: Campus/Edit/5
+        // ============================================================
+        // EDIT (Admin only)
+        // ============================================================
         public async Task<IActionResult> Edit(Guid id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                TempData["ErrorMessage"] = "❌ Bạn không có quyền chỉnh sửa.";
+                return RedirectToAction(nameof(Index));
+            }
+
             try
             {
                 var campus = await _campusService.GetCampusByIdAsync(id);
-                
-                var updateDto = new UpdateCampusDto
+
+                var dto = new UpdateCampusDto
                 {
                     Id = campus.Id,
                     Name = campus.Name,
                     Address = campus.Address
                 };
 
-                return View(updateDto);
+                return View(dto);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, $"Error loading campus for edit: {id}");
-                TempData["ErrorMessage"] = "Campus not found";
+                TempData["ErrorMessage"] = "Không tìm thấy campus.";
                 return RedirectToAction(nameof(Index));
             }
         }
 
-        // POST: Campus/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, UpdateCampusDto updateDto)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                TempData["ErrorMessage"] = "❌ Bạn không phải Admin.";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (id != updateDto.Id)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "ID không hợp lệ.";
+                return RedirectToAction(nameof(Index));
             }
 
             if (!ModelState.IsValid)
@@ -131,46 +159,56 @@ namespace UniSpace.MVC.Presentation.Controllers
             try
             {
                 await _campusService.UpdateCampusAsync(updateDto);
-                TempData["SuccessMessage"] = "Campus updated successfully";
+                TempData["SuccessMessage"] = "Cập nhật campus thành công!";
                 return RedirectToAction(nameof(Details), new { id = updateDto.Id });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error updating campus: {id}");
-                ModelState.AddModelError(string.Empty, ex.Message);
+                ModelState.AddModelError("", ex.Message);
                 return View(updateDto);
             }
         }
 
-        // GET: Campus/Delete/5
+        // ============================================================
+        // DELETE (Admin only)
+        // ============================================================
         public async Task<IActionResult> Delete(Guid id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                TempData["ErrorMessage"] = "❌ Bạn không có quyền xóa.";
+                return RedirectToAction(nameof(Index));
+            }
+
             try
             {
                 var campus = await _campusService.GetCampusByIdAsync(id);
                 return View(campus);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, $"Error loading campus for delete: {id}");
-                TempData["ErrorMessage"] = "Campus not found";
+                TempData["ErrorMessage"] = "Không tìm thấy campus.";
                 return RedirectToAction(nameof(Index));
             }
         }
 
-        // POST: Campus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                TempData["ErrorMessage"] = "❌ Bạn không có quyền xóa.";
+                return RedirectToAction(nameof(Index));
+            }
+
             try
             {
                 await _campusService.SoftDeleteCampusAsync(id);
-                TempData["SuccessMessage"] = "Campus deleted successfully";
+                TempData["SuccessMessage"] = "Xóa campus thành công!";
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error deleting campus: {id}");
                 TempData["ErrorMessage"] = ex.Message;
             }
 

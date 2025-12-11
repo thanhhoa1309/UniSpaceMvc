@@ -1,0 +1,366 @@
+/* ============================================================
+   CAMPUS UI — CYBER + CLEAN MERGED STYLE (FINAL BEAUTY FIX)
+   ============================================================ */
+
+/* Base font rules -------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    color: #0f172a;
+    line-height: 1.5;
+}
+
+/* Remove UL bullets (Fix dot issue) -------------------------------- */
+ul, li {
+    list-style: none !important;
+    margin: 0;
+    padding: 0;
+}
+
+/* Focus styles ----------------------------------------------------- */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* CAMPUS HERO — phiên bản nhỏ gọn */
+.campus-hero {
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    color: #fff;
+    border-radius: 14px;     /* giảm bo góc */
+    padding: 16px 20px;      /* giảm padding = nhỏ xuống */
+    box-shadow: 0 10px 26px rgba(37, 99, 235, 0.20);
+    margin-bottom: 18px;
+}
+
+/* Hero title smaller */
+.campus-hero h1 {
+    font-size: 1.7rem;       /* nhỏ hơn */
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+/* Sub text giảm khoảng cách */
+.sub-text {
+    margin-top: 2px;
+    margin-bottom: 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+}
+
+/* Giảm spacing giữa hero-left và hero-right */
+.hero-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px; /* nhỏ hơn */
+}
+
+
+/* Tags ------------------------------------------------------------- */
+.tag-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #f4f4f5;
+    color: #111827;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.pill.active {
+    background: #2563eb;
+    color: white;
+    border: none;
+}
+
+/* SEARCH BAR ------------------------------------------------------- */
+.search-bar-hero {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid #e5e7eb;
+    margin-top: -18px;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+}
+
+.search-bar-hero i {
+    font-size: 18px;
+    color: #64748b;
+}
+
+.search-bar-hero input {
+    border: none;
+    outline: none;
+    width: 100%;
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.btn-search {
+    padding: 8px 16px;
+    background: linear-gradient(90deg, #2563eb, #8b5cf6);
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+
+.btn-search:hover {
+    transform: translateY(-2px);
+}
+
+/* CAMPUS FEED LIST MODE (vertical centered) ------------------------- */
+.campus-feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    margin-top: 25px;
+}
+
+/* CARD ITEM -------------------------------------------------------- */
+.campus-item,
+.campus-card {
+    width: 100%;
+    max-width: 780px;
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    padding: 26px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.campus-item:hover,
+.campus-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.13);
+}
+
+.campus-item p {
+    margin: 6px 0;
+}
+
+/* Buttons ---------------------------------------------------------- */
+.neon-btn {
+    background: linear-gradient(90deg, #2563eb, #8b5cf6);
+    color: white !important;
+    padding: 10px 16px;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: .25s;
+}
+
+.neon-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 18px rgba(59, 130, 246, 0.45);
+}
+
+/* Pagination (NO DOTS — Modern) ------------------------------------ */
+.pagination-modern {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+    padding: 0;
+}
+
+.pg-item {
+    list-style: none !important;
+}
+
+.pg-item a {
+    padding: 10px 18px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #dbeafe;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
+    text-decoration: none !important;
+}
+
+.pg-item a:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    transform: translateY(-2px);
+}
+
+.pg-item.active a {
+    background: linear-gradient(90deg, #2563eb, #8b5cf6);
+    color: white !important;
+    border: none;
+    box-shadow: 0 0 18px rgba(59,130,246,0.4);
+}
+
+.pg-item.disabled a {
+    opacity: .35;
+    pointer-events: none;
+}
+
+/* EXTRA SPACING BETWEEN TEXT LINES INSIDE CAMPUS ITEMS */
+.campus-item p,
+.campus-item .meta,
+.campus-card p,
+.campus-card .meta {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    line-height: 1.55;
+}
+
+/* More spacing between blocks inside card */
+.campus-item > *:not(:last-child),
+.campus-card > *:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+/* HERO RIGHT — kiểu A: dạng CỘT, spacing thoáng */
+.hero-right {
+    display: flex;
+    flex-direction: column;  /* xếp xuống dưới */
+    align-items: flex-end;   /* canh phải cho đẹp */
+    gap: 12px;               /* GIÃN CÁCH GIỮA CÁC DÒNG */
+    margin-left: 20px;
+}
+
+.hero-right .badge-soft {
+    padding: 8px 14px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.hero-right .neon-btn {
+    margin-top: 6px; /* tạo breathing space thêm */
+}
+
+/* CAMPUS FEED — Tên campus to & đậm hơn */
+.campus-feed .campus-item h5 {
+    font-size: 1.5rem;     /* to hơn (20px) */
+    font-weight: 800;       /* đậm nhất */
+    color: #0f172a;         /* đen đậm */
+    margin-bottom: 6px;     /* giãn nhẹ */
+}
+
+/* Meta (địa chỉ, ngày tạo...) nhỏ & nhẹ hơn */
+.campus-feed .campus-item .meta {
+    font-size: 0.95rem;     /* nhỏ hơn 1 chút */
+    color: #6b7280;         /* xám dễ nhìn */
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* Small hero like Index */
+.small-hero {
+    padding: 16px 20px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+}
+.small-hero .hero-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+.small-hero .hero-sub {
+    margin-top: 4px;
+    opacity: .9;
+}
+
+/* Wrapper center */
+.details-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Main card */
+.campus-details-card {
+    width: 100%;
+    max-width: 700px;
+    background: #fff;
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+
+/* Title + subtitle */
+.details-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #0f172a;
+}
+
+.details-sub {
+    color: #6b7280;
+    margin-bottom: 18px;
+    font-size: 0.95rem;
+}
+
+/* Info grid */
+.details-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.details-row {
+    display: flex;
+    justify-content: space-between;
+    background: #f8fafc;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+}
+
+.details-label {
+    font-weight: 700;
+    color: #374151;
+}
+
+.details-value {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Action buttons */
+.details-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+

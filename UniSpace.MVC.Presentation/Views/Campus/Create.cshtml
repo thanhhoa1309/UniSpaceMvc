@@ -1,26 +1,38 @@
 @model UniSpace.Bo.DTOs.CampusDTOs.CreateCampusDto
 @{
-    ViewData["Title"] = "Create Campus";
+    ViewData["Title"] = "Tạo Campus";
 }
+<link rel="stylesheet" href="~/css/campus-cyber.css" />
 
-<h1>Create Campus</h1>
+<header>Tạo mới Campus</header>
 
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+<div class="page-wrapper form-wrapper">
+    <div class="glass-box">
+        <h2>Thêm campus mới</h2>
+        <p class="muted">Điền thông tin bên dưới để thêm cơ sở mới</p>
+
+        <form asp-action="Create" method="post" class="cyber-form">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Tên campus</label>
+                <input asp-for="Name" class="form-control" placeholder="Nhập tên campus..." />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label">Địa chỉ</label>
+                <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ..." />
+                <span asp-validation-for="Address" class="text-danger small"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-strong">Lưu</button>
+                <a asp-action="Index" class="btn-soft">Hủy</a>
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-        <label asp-for="Address" class="form-label"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/css/campus-cyber.js"></script>
 }
-

@@ -1,27 +1,40 @@
 @model UniSpace.Bo.DTOs.CampusDTOs.UpdateCampusDto
 @{
-    ViewData["Title"] = "Edit Campus";
+    ViewData["Title"] = "Chỉnh sửa Campus";
 }
+<link rel="stylesheet" href="~/css/campus-cyber.css" />
 
-<h1>Edit Campus</h1>
+<header>Chỉnh sửa Campus</header>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+<div class="page-wrapper form-wrapper">
+    <div class="glass-box">
+        <h2>Cập nhật thông tin</h2>
+        <p class="muted">Điều chỉnh nội dung campus tại đây</p>
+
+        <form asp-action="Edit" method="post" class="cyber-form">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Tên campus</label>
+                <input asp-for="Name" class="form-control" placeholder="Nhập tên campus..." />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label">Địa chỉ</label>
+                <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ..." />
+                <span asp-validation-for="Address" class="text-danger small"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-strong">Cập nhật</button>
+                <a asp-action="Index" class="btn-soft">Hủy</a>
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-        <label asp-for="Address" class="form-label"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/css/campus-cyber.js"></script>
 }
-

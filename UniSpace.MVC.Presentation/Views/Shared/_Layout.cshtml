@@ -4,12 +4,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - UniSpace</title>
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Default site css -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Razor generated styles -->
     <link rel="stylesheet" href="~/UniSpace.MVC.Presentation.styles.css" asp-append-version="true" />
+
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Cyber Theme CSS -->
+    <link rel="stylesheet" href="~/css/campus-cyber.css" />
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
@@ -17,109 +29,42 @@
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <i class="fas fa-graduation-cap"></i> UniSpace
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <!-- LEFT MENU -->
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link text-dark"
+                               asp-controller="Home"
+                               asp-action="Index">
                                 <i class="fas fa-home"></i> Home
                             </a>
                         </li>
 
                         @if (Context.Session.GetString("AuthToken") != null)
                         {
-                            <!-- Campus & Rooms -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
                                     <i class="fas fa-building"></i> Facilities
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-controller="Campus" asp-action="Index"><i class="fas fa-university"></i> Campuses</a></li>
                                     <li><a class="dropdown-item" asp-controller="Room" asp-action="Index"><i class="fas fa-door-open"></i> All Rooms</a></li>
                                     <li><a class="dropdown-item" asp-controller="Room" asp-action="Available"><i class="fas fa-check-circle"></i> Available Rooms</a></li>
+
                                     @if (User.IsInRole("Admin"))
                                     {
-                                        <li><hr class="dropdown-divider"></li>
+                                        <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item" asp-controller="Campus" asp-action="Create"><i class="fas fa-plus"></i> Add Campus</a></li>
                                         <li><a class="dropdown-item" asp-controller="Room" asp-action="Create"><i class="fas fa-plus"></i> Add Room</a></li>
                                     }
                                 </ul>
                             </li>
-
-                            <!-- Bookings -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-calendar-alt"></i> Bookings
-                                </a>
-                                <ul class="dropdown-menu">
-                                    @if (User.IsInRole("Student") || User.IsInRole("Lecturer"))
-                                    {
-                                        <li><a class="dropdown-item" asp-controller="Booking" asp-action="MyBookings"><i class="fas fa-list"></i> My Bookings</a></li>
-                                        <li><a class="dropdown-item" asp-controller="Booking" asp-action="Create"><i class="fas fa-plus"></i> New Booking</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                    }
-                                    <li><a class="dropdown-item" asp-controller="Booking" asp-action="Index"><i class="fas fa-list-alt"></i> All Bookings</a></li>
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <li><a class="dropdown-item" asp-controller="Booking" asp-action="PendingApprovals"><i class="fas fa-clock"></i> Pending Approvals</a></li>
-                                    }
-                                </ul>
-                            </li>
-
-                            <!-- Schedules -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-calendar-week"></i> Schedules
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-controller="Schedule" asp-action="Index"><i class="fas fa-list"></i> All Schedules</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Schedule" asp-action="Calendar"><i class="fas fa-calendar"></i> Calendar View</a></li>
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" asp-controller="Schedule" asp-action="Create"><i class="fas fa-plus"></i> Add Schedule</a></li>
-                                    }
-                                </ul>
-                            </li>
-
-                            <!-- Reports -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-exclamation-triangle"></i> Reports
-                                </a>
-                                <ul class="dropdown-menu">
-                                    @if (User.IsInRole("Student") || User.IsInRole("Lecturer"))
-                                    {
-                                        <li><a class="dropdown-item" asp-controller="RoomReport" asp-action="MyReports"><i class="fas fa-list"></i> My Reports</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                    }
-                                    <li><a class="dropdown-item" asp-controller="RoomReport" asp-action="Index"><i class="fas fa-list-alt"></i> All Reports</a></li>
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <li><a class="dropdown-item" asp-controller="RoomReport" asp-action="PendingReports"><i class="fas fa-clock"></i> Pending Reports</a></li>
-                                        <li><a class="dropdown-item" asp-controller="RoomReport" asp-action="Stats"><i class="fas fa-chart-bar"></i> Statistics</a></li>
-                                    }
-                                </ul>
-                            </li>
-
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <!-- Admin -->
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-shield-alt"></i> Admin
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" asp-controller="Dashboard" asp-action="Index"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                                        <li><a class="dropdown-item" asp-controller="Dashboard" asp-action="BookingStats"><i class="fas fa-chart-line"></i> Booking Stats</a></li>
-                                        <li><a class="dropdown-item" asp-controller="Dashboard" asp-action="RoomStats"><i class="fas fa-chart-pie"></i> Room Stats</a></li>
-                                        <li><a class="dropdown-item" asp-controller="Dashboard" asp-action="ReportStats"><i class="fas fa-chart-bar"></i> Report Stats</a></li>
-                                    </ul>
-                                </li>
-                            }
                         }
                         else
                         {
@@ -128,31 +73,23 @@
                                     <i class="fas fa-university"></i> Campuses
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Room" asp-action="Index">
-                                    <i class="fas fa-door-open"></i> Rooms
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Schedule" asp-action="Index">
-                                    <i class="fas fa-calendar-week"></i> Schedules
-                                </a>
-                            </li>
                         }
                     </ul>
+
+                    <!-- RIGHT MENU -->
                     <ul class="navbar-nav">
                         @if (Context.Session.GetString("AuthToken") != null)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                     <i class="fas fa-user-circle"></i> Account
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Profile</a></li>
                                     <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li><hr class="dropdown-divider" /></li>
                                     <li>
-                                        <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                                        <form asp-controller="Auth" asp-action="Logout" method="post">
                                             <button type="submit" class="dropdown-item">
                                                 <i class="fas fa-sign-out-alt"></i> Logout
                                             </button>
@@ -163,45 +100,38 @@
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Auth" asp-action="Login">
-                                    <i class="fas fa-sign-in-alt"></i> Login
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Auth" asp-action="Register">
-                                    <i class="fas fa-user-plus"></i> Register
-                                </a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Auth" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Auth" asp-action="Register"><i class="fas fa-user-plus"></i> Register</a></li>
                         }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
+    <!-- ALERTS -->
+    <div id="alert-container" class="position-fixed top-0 end-0 m-3" style="z-index:1050;">
+        @* Error Alert *@
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @* Success Alert *@
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+
     <div class="container">
         <main role="main" class="pb-3">
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
-            @if (TempData["InfoMessage"] != null)
-            {
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <i class="fas fa-info-circle"></i> @TempData["InfoMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
             @RenderBody()
         </main>
     </div>
@@ -209,18 +139,31 @@
     <footer class="border-top footer text-muted mt-5">
         <div class="container text-center py-3">
             &copy; 2025 - UniSpace - Room Booking Management System
-            <br>
-            <small class="text-muted">
-                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> |
-                <a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a> |
-                <a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Contact</a>
-            </small>
         </div>
     </footer>
 
+    <!-- JS Libraries -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Site JS -->
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- ALERT SCRIPT -->
+    <script>
+        $(document).ready(function () {
+            $('#alert-container .alert').each(function () {
+                const $alert = $(this);
+                if ($alert.text().trim() !== '') {
+                    $alert.fadeIn();
+                    setTimeout(() => $alert.fadeOut(500, function () {
+                        $(this).remove();
+                    }), 3000); // 3 giây
+                }
+            });
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

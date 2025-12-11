@@ -1,28 +1,52 @@
 @model UniSpace.Bo.DTOs.CampusDTOs.CampusDto
 @{
-    ViewData["Title"] = "Campus Details";
+    ViewData["Title"] = "Chi tiết Campus";
 }
 
-<h1>Campus Details</h1>
+<link rel="stylesheet" href="~/css/campus-cyber.css" />
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">Name</dt>
-        <dd class="col-sm-10">@Model.Name</dd>
-
-        <dt class="col-sm-2">Address</dt>
-        <dd class="col-sm-10">@Model.Address</dd>
-
-        <dt class="col-sm-2">Total Rooms</dt>
-        <dd class="col-sm-10">@Model.TotalRooms</dd>
-
-        <dt class="col-sm-2">Created At</dt>
-        <dd class="col-sm-10">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
-    </dl>
+<div class="campus-hero small-hero">
+    <h1 class="hero-title">Chi tiết Campus</h1>
+    <p class="hero-sub">Xem thông tin chi tiết về cơ sở</p>
 </div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+<div class="details-wrapper">
+    <div class="campus-details-card">
+
+        <h2 class="details-title">@Model.Name</h2>
+        <p class="details-sub">@Model.Address</p>
+
+        <div class="details-grid">
+            <div class="details-row">
+                <label class="details-label">Tên:</label>
+                <div class="details-value">@Model.Name</div>
+            </div>
+
+            <div class="details-row">
+                <label class="details-label">Địa chỉ:</label>
+                <div class="details-value">@Model.Address</div>
+            </div>
+
+            <div class="details-row">
+                <label class="details-label">Số phòng:</label>
+                <div class="details-value">@Model.TotalRooms</div>
+            </div>
+
+            <div class="details-row">
+                <label class="details-label">Ngày tạo:</label>
+                <div class="details-value">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+            </div>
+        </div>
+
+        <div class="details-actions">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary">Sửa</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-danger">Xóa</a>
+            <a asp-action="Index" class="btn-soft">Quay lại</a>
+        </div>
+
+    </div>
 </div>
 
+@section Scripts {
+    <script src="~/js/campus-cyber.js"></script>
+}

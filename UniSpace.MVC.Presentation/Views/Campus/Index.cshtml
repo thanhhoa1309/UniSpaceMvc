@@ -3,70 +3,85 @@
     ViewData["Title"] = "Campuses";
 }
 
-<h1>Campuses</h1>
+<div class="campus-hero">
+    <div class="decor-circle c1"></div>
+    <div class="decor-circle c2"></div>
 
-<form asp-action="Index" method="get" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search by name or address" />
-        <button type="submit" class="btn btn-primary">Search</button>
+    <div class="hero-flex">
+        <div class="hero-left">
+            <div class="badges mb-1">
+                <span class="badge">Campus</span>
+                <span class="small" style="opacity:.95">Quản lý cơ sở và phòng học</span>
+            </div>
+            <h1>Danh sách Campuses</h1>
+            <p class="sub-text">Xem toàn bộ danh sách cơ sở và thao tác nhanh.</p>
+        </div>
+
+        <div class="hero-right">
+            <div class="badge-soft shimmer">Tổng: @Model.TotalCount</div>
+            <div class="badge-soft">Trang: @ViewBag.CurrentPage / @ViewBag.TotalPages</div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn neon-btn" asp-action="Create">+ Thêm campus</a>
+            }
+        </div>
     </div>
-</form>
+</div>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-}
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-}
+<!-- SEARCH BAR BEAUTIFUL -->
+<div class="search-bar-hero search-floating">
+    <form asp-action="Index" method="get" class="search-flex">
+        <i class="fa fa-search"></i>
+        <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm theo tên hoặc địa chỉ campus..." />
+        <button type="submit" class="btn-search">Tìm kiếm</button>
+    </form>
+</div>
 
-<p>
-    <a class="btn btn-success" asp-action="Create">Create New</a>
-</p>
+<!-- TAGS -->
+<div class="tag-strip mt-3">
+    <span class="pill active">Tất cả</span>
+    <span class="pill">Nhiều phòng</span>
+    <span class="pill">Đang hoạt động</span>
+    <span class="pill">Mới tạo</span>
+</div>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Total Rooms</th>
-            <th>Created At</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<!-- CAMPUS LIST - NOW VERTICAL + CENTER -->
+<div class="campus-feed mt-3">
     @foreach (var item in Model)
     {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.Address</td>
-            <td>@item.TotalRooms</td>
-            <td>@item.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-secondary">Edit</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
-            </td>
-        </tr>
+        @Html.Partial("_CampusCard", item)
     }
-    </tbody>
-</table>
+</div>
 
-<nav aria-label="Campus pagination">
-    <ul class="pagination">
-        <li class="page-item @(ViewBag.CurrentPage <= 1 ? "disabled" : "")">
-            <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-search="@ViewBag.Search">Previous</a>
+<!-- PAGINATION MODERN -->
+<nav aria-label="Campus pagination" class="pagination-wrapper mt-4">
+    <ul class="pagination-modern">
+
+        <!-- PREVIOUS -->
+        <li class="pg-item @(ViewBag.CurrentPage <= 1 ? "disabled" : "")">
+            <a asp-action="Index"
+               asp-route-page="@(ViewBag.CurrentPage - 1)"
+               asp-route-search="@ViewBag.Search">
+                <i class="fa fa-chevron-left"></i> Previous
+            </a>
         </li>
+
+        <!-- PAGE NUMBERS -->
         @for (int i = 1; i <= (int)(ViewBag.TotalPages ?? 1); i++)
         {
-            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search">@i</a>
+            <li class="pg-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                <a asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search">@i</a>
             </li>
         }
-        <li class="page-item @(ViewBag.CurrentPage >= (int)(ViewBag.TotalPages ?? 1) ? "disabled" : "")">
-            <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-search="@ViewBag.Search">Next</a>
+
+        <!-- NEXT -->
+        <li class="pg-item @(ViewBag.CurrentPage >= (int)(ViewBag.TotalPages ?? 1) ? "disabled" : "")">
+            <a asp-action="Index"
+               asp-route-page="@(ViewBag.CurrentPage + 1)"
+               asp-route-search="@ViewBag.Search">
+                Next <i class="fa fa-chevron-right"></i>
+            </a>
         </li>
+
     </ul>
 </nav>
-

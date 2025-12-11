@@ -1,0 +1,19 @@
+@model UniSpace.Bo.DTOs.CampusDTOs.CampusDto
+<div class="campus-item fade-up" role="article" aria-labelledby="campus-@Model.Id" tabindex="0">
+    <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <h5 id="campus-@Model.Id" class="mb-0">@Model.Name</h5>
+            <span class="badge-rooms">Rooms: @Model.TotalRooms</span>
+        </div>
+        <div class="meta">@Model.Address</div>
+        <div class="meta">Tạo lúc @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+    </div>
+
+    <div class="actions" role="group" aria-label="Campus actions">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-soft" title="Chi tiết">Chi tiết</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary" title="Sửa">Sửa</a>
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="get" style="margin:0">
+            <button type="submit" class="btn btn-danger" title="Xóa">Xóa</button>
+        </form>
+    </div>
+</div>
