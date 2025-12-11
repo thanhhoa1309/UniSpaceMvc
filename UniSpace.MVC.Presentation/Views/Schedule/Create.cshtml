@@ -1,0 +1,180 @@
+@model UniSpace.Bo.DTOs.ScheduleDTOs.CreateScheduleDto
+@using UniSpace.Bo.DTOs.CampusDTOs
+@{
+    ViewData["Title"] = "Create Schedule";
+    var campuses = ViewBag.Campuses as IEnumerable<CampusDto>;
+    var selectedRoom = ViewBag.SelectedRoom as UniSpace.Bo.DTOs.RoomDTOs.RoomDto;
+}
+<link rel="stylesheet" href="~/css/campus-cyber.css" />
+
+<header>Create New Schedule</header>
+
+<div class="page-wrapper form-wrapper">
+    <div class="glass-box">
+        <h2>Add Schedule</h2>
+        <p class="muted">Set up a new class or event schedule</p>
+
+        @if (selectedRoom != null)
+        {
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> Creating schedule for room: <strong>@selectedRoom.Name</strong>
+                (@selectedRoom.CampusName)
+            </div>
+        }
+
+        <!-- Conflict Alert container -->
+        <div id="conflictAlert" class="alert alert-danger" style="display:none;">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span id="conflictMessage"></span>
+        </div>
+
+        <form asp-action="Create" method="post" class="cyber-form">
+            @if (selectedRoom != null)
+            {
+                <input type="hidden" asp-for="RoomId" value="@selectedRoom.Id" />
+            }
+            else
+            {
+                <div class="mb-3">
+                    <label asp-for="RoomId" class="form-label">Select Room</label>
+                    <select asp-for="RoomId" class="form-control">
+                        <option value="">-- Select Room --</option>
+                        @if (ViewBag.Rooms != null)
+                        {
+                            foreach (var r in ViewBag.Rooms as IEnumerable<UniSpace.Bo.DTOs.RoomDTOs.RoomDto>)
+                            {
+                                <option value="@r.Id">@r.Name (@r.CampusName)</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="RoomId" class="text-danger small"></span>
+                </div>
+            }
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Title / Subject</label>
+                <input asp-for="Title" class="form-control" placeholder="e.g. Mathematics 101" />
+                <span asp-validation-for="Title" class="text-danger small"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ScheduleType" class="form-label">Type</label>
+                    <select asp-for="ScheduleType" class="form-control"
+                        asp-items="Html.GetEnumSelectList<UniSpace.Bo.Enums.ScheduleType>()">
+                    </select>
+                    <span asp-validation-for="ScheduleType" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DayOfWeek" class="form-label">Day of Week</label>
+                    <select asp-for="DayOfWeek" class="form-control">
+                        <option value="1">Monday</option>
+                        <option value="2">Tuesday</option>
+                        <option value="3">Wednesday</option>
+                        <option value="4">Thursday</option>
+                        <option value="5">Friday</option>
+                        <option value="6">Saturday</option>
+                        <option value="0">Sunday</option>
+                    </select>
+                    <span asp-validation-for="DayOfWeek" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="StartTime" class="form-label">Start Time</label>
+                    <input asp-for="StartTime" type="time" class="form-control" />
+                    <span asp-validation-for="StartTime" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="EndTime" class="form-label">End Time</label>
+                    <input asp-for="EndTime" type="time" class="form-control" />
+                    <span asp-validation-for="EndTime" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="StartDate" class="form-label">Effective From</label>
+                    <input asp-for="StartDate" type="date" class="form-control"
+                        value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="StartDate" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="EndDate" class="form-label">Effective To</label>
+                    <input asp-for="EndDate" type="date" class="form-control"
+                        value="@DateTime.Now.AddMonths(4).ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="EndDate" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-strong">Create</button>
+                <a asp-action="Index" class="btn-soft">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/css/campus-cyber.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // Real-time conflict checking inputs
+
+            // Real-time conflict checking inputs
+            const inputs = '#RoomId, #DayOfWeek, #StartTime, #EndTime, #StartDate, #EndDate';
+            $(inputs).on('change', function () {
+                checkConflict();
+            });
+
+            function checkConflict() {
+                var roomId = $('#RoomId').val();
+                var dayOfWeek = $('#DayOfWeek').val();
+                var startTime = $('#StartTime').val();
+                var endTime = $('#EndTime').val();
+                var startDate = $('#StartDate').val();
+                var endDate = $('#EndDate').val();
+
+                if (roomId && startTime && endTime && startDate && endDate) {
+                    $.ajax({
+                        url: '@Url.Action("CheckConflict")',
+                        type: 'GET',
+                        container: null, // Avoid jQuery mobile issues
+                        data: {
+                            roomId: roomId,
+                            dayOfWeek: dayOfWeek,
+                            startTime: startTime,
+                            endTime: endTime,
+                            startDate: startDate,
+                            endDate: endDate
+                        },
+                        success: function (response) {
+                            if (response.hasConflict) {
+                                var msg = "Schedule conflict detected!";
+                                if (response.conflicts && response.conflicts.length > 0) {
+                                    var c = response.conflicts[0];
+                                    msg += ` Overlaps with: ${c.title} (${c.startTime.substring(0, 5)} - ${c.endTime.substring(0, 5)})`;
+                                } else if (response.error) {
+                                    msg = "Error checking conflict: " + response.error;
+                                }
+
+                                $('#conflictMessage').text(msg);
+                                $('#conflictAlert').slideDown();
+                                $('button[type="submit"]').prop('disabled', true);
+                            } else {
+                                $('#conflictAlert').slideUp();
+                                $('button[type="submit"]').prop('disabled', false);
+                            }
+                        },
+                        error: function () {
+                            console.log('Error checking conflict');
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+}

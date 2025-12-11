@@ -17,6 +17,10 @@
     <div class="room-footer">
         <a class="btn btn-sm btn-primary" asp-action="Details" asp-route-id="@Model.Id"><i class="fa fa-eye"></i>
             View</a>
+        <a class="btn btn-sm btn-info" asp-controller="Schedule" asp-action="Index" asp-route-roomId="@Model.Id"
+            title="View Schedule">
+            <i class="fas fa-calendar-alt"></i>
+        </a>
         @if (User.IsInRole("Admin"))
         {
             <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@Model.Id"><i class="fa fa-edit"></i> Edit</a>

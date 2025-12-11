@@ -1,0 +1,48 @@
+@model IEnumerable<UniSpace.Bo.DTOs.ScheduleDTOs.ScheduleDto>
+@{
+    ViewData["Title"] = "Calendar View";
+    var targetDate = ViewBag.TargetDate as DateTime? ?? DateTime.Now;
+    var roomId = ViewBag.RoomId as Guid?;
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="display-6 fw-bold">Daily Schedule</h2>
+            <p class="text-muted">Viewing schedule for @targetDate.ToString("dddd, dd MMMM yyyy")</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="Calendar" asp-route-date="@targetDate.AddDays(-1).ToString("yyyy-MM-dd")"
+                asp-route-roomId="@roomId" class="btn btn-outline-secondary">
+                <i class="fas fa-chevron-left"></i> Previous Day
+            </a>
+            <input type="date" class="form-control" value="@targetDate.ToString("yyyy-MM-dd")"
+                onchange="window.location.href='@Url.Action("Calendar")?roomId=@roomId&date='+this.value">
+            <a asp-action="Calendar" asp-route-date="@targetDate.AddDays(1).ToString("yyyy-MM-dd")"
+                asp-route-roomId="@roomId" class="btn btn-outline-secondary">
+                Next Day <i class="fas fa-chevron-right"></i>
+            </a>
+            <a asp-action="Index" class="btn btn-primary ms-3">List View</a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+            <h3>No classes or events scheduled for this day</h3>
+            <p class="text-muted">Try selecting a different date or check the weekly schedule.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model.OrderBy(s => s.StartTime))
+            {
+                <div class="col-md-6 col-lg-4">
+                    <partial name="_ScheduleCard" model="item" />
+                </div>
+            }
+        </div>
+    }
+</div>

@@ -118,7 +118,7 @@ namespace UniSpace.MVC.Presentation.Controllers
 
         // GET: Schedule/Create
         [Authorize(Policy = "AdminPolicy")]
-        public async Task<IActionResult> Create(Guid? roomId)
+        public async Task<IActionResult> Create(Guid? roomId, Guid? campusId)
         {
             try
             {
@@ -129,6 +129,17 @@ namespace UniSpace.MVC.Presentation.Controllers
                 {
                     var room = await _roomService.GetRoomByIdAsync(roomId.Value);
                     ViewBag.SelectedRoom = room;
+                }
+                else
+                {
+                    // Load ALL rooms to allow direct selection
+                    // We fetch a large page size to ensure we get all/most rooms for the dropdown
+                    var roomsPagination = await _roomService.GetRoomsAsync(pageSize: 1000);
+                    ViewBag.Rooms = roomsPagination;
+
+                    // If a campus filter was passed in URL, we'll use it to pre-set the filter dropdown,
+                    // but we still provide all rooms so the user can change their mind or select directly.
+                    ViewBag.SelectedCampusId = campusId;
                 }
 
                 return View();
@@ -151,6 +162,19 @@ namespace UniSpace.MVC.Presentation.Controllers
             {
                 var campuses = await _campusService.GetCampusesAsync(pageSize: 100);
                 ViewBag.Campuses = campuses;
+
+                // Reload rooms if RoomId is selected to keep dropdown active
+                if (createDto.RoomId != Guid.Empty)
+                {
+                    var room = await _roomService.GetRoomByIdAsync(createDto.RoomId);
+                    if (room != null)
+                    {
+                        var roomsPagination = await _roomService.GetRoomsAsync(pageSize: 1000, campusId: room.CampusId);
+                        ViewBag.Rooms = roomsPagination;
+                        ViewBag.SelectedCampusId = room.CampusId;
+                    }
+                }
+
                 return View(createDto);
             }
 
@@ -166,6 +190,23 @@ namespace UniSpace.MVC.Presentation.Controllers
                 ModelState.AddModelError(string.Empty, ex.Message);
                 var campuses = await _campusService.GetCampusesAsync(pageSize: 100);
                 ViewBag.Campuses = campuses;
+
+                // Reload rooms if RoomId is selected to keep dropdown active
+                if (createDto.RoomId != Guid.Empty)
+                {
+                    try
+                    {
+                        var room = await _roomService.GetRoomByIdAsync(createDto.RoomId);
+                        if (room != null)
+                        {
+                            var roomsPagination = await _roomService.GetRoomsAsync(pageSize: 1000, campusId: room.CampusId);
+                            ViewBag.Rooms = roomsPagination;
+                            ViewBag.SelectedCampusId = room.CampusId;
+                        }
+                    }
+                    catch { /* If room lookup fails, ignore */ }
+                }
+
                 return View(createDto);
             }
         }
@@ -234,6 +275,24 @@ namespace UniSpace.MVC.Presentation.Controllers
                 var campuses = await _campusService.GetCampusesAsync(pageSize: 100);
                 ViewBag.Campuses = campuses;
                 return View(updateDto);
+            }
+        }
+
+        // GET: Schedule/GetRoomsByCampus
+        [HttpGet]
+        public async Task<JsonResult> GetRoomsByCampus(Guid campusId)
+        {
+            try
+            {
+                // Use the room service which handles filtering
+                var roomsPagination = await _roomService.GetRoomsAsync(pageSize: 1000, campusId: campusId);
+                var rooms = roomsPagination.Select(r => new { id = r.Id, name = r.Name }).OrderBy(r => r.name).ToList();
+                return Json(rooms);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error fetching rooms for campus {campusId}");
+                return Json(new List<object>());
             }
         }
 

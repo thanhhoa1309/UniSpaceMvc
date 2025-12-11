@@ -139,6 +139,10 @@
                         class="btn btn-lg btn-cyber-primary w-100 neon-shadow">
                         <i class="fas fa-calendar-plus me-2"></i> Book Now
                     </a>
+                    <a asp-controller="Schedule" asp-action="Index" asp-route-roomId="@Model.Id"
+                        class="btn btn-lg btn-outline-light w-100 mt-3">
+                        <i class="fas fa-calendar-alt me-2"></i> View Room Schedule
+                    </a>
                 </div>
             </div>
         </div>
