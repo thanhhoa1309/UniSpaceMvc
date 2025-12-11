@@ -1,0 +1,112 @@
+@model UniSpace.Service.Utils.Pagination<UniSpace.Bo.DTOs.RoomDTOs.RoomDto>
+@{
+    ViewData["Title"] = "Rooms";
+}
+
+<div class="room-hero">
+    <div class="decor-circle c1"></div>
+    <div class="decor-circle c2"></div>
+
+    <div class="hero-flex">
+        <div class="hero-left">
+            <div class="badges mb-1">
+                <span class="badge">Room</span>
+                <span class="small" style="opacity:.95">Quản lý phòng học & cơ sở</span>
+            </div>
+            <h1>Danh sách phòng</h1>
+            <p class="sub-text">Xem và quản lý tất cả phòng trong hệ thống</p>
+        </div>
+
+        <div class="hero-right">
+            <div class="badge-soft shimmer">Tổng: @Model.TotalCount</div>
+            <div class="badge-soft">Trang: @ViewBag.CurrentPage / @ViewBag.TotalPages</div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn neon-btn" asp-action="Create">+ Thêm phòng</a>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- SEARCH & FILTER -->
+<div class="search-bar-hero search-floating">
+    <form asp-action="Index" method="get" class="search-flex">
+        <i class="fa fa-search"></i>
+        <input type="text" name="search" value="@ViewBag.Search" placeholder="Tìm theo tên phòng..." />
+
+        <select name="campusId">
+            <option value="">Chọn campus</option>
+            @if (ViewBag.Campuses != null)
+            {
+                @foreach (var campus in ViewBag.Campuses)
+                {
+                    <option value="@campus.Id" selected="@(ViewBag.CampusId == campus.Id ? "selected" : null)">
+                        @campus.Name
+                    </option>
+                }
+            }
+        </select>
+
+        <select name="type">
+            <option value="">Loại phòng</option>
+            @{
+                var currentType = ViewBag.Type as UniSpace.Bo.Enums.RoomType?;
+            }
+            @foreach (UniSpace.Bo.Enums.RoomType t in Enum.GetValues(typeof(UniSpace.Bo.Enums.RoomType)))
+            {
+                <option value="@t" selected="@(currentType == t ? "selected" : null)">
+                    @t
+                </option>
+            }
+        </select>
+
+        <select name="status">
+            <option value="">Trạng thái</option>
+            @{
+                var currentStatus = ViewBag.Status as UniSpace.Bo.Enums.BookingStatus?;
+            }
+            @foreach (UniSpace.Bo.Enums.BookingStatus s in Enum.GetValues(typeof(UniSpace.Bo.Enums.BookingStatus)))
+            {
+                <option value="@s" selected="@(currentStatus == s ? "selected" : null)">
+                    @s
+                </option>
+            }
+        </select>
+
+        <button type="submit" class="btn-search">Tìm kiếm</button>
+    </form>
+</div>
+
+<!-- ROOM LIST -->
+<div class="room-feed mt-3">
+    @foreach (var room in Model)
+    {
+        @Html.Partial("_RoomCard", room)
+    }
+</div>
+
+<!-- PAGINATION -->
+<nav aria-label="Room pagination" class="pagination-wrapper mt-4">
+    <ul class="pagination-modern">
+
+        <li class="pg-item @(ViewBag.CurrentPage <= 1 ? "disabled" : "")">
+            <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-search="@ViewBag.Search">
+                <i class="fa fa-chevron-left"></i> Previous
+            </a>
+        </li>
+
+        @for (int i = 1; i <= (int)(ViewBag.TotalPages ?? 1); i++)
+        {
+            <li class="pg-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                <a asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search">@i</a>
+            </li>
+        }
+
+        <li class="pg-item @(ViewBag.CurrentPage >= (int)(ViewBag.TotalPages ?? 1) ? "disabled" : "")">
+            <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-search="@ViewBag.Search">
+                Next <i class="fa fa-chevron-right"></i>
+            </a>
+        </li>
+
+    </ul>
+</nav>

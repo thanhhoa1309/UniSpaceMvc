@@ -1,0 +1,27 @@
+@model UniSpace.Bo.DTOs.RoomDTOs.RoomDto
+
+<div class="room-card">
+    <div class="room-header">
+        <h3>@Model.Name</h3>
+        <span class="badge">@Model.Type</span>
+    </div>
+    <div class="room-body">
+        <p><i class="fa fa-building"></i> Campus: @Model.CampusName</p>
+        <p><i class="fa fa-users"></i> Capacity: @Model.Capacity</p>
+        <p><i class="fa fa-info-circle"></i> Status: @Model.RoomStatus</p>
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <p class="description">@Model.Description</p>
+        }
+    </div>
+    <div class="room-footer">
+        <a class="btn btn-sm btn-primary" asp-action="Details" asp-route-id="@Model.Id"><i class="fa fa-eye"></i>
+            Xem</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@Model.Id"><i class="fa fa-edit"></i> Sửa</a>
+            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@Model.Id"><i class="fa fa-trash"></i>
+                Xóa</a>
+        }
+    </div>
+</div>

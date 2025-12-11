@@ -1,0 +1,57 @@
+.room-hero {
+    position: relative;
+    padding: 2rem;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #fff;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.room-hero .badge-soft {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.room-feed {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.room-card {
+    background: #1f1b2e;
+    border-radius: 12px;
+    padding: 1rem;
+    width: 100%;
+    max-width: 300px;
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+}
+
+.room-card .room-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.room-card .badge {
+    background: #ff007f;
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+}
+
+.room-card .room-footer {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+}

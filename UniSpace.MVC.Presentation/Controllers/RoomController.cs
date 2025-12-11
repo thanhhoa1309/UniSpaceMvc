@@ -58,7 +58,7 @@ namespace UniSpace.MVC.Presentation.Controllers
             {
                 _logger.LogError(ex, "Error loading rooms");
                 TempData["ErrorMessage"] = "Error loading rooms: " + ex.Message;
-                return View(new List<RoomDto>());
+                return View(new UniSpace.Service.Utils.Pagination<RoomDto>(new List<RoomDto>(), 0, 1, 20));
             }
         }
 
@@ -98,7 +98,7 @@ namespace UniSpace.MVC.Presentation.Controllers
             {
                 _logger.LogError(ex, "Error loading available rooms");
                 TempData["ErrorMessage"] = "Error loading available rooms: " + ex.Message;
-                return View(new List<RoomDto>());
+                return View(new UniSpace.Service.Utils.Pagination<RoomDto>(new List<RoomDto>(), 0, 1, 20));
             }
         }
 
