@@ -1,0 +1,52 @@
+@model UniSpace.Bo.DTOs.ScheduleDTOs.ScheduleDto
+@{
+    ViewData["Title"] = "Schedule Details";
+}
+<link rel="stylesheet" href="~/css/campus-cyber.css" />
+
+<header>Schedule Details</header>
+
+<div class="page-wrapper">
+    <div class="glass-box">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-cyber-info mb-0">@Model.Title</h2>
+            <span class="badge bg-cyber-primary fs-6">@Model.ScheduleTypeDisplay</span>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <div class="cyber-card p-3 h-100">
+                    <h5 class="text-muted mb-3"><i class="fas fa-map-marker-alt me-2"></i> Location</h5>
+                    <p class="mb-1"><strong>Room:</strong> @Model.RoomName</p>
+                    <p class="mb-0"><strong>Campus:</strong> @Model.CampusName</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="cyber-card p-3 h-100">
+                    <h5 class="text-muted mb-3"><i class="fas fa-clock me-2"></i> Timing</h5>
+                    <p class="mb-1"><strong>Day:</strong> @Model.DayOfWeekDisplay</p>
+                    <p class="mb-0"><strong>Time:</strong> @Model.StartTime.ToString(@"hh\:mm") -
+                        @Model.EndTime.ToString(@"hh\:mm")</p>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="cyber-card p-3">
+                    <h5 class="text-muted mb-3"><i class="fas fa-calendar-alt me-2"></i> Duration</h5>
+                    <p class="mb-0">Effective from <strong>@Model.StartDate.ToString("dd/MM/yyyy")</strong> to
+                        <strong>@Model.EndDate.ToString("dd/MM/yyyy")</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary">Edit</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-danger">Delete</a>
+            }
+            <a asp-action="Index" class="btn-soft">Back to List</a>
+        </div>
+    </div>
+</div>

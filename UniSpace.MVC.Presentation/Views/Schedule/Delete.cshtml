@@ -1,0 +1,36 @@
+@model UniSpace.Bo.DTOs.ScheduleDTOs.ScheduleDto
+@{
+    ViewData["Title"] = "Delete Schedule";
+}
+<link rel="stylesheet" href="~/css/campus-cyber.css" />
+
+<header>Delete Schedule</header>
+
+<div class="page-wrapper">
+    <div class="glass-box delete-box">
+        <h2 class="danger-text">Are you sure you want to delete?</h2>
+        <p class="muted">This action cannot be undone.</p>
+
+        <dl class="row mb-3">
+            <dt class="col-sm-3">Title</dt>
+            <dd class="col-sm-9">@Model.Title</dd>
+
+            <dt class="col-sm-3">Room</dt>
+            <dd class="col-sm-9">@Model.RoomName</dd>
+
+            <dt class="col-sm-3">Day/Time</dt>
+            <dd class="col-sm-9">@Model.DayOfWeekDisplay, @Model.StartTime.ToString(@"hh\:mm") -
+                @Model.EndTime.ToString(@"hh\:mm")</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post" class="form-actions">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn-danger strong w100">Delete</button>
+            <a asp-action="Index" class="btn-soft w100">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/css/campus-cyber.js"></script>
+}
