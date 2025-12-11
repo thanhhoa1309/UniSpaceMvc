@@ -12,8 +12,8 @@ using UniSpace.Model;
 namespace UniSpace.Model.Migrations
 {
     [DbContext(typeof(UniSpaceMvcDbContext))]
-    [Migration("20251207103414_IniSpaceMvc")]
-    partial class IniSpaceMvc
+    [Migration("20251211092612_UniSpaceMvcDb")]
+    partial class UniSpaceMvcDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

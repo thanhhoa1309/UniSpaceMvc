@@ -1,12 +1,67 @@
-using UniSpace.Presentation.Architecture;
+using Microsoft.AspNetCore.DataProtection;
+using System.IdentityModel.Tokens.Jwt;
 using UniSpace.Model;
+using UniSpace.Presentation.Architecture;
+using UniSpace.Presentation.Helper;
+using UniSpace.Service.BackgroundServices;
+using UniSpace.Service.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.SetupIocContainer();
+builder.Configuration
+ .AddJsonFile("appsettings.json", true, true)
+ .AddEnvironmentVariables();
 
-// Setup Session
+// Add services to the container.
+builder.Services.AddRazorPages(options =>
+{
+    // Configure authorization for specific pages
+    options.Conventions.AuthorizePage("/Dashboard");
+    options.Conventions.AuthorizeFolder("/Admin", "AdminPolicy");
+    options.Conventions.AllowAnonymousToPage("/Index");
+    options.Conventions.AllowAnonymousToFolder("/Auth");
+});
+
+// Add SignalR
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = builder.Environment.IsDevelopment();
+    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+});
+
+// Add Background Services
+builder.Services.AddHostedService<BookingCompletionService>();
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+// Bind to container network interface; prefer ASPNETCORE_URLS env when present
+var urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS") ?? "http://0.0.0.0:5000";
+builder.WebHost.UseUrls(urls);
+builder.Services.AddDistributedMemoryCache();
+
+// Configure data protection key persistence
+var dataProtectionPath = builder.Configuration["DataProtection:KeyPath"]
+ ?? Environment.GetEnvironmentVariable("DATA_PROTECTION_KEY_PATH")
+ ?? "/keys";
+
+try
+{
+    if (!Directory.Exists(dataProtectionPath))
+    {
+        Directory.CreateDirectory(dataProtectionPath);
+    }
+
+    builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionPath))
+    .SetApplicationName("UniSpace");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Warning: could not configure persistent data protection keys at '{dataProtectionPath}': {ex.Message}");
+}
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -14,38 +69,37 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Setup IoC Container (DbContext, Services, JWT, etc.)
-builder.Services.SetupIocContainer();
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-// Apply migrations automatically
-app.ApplyMigrations(app.Logger);
+// Apply database migrations and seed data
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
-// Seed initial data
-using (var scope = app.Services.CreateScope())
+try
 {
-    var services = scope.ServiceProvider;
-    try
+    app.ApplyMigrations(app.Logger);
+
+    // Seed data
+    using (var scope = app.Services.CreateScope())
     {
-        var context = services.GetRequiredService<UniSpaceMvcDbContext>();
-        await DbInitializer.SeedDataAsync(context);
-        app.Logger.LogInformation("Database seeded successfully!");
-    }
-    catch (Exception ex)
-    {
-        app.Logger.LogError(ex, "An error occurred while seeding the database.");
+        var dbContext = scope.ServiceProvider.GetRequiredService<UniSpaceMvcDbContext>();
+        await DbSeeder.SeedUsersAsync(dbContext);
+        await DbSeeder.SeedCampusesAsync(dbContext);
+        await DbSeeder.SeedRoomsAsync(dbContext);
+        await DbSeeder.SeedSchedulesAsync(dbContext);
     }
 }
-
+catch (Exception e)
+{
+    app.Logger.LogError(e, "An problem occurred during migration!");
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-}
-else
-{
-    app.UseDeveloperExceptionPage();
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
 app.UseStaticFiles();
@@ -53,12 +107,12 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+// Map SignalR Hub
+app.MapHub<BookingHub>("/bookingHub");
+
+app.MapRazorPages();
 
 app.Run();
