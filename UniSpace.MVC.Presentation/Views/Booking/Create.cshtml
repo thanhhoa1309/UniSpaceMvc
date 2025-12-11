@@ -1,0 +1,377 @@
+@model UniSpace.Bo.DTOs.BookingDTOs.CreateBookingDto
+@{
+    ViewData["Title"] = "Create Booking";
+}
+
+<style>
+    /* Page Container */
+    .create-booking-page-container {
+        min-height: 100vh;
+        padding: 40px 0;
+    }
+
+    /* Glass Card */
+    .glass-card-create {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .glass-card-create:hover {
+        border: 1px solid rgba(255, 138, 0, 0.4);
+        box-shadow: 0 12px 40px 0 rgba(255, 138, 0, 0.15);
+    }
+
+    /* Card Header */
+    .glass-card-header-create {
+        background: rgba(255, 138, 0, 0.15);
+        border-bottom: 2px solid rgba(255, 138, 0, 0.3);
+        padding: 20px 24px;
+    }
+
+    .glass-card-header-create h6 {
+        color: #ff8a00;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    /* Card Body */
+    .glass-card-body-create {
+        padding: 24px;
+    }
+
+    /* Room Info Alert */
+    .alert-glass-info {
+        background: rgba(6, 182, 212, 0.15);
+        border: 1px solid rgba(6, 182, 212, 0.4);
+        border-radius: 10px;
+        padding: 20px;
+        color: #22d3ee;
+        margin-bottom: 24px;
+    }
+
+    .alert-glass-info h5 {
+        color: #06b6d4;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    .alert-glass-info p {
+        color: #d1d5db;
+        margin: 0;
+        line-height: 1.8;
+    }
+
+    .alert-glass-info strong {
+        color: #06b6d4;
+    }
+
+    /* Form Labels */
+    .form-label-glass {
+        color: #ff8a00;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-label-glass .text-danger {
+        color: #f87171;
+    }
+
+    /* Form Controls */
+    .form-control-glass {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        color: #ffffff;
+        padding: 12px 16px;
+        transition: all 0.3s ease;
+        min-width: 100%;
+    }
+
+    .form-control-glass::placeholder {
+        color: #6b7280;
+    }
+
+    .form-control-glass:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 138, 0, 0.6);
+        outline: none;
+        box-shadow: 0 0 15px rgba(255, 138, 0, 0.2);
+        color: #ffffff;
+    }
+
+    .form-control-glass.is-invalid {
+        border-color: rgba(239, 68, 68, 0.6);
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+    }
+
+    /* Helper Text */
+    .helper-text-glass {
+        color: #9ca3af;
+        font-size: 0.875rem;
+        margin-top: 6px;
+        display: block;
+    }
+
+    /* Validation Feedback */
+    .invalid-feedback {
+        color: #fca5a5;
+        font-size: 0.875rem;
+        margin-top: 6px;
+    }
+
+    /* Availability Alert */
+    .alert-glass-success {
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #6ee7b7;
+    }
+
+    .alert-glass-danger {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #fca5a5;
+    }
+
+    .alert-glass-warning {
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(245, 158, 11, 0.4);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #fcd34d;
+    }
+
+    /* Validation Summary */
+    .validation-summary-glass {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #fca5a5;
+        margin-bottom: 20px;
+    }
+
+    /* Buttons */
+    .btn-neon-primary {
+        background: linear-gradient(135deg, #ff8a00 0%, #ff6b00 100%);
+        border: 2px solid #ff8a00;
+        color: #fff;
+        font-weight: 600;
+        padding: 12px 28px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.4);
+    }
+
+    .btn-neon-primary:hover:not(:disabled) {
+        box-shadow: 0 0 30px rgba(255, 138, 0, 0.7);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-neon-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .btn-glass-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-weight: 600;
+        padding: 12px 28px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-glass-secondary:hover {
+        border: 2px solid rgba(255, 138, 0, 0.5);
+        color: #ff8a00;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .glass-card-body-create {
+            padding: 20px;
+        }
+
+        .alert-glass-info {
+            padding: 16px;
+        }
+    }
+</style>
+
+<div class="create-booking-page-container">
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="glass-card-create">
+                    <div class="glass-card-header-create">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h6>
+                                <i class="fas fa-calendar-plus"></i> Create New Booking
+                            </h6>
+                            <a asp-controller="Room" asp-action="Index" class="btn btn-glass-secondary btn-sm">
+                                <i class="fas fa-arrow-left"></i> Back to Rooms
+                            </a>
+                        </div>
+                    </div>
+                    <div class="glass-card-body-create">
+                        @if (ViewBag.SelectedRoom != null)
+                        {
+                            var room = ViewBag.SelectedRoom as UniSpace.Bo.DTOs.RoomDTOs.RoomDto;
+                            <!-- Room Information -->
+                            <div class="alert-glass-info">
+                                <h5>
+                                    <i class="fas fa-door-open"></i> @room!.Name
+                                </h5>
+                                <p>
+                                    <i class="fas fa-building"></i> <strong>Campus:</strong> @room.CampusName<br>
+                                    <i class="fas fa-tag"></i> <strong>Type:</strong> @room.TypeDisplay<br>
+                                    <i class="fas fa-users"></i> <strong>Capacity:</strong> @room.Capacity people<br>
+                                    @if (!string.IsNullOrEmpty(room.Description))
+                                    {
+                                        <i class="fas fa-info-circle"></i>
+                                        @room.Description
+                                    }
+                                </p>
+                            </div>
+
+                            <!-- Booking Form -->
+                            <form asp-action="Create" asp-controller="Booking" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" asp-for="RoomId" value="@room.Id" />
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="StartTime" class="form-label-glass">
+                                            <i class="fas fa-calendar-alt"></i> Start Time
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="datetime-local" class="form-control-glass" asp-for="StartTime"
+                                            id="startTime" required>
+                                        <span asp-validation-for="StartTime" class="invalid-feedback"></span>
+                                        <small class="helper-text-glass">
+                                            <i class="fas fa-info-circle"></i> Select when you want to start using the room
+                                        </small>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="EndTime" class="form-label-glass">
+                                            <i class="fas fa-calendar-alt"></i> End Time
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="datetime-local" class="form-control-glass" asp-for="EndTime"
+                                            id="endTime" required>
+                                        <span asp-validation-for="EndTime" class="invalid-feedback"></span>
+                                        <small class="helper-text-glass">
+                                            <i class="fas fa-info-circle"></i> Select when you will finish using the room
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div id="availabilityCheck" class="alert" style="display:none;"></div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="Purpose" class="form-label-glass">
+                                        <i class="fas fa-edit"></i> Purpose
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <textarea class="form-control-glass" asp-for="Purpose" rows="5"
+                                        placeholder="Please describe the purpose of your booking (minimum 10 characters)"
+                                        required></textarea>
+                                    <span asp-validation-for="Purpose" class="invalid-feedback"></span>
+                                    <small class="helper-text-glass">
+                                        <i class="fas fa-info-circle"></i> Provide details about how you plan to use the
+                                        room
+                                    </small>
+                                </div>
+
+                                <div asp-validation-summary="ModelOnly" class="validation-summary-glass" role="alert"></div>
+
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a asp-controller="Booking" asp-action="MyBookings" class="btn btn-glass-secondary">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-neon-primary" id="submitBtn">
+                                        <i class="fas fa-calendar-check"></i> Create Booking
+                                    </button>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="alert-glass-warning">
+                                <i class="fas fa-exclamation-triangle"></i> Room information not available.
+                                <a asp-controller="Room" asp-action="Index"
+                                    style="color: #fbbf24; text-decoration: underline;">Go back to rooms</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            let availabilityTimeout;
+
+            function checkAvailability() {
+                const roomId = $('input[name="RoomId"]').val();
+                const startTime = $('#startTime').val();
+                const endTime = $('#endTime').val();
+
+                if (roomId && startTime && endTime) {
+                    $.get('@Url.Action("CheckAvailability", "Booking")', {
+                        roomId: roomId,
+                        startTime: startTime,
+                        endTime: endTime
+                    }, function (data) {
+                        const alertDiv = $('#availabilityCheck');
+                        const submitBtn = $('#submitBtn');
+
+                        if (data.available) {
+                            alertDiv.removeClass('alert-danger alert-glass-danger').addClass('alert-glass-success');
+                            alertDiv.html('<i class="fas fa-check-circle"></i> Room is available for the selected time!');
+                            alertDiv.show();
+                            submitBtn.prop('disabled', false);
+                        } else {
+                            alertDiv.removeClass('alert-success alert-glass-success').addClass('alert-glass-danger');
+                            alertDiv.html('<i class="fas fa-times-circle"></i> Room is not available for the selected time. Please choose a different time.');
+                            alertDiv.show();
+                            submitBtn.prop('disabled', true);
+                        }
+                    });
+                }
+            }
+
+            $('#startTime, #endTime').on('change', function () {
+                clearTimeout(availabilityTimeout);
+                availabilityTimeout = setTimeout(checkAvailability, 500);
+            });
+
+            // Initial check if times are pre-filled
+            if ($('#startTime').val() && $('#endTime').val()) {
+                checkAvailability();
+            }
+        });
+    </script>
+}

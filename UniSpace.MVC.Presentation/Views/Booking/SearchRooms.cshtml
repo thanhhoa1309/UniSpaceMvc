@@ -1,0 +1,446 @@
+@model IEnumerable<UniSpace.Bo.DTOs.RoomDTOs.RoomDto>
+@{
+    ViewData["Title"] = "Search Rooms";
+}
+
+<style>
+    /* Page Container */
+    .searchrooms-page-container {
+        min-height: 100vh;
+        padding: 40px 0;
+    }
+
+    /* Glass Card */
+    .glass-card-search {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .glass-card-search:hover {
+        border: 1px solid rgba(255, 138, 0, 0.4);
+        box-shadow: 0 12px 40px 0 rgba(255, 138, 0, 0.15);
+    }
+
+    /* Card Header */
+    .glass-card-header-search {
+        background: rgba(255, 138, 0, 0.15);
+        border-bottom: 2px solid rgba(255, 138, 0, 0.3);
+        padding: 20px 24px;
+    }
+
+    .glass-card-header-search h6 {
+        color: #ff8a00;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    /* Card Body */
+    .glass-card-body-search {
+        padding: 24px;
+    }
+
+    /* Search Form Section */
+    .search-form-glass {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    /* Form Controls */
+    .form-label-glass {
+        color: #e0e0e0;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .form-control-glass,
+    .form-select-glass {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        color: #ffffff;
+        padding: 10px 14px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control-glass::placeholder {
+        color: #6b7280;
+    }
+
+    .form-control-glass:focus,
+    .form-select-glass:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 138, 0, 0.6);
+        outline: none;
+        box-shadow: 0 0 15px rgba(255, 138, 0, 0.2);
+        color: #ffffff;
+    }
+
+    .form-select-glass option {
+        background: #2d2d2d;
+        color: #ffffff;
+    }
+
+    /* Buttons */
+    .btn-neon-primary {
+        background: linear-gradient(135deg, #ff8a00 0%, #ff6b00 100%);
+        border: 2px solid #ff8a00;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.4);
+    }
+
+    .btn-neon-primary:hover {
+        box-shadow: 0 0 30px rgba(255, 138, 0, 0.7);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-glass-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-glass-secondary:hover {
+        border: 2px solid rgba(255, 138, 0, 0.5);
+        color: #ff8a00;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+    }
+
+    /* Alert Styling */
+    .alert-glass-danger {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #fca5a5;
+        margin-bottom: 20px;
+    }
+
+    .alert-glass-success {
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #6ee7b7;
+        margin-bottom: 20px;
+    }
+
+    .alert-glass-info {
+        background: rgba(6, 182, 212, 0.15);
+        border: 1px solid rgba(6, 182, 212, 0.4);
+        border-radius: 10px;
+        padding: 16px 20px;
+        color: #22d3ee;
+    }
+
+    /* Room Cards */
+    .room-card-glass {
+        background: rgba(45, 45, 45, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .room-card-glass:hover {
+        border-color: rgba(255, 138, 0, 0.4);
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(255, 138, 0, 0.2);
+    }
+
+    .room-card-body-glass {
+        padding: 20px;
+        color: #e0e0e0;
+    }
+
+    .room-card-body-glass h5 {
+        color: #ff8a00;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .room-card-body-glass h6 {
+        color: #9ca3af;
+        font-size: 0.875rem;
+        margin-bottom: 12px;
+    }
+
+    .room-card-body-glass p {
+        color: #d1d5db;
+        margin-bottom: 12px;
+    }
+
+    /* Badges */
+    .badge-glass-info {
+        background: rgba(6, 182, 212, 0.2);
+        border: 1px solid rgba(6, 182, 212, 0.4);
+        color: #06b6d4;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        margin-right: 6px;
+    }
+
+    .badge-glass-success {
+        background: rgba(16, 185, 129, 0.2);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        color: #10b981;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    /* Pagination */
+    .pagination-glass {
+        display: flex;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        justify-content: center;
+    }
+
+    .page-item.active .page-link-glass {
+        background: linear-gradient(135deg, #ff8a00 0%, #ff6b00 100%);
+        border-color: #ff8a00;
+        color: #fff;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.5);
+    }
+
+    .page-item.disabled .page-link-glass {
+        background: rgba(255, 255, 255, 0.02);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: #6b7280;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .page-link-glass {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        color: #ffffff;
+        padding: 8px 14px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    .page-link-glass:hover:not(.page-item.disabled .page-link-glass) {
+        background: rgba(255, 138, 0, 0.2);
+        border-color: rgba(255, 138, 0, 0.4);
+        color: #ff8a00;
+        box-shadow: 0 0 15px rgba(255, 138, 0, 0.3);
+    }
+
+    /* Empty State */
+    .empty-state-glass {
+        text-align: center;
+        padding: 60px 40px;
+        color: #9ca3af;
+    }
+
+    .empty-state-glass i {
+        font-size: 4rem;
+        color: #6b7280;
+        margin-bottom: 20px;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .glass-card-body-search {
+            padding: 20px;
+        }
+
+        .search-form-glass {
+            padding: 16px;
+        }
+    }
+</style>
+
+<div class="searchrooms-page-container">
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="glass-card-search mb-4">
+                    <div class="glass-card-header-search">
+                        <h6>
+                            <i class="fas fa-search"></i> Search Available Rooms
+                        </h6>
+                    </div>
+                    <div class="glass-card-body-search">
+                        <!-- Search Form -->
+                        <div class="search-form-glass">
+                            <form method="get">
+                                <!-- First Row -->
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-3">
+                                        <label for="searchTerm" class="form-label-glass">
+                                            <i class="fas fa-search"></i> Search
+                                        </label>
+                                        <input type="text" class="form-control-glass" id="searchTerm" name="searchTerm"
+                                            value="@ViewBag.SearchTerm" placeholder="Room name or campus...">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="campusId" class="form-label-glass">
+                                            <i class="fas fa-building"></i> Campus
+                                        </label>
+                                        <select class="form-select-glass" id="campusId" name="campusId"
+                                            asp-items="ViewBag.Campuses">
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="roomType" class="form-label-glass">
+                                            <i class="fas fa-tag"></i> Room Type
+                                        </label>
+                                        <select class="form-select-glass" id="roomType" name="roomType"
+                                            asp-items="ViewBag.RoomTypes">
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="minCapacity" class="form-label-glass">
+                                            <i class="fas fa-users"></i> Min Capacity
+                                        </label>
+                                        <input type="number" class="form-control-glass" id="minCapacity"
+                                            name="minCapacity" value="@ViewBag.MinCapacity" min="1"
+                                            placeholder="Min capacity">
+                                    </div>
+                                </div>
+
+                                <!-- Second Row -->
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-md-3">
+                                        <label for="startTime" class="form-label-glass">
+                                            <i class="fas fa-calendar-alt"></i> From
+                                        </label>
+                                        <input type="datetime-local" class="form-control-glass" id="startTime"
+                                            name="startTime"
+                                            value="@(ViewBag.StartTime != null ? ((DateTime)ViewBag.StartTime).ToString("yyyy-MM-ddTHH:mm") : "")">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="endTime" class="form-label-glass">
+                                            <i class="fas fa-calendar-alt"></i> To
+                                        </label>
+                                        <input type="datetime-local" class="form-control-glass" id="endTime"
+                                            name="endTime"
+                                            value="@(ViewBag.EndTime != null ? ((DateTime)ViewBag.EndTime).ToString("yyyy-MM-ddTHH:mm") : "")">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="d-flex gap-2">
+                                            <button type="submit" class="btn btn-neon-primary">
+                                                <i class="fas fa-search"></i> Search
+                                            </button>
+                                            <a asp-controller="Booking" asp-action="SearchRooms"
+                                                class="btn btn-glass-secondary">
+                                                <i class="fas fa-redo"></i> Reset
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert-glass-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-circle"></i> <strong>Error!</strong> @TempData["Error"]
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
+                                    aria-label="Close" style="filter: brightness(0) invert(1);"></button>
+                            </div>
+                        }
+
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert-glass-success alert-dismissible fade show" role="alert">
+                                <i class="bi bi-check-circle"></i> <strong>Success!</strong> @TempData["Success"]
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
+                                    aria-label="Close" style="filter: brightness(0) invert(1);"></button>
+                            </div>
+                        }
+
+                        <!-- Results -->
+                        @if (Model != null && Model.Any())
+                        {
+                            <div class="row">
+                                @foreach (var room in Model)
+                                {
+                                    <div class="col-md-4 mb-4">
+                                        <div class="room-card-glass">
+                                            <div class="room-card-body-glass">
+                                                <h5 class="card-title">
+                                                    <i class="fas fa-door-open"></i> @room.Name
+                                                </h5>
+                                                <h6 class="card-subtitle mb-2">
+                                                    <i class="fas fa-building"></i> @room.CampusName
+                                                </h6>
+
+                                                <div class="mb-3">
+                                                    <span class="badge-glass-info">@room.TypeDisplay</span>
+                                                    <span class="badge-glass-success">@room.RoomStatusDisplay</span>
+                                                </div>
+
+                                                <p class="card-text">
+                                                    <i class="fas fa-users"></i> Capacity: <strong
+                                                        style="color: #ff8a00;">@room.Capacity</strong><br>
+                                                    @if (!string.IsNullOrEmpty(room.Description))
+                                                    {
+                                                        <small class="text-muted">@room.Description</small>
+                                                    }
+                                                </p>
+
+                                                <div class="d-grid">
+                                                    <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@room.Id"
+                                                        asp-route-startTime="@(ViewBag.StartTime != null ? ((DateTime)ViewBag.StartTime).ToString("yyyy-MM-ddTHH:mm") : "")"
+                                                        asp-route-endTime="@(ViewBag.EndTime != null ? ((DateTime)ViewBag.EndTime).ToString("yyyy-MM-ddTHH:mm") : "")"
+                                                        class="btn btn-neon-primary btn-sm">
+                                                        <i class="fas fa-calendar-plus"></i> Book This Room
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Pagination: Removed - can be re-added with ViewBag if needed -->
+                        }
+                        else
+                        {
+                            <div class="empty-state-glass">
+                                <i class="fas fa-info-circle"></i>
+                                <h5 class="mt-3" style="color: #e0e0e0;">No rooms found matching your criteria</h5>
+                                <p class="mt-2">Try adjusting your search filters.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
