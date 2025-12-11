@@ -137,14 +137,34 @@ namespace UniSpace.MVC.Presentation.Controllers
             {
                 var campuses = await _campusService.GetCampusesAsync(pageSize: 100);
                 ViewBag.Campuses = campuses;
+
+                // Reload room data if validation fails
+                if (createDto.RoomId != Guid.Empty)
+                {
+                    try
+                    {
+                        var room = await _roomService.GetRoomByIdAsync(createDto.RoomId);
+                        ViewBag.SelectedRoom = room;
+                    }
+                    catch { }
+                }
+
                 return View(createDto);
             }
 
             try
             {
                 var booking = await _bookingService.CreateBookingAsync(createDto);
-                TempData["SuccessMessage"] = "Booking created successfully and is pending approval";
-                return RedirectToAction(nameof(Details), new { id = booking.Id });
+                if (booking != null)
+                {
+                    TempData["SuccessMessage"] = "Booking created successfully and is pending approval";
+                    return RedirectToAction(nameof(Details), new { id = booking.Id });
+                }
+
+                ModelState.AddModelError(string.Empty, "Failed to create booking");
+                var campusesRetry = await _campusService.GetCampusesAsync(pageSize: 100);
+                ViewBag.Campuses = campusesRetry;
+                return View(createDto);
             }
             catch (Exception ex)
             {
@@ -152,6 +172,18 @@ namespace UniSpace.MVC.Presentation.Controllers
                 ModelState.AddModelError(string.Empty, ex.Message);
                 var campuses = await _campusService.GetCampusesAsync(pageSize: 100);
                 ViewBag.Campuses = campuses;
+
+                // Reload room data if error occurs
+                if (createDto.RoomId != Guid.Empty)
+                {
+                    try
+                    {
+                        var room = await _roomService.GetRoomByIdAsync(createDto.RoomId);
+                        ViewBag.SelectedRoom = room;
+                    }
+                    catch { }
+                }
+
                 return View(createDto);
             }
         }
@@ -163,7 +195,12 @@ namespace UniSpace.MVC.Presentation.Controllers
             try
             {
                 var booking = await _bookingService.GetBookingByIdAsync(id);
-                
+                if (booking == null)
+                {
+                    TempData["ErrorMessage"] = "Booking not found";
+                    return RedirectToAction(nameof(Index));
+                }
+
                 var updateDto = new UpdateBookingDto
                 {
                     Id = booking.Id,
@@ -171,6 +208,14 @@ namespace UniSpace.MVC.Presentation.Controllers
                     EndTime = booking.EndTime,
                     Purpose = booking.Purpose
                 };
+
+                // Load room data for display
+                try
+                {
+                    var room = await _roomService.GetRoomByIdAsync(booking.RoomId);
+                    ViewBag.Room = room;
+                }
+                catch { }
 
                 return View(updateDto);
             }
@@ -195,6 +240,18 @@ namespace UniSpace.MVC.Presentation.Controllers
 
             if (!ModelState.IsValid)
             {
+                // Reload room data if validation fails
+                try
+                {
+                    var booking = await _bookingService.GetBookingByIdAsync(id);
+                    if (booking != null)
+                    {
+                        var room = await _roomService.GetRoomByIdAsync(booking.RoomId);
+                        ViewBag.Room = room;
+                    }
+                }
+                catch { }
+
                 return View(updateDto);
             }
 
@@ -208,6 +265,19 @@ namespace UniSpace.MVC.Presentation.Controllers
             {
                 _logger.LogError(ex, $"Error updating booking: {id}");
                 ModelState.AddModelError(string.Empty, ex.Message);
+
+                // Reload room data if error occurs
+                try
+                {
+                    var booking = await _bookingService.GetBookingByIdAsync(id);
+                    if (booking != null)
+                    {
+                        var room = await _roomService.GetRoomByIdAsync(booking.RoomId);
+                        ViewBag.Room = room;
+                    }
+                }
+                catch { }
+
                 return View(updateDto);
             }
         }
@@ -299,6 +369,70 @@ namespace UniSpace.MVC.Presentation.Controllers
                 _logger.LogError(ex, "Error loading pending bookings");
                 TempData["ErrorMessage"] = "Error loading pending bookings: " + ex.Message;
                 return View(new List<BookingDto>());
+            }
+        }
+
+        // GET: Booking/SearchRooms
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<IActionResult> SearchRooms(
+            string? searchTerm = null,
+            Guid? campusId = null,
+            RoomType? roomType = null,
+            int? minCapacity = null,
+            DateTime? startTime = null,
+            DateTime? endTime = null)
+        {
+            try
+            {
+                // Get all rooms with filters
+                var rooms = await _roomService.GetRoomsAsync(
+                    pageSize: 100,
+                    searchTerm: searchTerm,
+                    campusId: campusId,
+                    type: roomType,
+                    availableFrom: startTime,
+                    availableTo: endTime);
+
+                // Pass filter values to ViewBag
+                ViewBag.SearchTerm = searchTerm;
+                ViewBag.MinCapacity = minCapacity;
+                ViewBag.StartTime = startTime;
+                ViewBag.EndTime = endTime;
+
+                // Load campuses for dropdown
+                var campuses = await _campusService.GetCampusesAsync(pageSize: 100);
+                var campusList = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+                {
+                    new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Value = "", Text = "All Campuses" }
+                };
+                foreach (var campus in campuses)
+                {
+                    campusList.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                    {
+                        Value = campus.Id.ToString(),
+                        Text = campus.Name,
+                        Selected = campus.Id == campusId
+                    });
+                }
+                ViewBag.Campuses = campusList;
+
+                // Room types dropdown
+                var roomTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+                {
+                    new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Value = "", Text = "All Types" },
+                    new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Value = ((int)RoomType.Classroom).ToString(), Text = "Classroom" },
+                    new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Value = ((int)RoomType.Lab).ToString(), Text = "Lab" },
+                    new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Value = ((int)RoomType.Stadium).ToString(), Text = "Stadium" }
+                };
+                ViewBag.RoomTypes = roomTypes;
+
+                return View(rooms);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching rooms");
+                TempData["ErrorMessage"] = "Error searching rooms: " + ex.Message;
+                return View(new List<UniSpace.Bo.DTOs.RoomDTOs.RoomDto>());
             }
         }
 
