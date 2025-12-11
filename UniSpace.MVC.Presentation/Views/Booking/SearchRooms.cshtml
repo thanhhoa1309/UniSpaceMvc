@@ -55,7 +55,7 @@
 
     /* Form Controls */
     .form-label-glass {
-        color: #e0e0e0;
+        color: #1e293b;
         font-weight: 600;
         font-size: 0.9rem;
         margin-bottom: 8px;
@@ -63,10 +63,10 @@
 
     .form-control-glass,
     .form-select-glass {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(100, 116, 139, 0.3);
         border-radius: 8px;
-        color: #ffffff;
+        color: #1e293b;
         padding: 10px 14px;
         transition: all 0.3s ease;
     }
@@ -169,114 +169,112 @@
 
     .room-card-body-glass {
         padding: 20px;
-        color: #e0e0e0;
+        color: #334155;
     }
 
     .room-card-body-glass h5 {
-        color: #ff8a00;
+        color: #ea580c;
         font-weight: bold;
         margin-bottom: 8px;
     }
 
     .room-card-body-glass h6 {
-        color: #9ca3af;
+        color: #64748b;
         font-size: 0.875rem;
         margin-bottom: 12px;
     }
 
     .room-card-body-glass p {
-        color: #d1d5db;
-        margin-bottom: 12px;
-    }
+        color: #475569;
 
-    /* Badges */
-    .badge-glass-info {
-        background: rgba(6, 182, 212, 0.2);
-        border: 1px solid rgba(6, 182, 212, 0.4);
-        color: #06b6d4;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-weight: 600;
-        margin-right: 6px;
-    }
-
-    .badge-glass-success {
-        background: rgba(16, 185, 129, 0.2);
-        border: 1px solid rgba(16, 185, 129, 0.4);
-        color: #10b981;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-weight: 600;
-    }
-
-    /* Pagination */
-    .pagination-glass {
-        display: flex;
-        gap: 8px;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        justify-content: center;
-    }
-
-    .page-item.active .page-link-glass {
-        background: linear-gradient(135deg, #ff8a00 0%, #ff6b00 100%);
-        border-color: #ff8a00;
-        color: #fff;
-        box-shadow: 0 0 20px rgba(255, 138, 0, 0.5);
-    }
-
-    .page-item.disabled .page-link-glass {
-        background: rgba(255, 255, 255, 0.02);
-        border-color: rgba(255, 255, 255, 0.1);
-        color: #6b7280;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-
-    .page-link-glass {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 8px;
-        color: #ffffff;
-        padding: 8px 14px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        display: inline-block;
-        min-width: 40px;
-        text-align: center;
-    }
-
-    .page-link-glass:hover:not(.page-item.disabled .page-link-glass) {
-        background: rgba(255, 138, 0, 0.2);
-        border-color: rgba(255, 138, 0, 0.4);
-        color: #ff8a00;
-        box-shadow: 0 0 15px rgba(255, 138, 0, 0.3);
-    }
-
-    /* Empty State */
-    .empty-state-glass {
-        text-align: center;
-        padding: 60px 40px;
-        color: #9ca3af;
-    }
-
-    .empty-state-glass i {
-        font-size: 4rem;
-        color: #6b7280;
-        margin-bottom: 20px;
-    }
-
-    /* Responsive */
-    @@media (max-width: 768px) {
-        .glass-card-body-search {
-            padding: 20px;
+        /* Badges */
+        .badge-glass-info {
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            color: #06b6d4;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-right: 6px;
         }
 
-        .search-form-glass {
-            padding: 16px;
+        .badge-glass-success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
         }
-    }
+
+        /* Pagination */
+        .pagination-glass {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+        }
+
+        .page-item.active .page-link-glass {
+            background: linear-gradient(135deg, #ff8a00 0%, #ff6b00 100%);
+            border-color: #ff8a00;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255, 138, 0, 0.5);
+        }
+
+        .page-item.disabled .page-link-glass {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #6b7280;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .page-link-glass {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #ffffff;
+            padding: 8px 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .page-link-glass:hover:not(.page-item.disabled .page-link-glass) {
+            background: rgba(255, 138, 0, 0.2);
+            border-color: rgba(255, 138, 0, 0.4);
+            color: #ff8a00;
+            box-shadow: 0 0 15px rgba(255, 138, 0, 0.3);
+        }
+
+        /* Empty State */
+        .empty-state-glass {
+            text-align: center;
+            padding: 60px 40px;
+            color: #9ca3af;
+        }
+
+        .empty-state-glass i {
+            font-size: 4rem;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .glass-card-body-search {
+                padding: 20px;
+            }
+
+            .search-form-glass {
+                padding: 16px;
+            }
+        }
 </style>
 
 <div class="searchrooms-page-container">

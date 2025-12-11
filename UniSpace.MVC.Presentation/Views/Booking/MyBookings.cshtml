@@ -75,29 +75,29 @@
 
     /* Alert Styling */
     .alert-glass-danger {
-        background: rgba(239, 68, 68, 0.15);
-        border: 1px solid rgba(239, 68, 68, 0.4);
+        background: rgba(239, 68, 68, 0.25);
+        border: 1px solid rgba(239, 68, 68, 0.5);
         border-radius: 10px;
         padding: 16px 20px;
-        color: #fca5a5;
+        color: #991b1b;
         margin-bottom: 20px;
     }
 
     .alert-glass-success {
-        background: rgba(16, 185, 129, 0.15);
-        border: 1px solid rgba(16, 185, 129, 0.4);
+        background: rgba(16, 185, 129, 0.25);
+        border: 1px solid rgba(16, 185, 129, 0.5);
         border-radius: 10px;
         padding: 16px 20px;
-        color: #6ee7b7;
+        color: #065f46;
         margin-bottom: 20px;
     }
 
     .alert-glass-info {
-        background: rgba(6, 182, 212, 0.15);
-        border: 1px solid rgba(6, 182, 212, 0.4);
+        background: rgba(6, 182, 212, 0.25);
+        border: 1px solid rgba(6, 182, 212, 0.5);
         border-radius: 10px;
         padding: 16px 20px;
-        color: #22d3ee;
+        color: #0c4a6e;
     }
 
     /* Filter Section */
@@ -680,12 +680,12 @@
 
                 if (actionsCell.find('.action-report').length === 0) {
                     actionsCell.append(`
-                            <a href="/RoomReports/Create?bookingId=${bookingId}"
-                               class="btn btn-action-glass btn-action-dark action-report"
-                               title="Report Issue">
-                                <i class="bi bi-exclamation-triangle"></i>
-                            </a>
-                        `);
+                                <a href="/RoomReports/Create?bookingId=${bookingId}"
+                                   class="btn btn-action-glass btn-action-dark action-report"
+                                   title="Report Issue">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                </a>
+                            `);
                 }
 
                 // Highlight row
@@ -703,39 +703,39 @@
                 if (status === 'Pending') {
                     // Add edit button
                     actionsCell.append(`
-                            <a href="/Bookings/Edit?id=${row.data('booking-id')}"
-                               class="btn btn-action-glass btn-action-warning action-edit"
-                               title="Edit">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                        `);
+                                <a href="/Bookings/Edit?id=${row.data('booking-id')}"
+                                   class="btn btn-action-glass btn-action-warning action-edit"
+                                   title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            `);
                 }
 
                 if (status === 'Pending' || status === 'Approved') {
                     // Add cancel button
                     actionsCell.append(`
-                            <form method="post"
-                                  action="?handler=Cancel&id=${row.data('booking-id')}"
-                                  class="d-inline action-cancel"
-                                  onsubmit="return confirm('Are you sure?');">
-                                <button type="submit"
-                                        class="btn btn-action-glass btn-action-danger"
-                                        title="Cancel">
-                                    <i class="bi bi-x-circle"></i>
-                                </button>
-                            </form>
-                        `);
+                                <form method="post"
+                                      action="?handler=Cancel&id=${row.data('booking-id')}"
+                                      class="d-inline action-cancel"
+                                      onsubmit="return confirm('Are you sure?');">
+                                    <button type="submit"
+                                            class="btn btn-action-glass btn-action-danger"
+                                            title="Cancel">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </form>
+                            `);
                 }
 
                 if (status === 'Completed') {
                     // Add report button
                     actionsCell.append(`
-                            <a href="/RoomReports/Create?bookingId=${row.data('booking-id')}"
-                               class="btn btn-action-glass btn-action-dark action-report"
-                               title="Report Issue">
-                                <i class="bi bi-exclamation-triangle"></i>
-                            </a>
-                        `);
+                                <a href="/RoomReports/Create?bookingId=${row.data('booking-id')}"
+                                   class="btn btn-action-glass btn-action-dark action-report"
+                                   title="Report Issue">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                </a>
+                            `);
                 }
             }
 

@@ -158,31 +158,32 @@
     }
 
     .alert-glass-info {
-        background: rgba(6, 182, 212, 0.15);
-        border: 1px solid rgba(6, 182, 212, 0.4);
+        background: rgba(6, 182, 212, 0.25);
+        border: 1px solid rgba(6, 182, 212, 0.5);
         border-radius: 10px;
         padding: 16px 20px;
-        color: #22d3ee;
+        color: #0c4a6e;
         margin-bottom: 20px;
     }
 
     .alert-glass-info strong {
-        color: #06b6d4;
+        color: #0284c7;
     }
 
     /* Timestamp Card */
     .timestamp-card-glass {
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(100, 116, 139, 0.3);
         border-radius: 10px;
-        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
         padding: 16px 20px;
-        color: #9ca3af;
+        color: #64748b;
+        background: rgba(255, 255, 255, 0.8);
     }
 
     .timestamp-card-glass strong {
-        color: #e0e0e0;
+        color: #1e293b;
     }
 
     /* Action Buttons */
@@ -347,7 +348,7 @@
                                                         <strong>Duration:</strong>
                                                         @{
                                                             var duration = Model.EndTime - Model.StartTime;
-                                                            <span class="text-primary-glass">@($"{duration.TotalHours:F1}        hours")</span>
+                                                            <span class="text-primary-glass">@($"{duration.TotalHours:F1}                                        hours")</span>
                                                         }
                                                     </p>
                                                 </div>
@@ -390,7 +391,7 @@
                                             @if (Model.UpdatedAt.HasValue)
                                             {
                                                 <p class="mb-0">
-                                                    <strong>Last Updated:</strong> @Model.UpdatedAt.Value.ToString("MMM dd, yyyy                         HH:mm")
+                                                    <strong>Last Updated:</strong> @Model.UpdatedAt.Value.ToString("MMM dd, yyyy                                          HH:mm")
                                                 </p>
                                             }
                                         </small>

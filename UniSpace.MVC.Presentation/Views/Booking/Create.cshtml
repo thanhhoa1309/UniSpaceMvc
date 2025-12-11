@@ -46,28 +46,28 @@
 
     /* Room Info Alert */
     .alert-glass-info {
-        background: rgba(6, 182, 212, 0.15);
-        border: 1px solid rgba(6, 182, 212, 0.4);
+        background: rgba(6, 182, 212, 0.25);
+        border: 1px solid rgba(6, 182, 212, 0.5);
         border-radius: 10px;
         padding: 20px;
-        color: #22d3ee;
+        color: #0ea5e9;
         margin-bottom: 24px;
     }
 
     .alert-glass-info h5 {
-        color: #06b6d4;
+        color: #0284c7;
         font-weight: bold;
         margin-bottom: 12px;
     }
 
     .alert-glass-info p {
-        color: #d1d5db;
+        color: #1e293b;
         margin: 0;
         line-height: 1.8;
     }
 
     .alert-glass-info strong {
-        color: #06b6d4;
+        color: #0c4a6e;
     }
 
     /* Form Labels */
@@ -291,8 +291,8 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <textarea class="form-control-glass" asp-for="Purpose" rows="5"
-                                        placeholder="Please describe the purpose of your booking (minimum 10 characters)"
-                                        required></textarea>
+                                    placeholder="Please describe the purpose of your booking (minimum 10 characters)"
+                                    required></textarea>
                                     <span asp-validation-for="Purpose" class="invalid-feedback"></span>
                                     <small class="helper-text-glass">
                                         <i class="fas fa-info-circle"></i> Provide details about how you plan to use the

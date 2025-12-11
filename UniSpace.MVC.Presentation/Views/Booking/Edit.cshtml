@@ -46,24 +46,22 @@
 
     /* Room Info Alert */
     .alert-glass-info {
-        background: rgba(6, 182, 212, 0.15);
-        border: 1px solid rgba(6, 182, 212, 0.4);
+        background: rgba(6, 182, 212, 0.25);
+        border: 1px solid rgba(6, 182, 212, 0.5);
         border-radius: 10px;
         padding: 20px;
-        color: #22d3ee;
+        color: #0ea5e9;
         margin-bottom: 24px;
     }
 
     .alert-glass-info h5 {
-        color: #06b6d4;
+        color: #0284c7;
         font-weight: bold;
         margin-bottom: 12px;
     }
 
     .alert-glass-info p {
-        color: #d1d5db;
-        margin: 0;
-        line-height: 1.8;
+        color: #1e293b;
     }
 
     .alert-glass-info strong {
@@ -222,7 +220,7 @@
                                 </h5>
                                 <p>
                                     <i class="fas fa-building"></i> <strong>Campus:</strong> @ViewBag.Room.CampusName<br>
-                                    <i class="fas fa-tag"></i> <strong>Type:</strong> @ViewBag.Room.RoomType<br>
+                                    <i class="fas fa-tag"></i> <strong>Type:</strong> @ViewBag.Room.TypeDisplay<br>
                                     <i class="fas fa-users"></i> <strong>Capacity:</strong> @ViewBag.Room.Capacity people
                                 </p>
                             </div>
@@ -266,8 +264,8 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <textarea
-                                        class="form-control-glass @(ViewData.ModelState["Purpose"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                        asp-for="Purpose" rows="5" required></textarea>
+                                    class="form-control-glass @(ViewData.ModelState["Purpose"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                    asp-for="Purpose" rows="5" required></textarea>
                                     <span asp-validation-for="Purpose" class="invalid-feedback"></span>
                                 </div>
 
