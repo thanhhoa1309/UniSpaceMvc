@@ -19,7 +19,7 @@
             <dd class="col-sm-9">@Model.Address</dd>
         </dl>
 
-        <form asp-action="DeleteConfirmed" method="post" class="form-actions">
+        <form asp-action="Delete" method="post" class="form-actions">
             <input type="hidden" asp-for="Id" />
             <button type="submit" class="btn-danger strong w100">Xóa</button>
             <a asp-action="Index" class="btn-soft w100">Hủy</a>

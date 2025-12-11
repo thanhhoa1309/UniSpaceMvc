@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\UniSpace.Bo\UniSpace.BO.csproj" />
+		<ProjectReference Include="..\UniSpace.Bo\UniSpace.Bo.csproj" />
 		<ProjectReference Include="..\UniSpace.Model\UniSpace.Model.csproj" />
 	</ItemGroup>
 
