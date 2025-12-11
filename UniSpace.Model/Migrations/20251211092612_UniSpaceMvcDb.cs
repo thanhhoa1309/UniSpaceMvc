@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniSpace.Model.Migrations
 {
     /// <inheritdoc />
-    public partial class IniSpaceMvc : Migration
+    public partial class UniSpaceMvcDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
