@@ -7,249 +7,503 @@
 }
 
 <style>
+    /* Page Container */
     .stats-container {
         min-height: 100vh;
+        background: #ffffff;
         padding: 40px 0;
     }
 
-    .glass-card-stats {
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        background: rgba(20, 20, 30, 0.6);
-        border: 1px solid rgba(255, 138, 0, 0.2);
-        border-radius: 15px;
-        padding: 24px;
-        margin-bottom: 24px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-
-    .stats-header {
-        background: rgba(255, 138, 0, 0.1);
-        border: 1px solid rgba(255, 138, 0, 0.3);
-        border-radius: 10px;
-        padding: 16px 20px;
-        margin-bottom: 24px;
-    }
-
-    .stats-header h5 {
-        color: #ff8a00;
-        margin: 0;
-        font-weight: 600;
-    }
-
-    .stat-box {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Header Section */
+    .stats-page-header {
+        background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
         border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        transition: all 0.3s ease;
-        height: 100%;
+        padding: 32px 40px;
+        margin-bottom: 32px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
-    .stat-box:hover {
-        background: rgba(255, 255, 255, 0.08);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(255, 138, 0, 0.2);
+        .stats-page-header h2 {
+            color: #1f2937;
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .stats-page-header .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+    .icon-header {
+        color: #3b82f6;
+        margin-right: 12px;
     }
 
-    .stat-box h3 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: #ffffff;
-    }
-
-    .stat-box p {
-        color: rgba(255, 255, 255, 0.7);
-        margin: 0;
-        font-size: 0.9rem;
-    }
-
-    .stat-box.pending {
-        border-left: 4px solid #f59e0b;
-    }
-
-    .stat-box.approved {
-        border-left: 4px solid #10b981;
-    }
-
-    .stat-box.rejected {
-        border-left: 4px solid #ef4444;
-    }
-
-    .stat-box.completed {
-        border-left: 4px solid #06b6d4;
-    }
-
-    .stat-box.cancelled {
-        border-left: 4px solid #6b7280;
-    }
-
-    .filter-form {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 24px;
-    }
-
-    .form-control-glass {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #ffffff;
+    /* Back Button */
+    .btn-back-modern {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        padding: 10px 24px;
         border-radius: 8px;
-        padding: 10px 15px;
-    }
-
-    .form-control-glass:focus {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 138, 0, 0.5);
-        color: #ffffff;
-        box-shadow: 0 0 10px rgba(255, 138, 0, 0.2);
-    }
-
-    .form-label {
-        color: rgba(255, 255, 255, 0.9);
         font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+    }
+
+        .btn-back-modern:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+
+    /* Filter Form */
+    .filter-form {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 32px;
+    }
+
+        .filter-form h6 {
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+    .form-label-modern {
+        color: #374151;
+        font-weight: 500;
+        font-size: 0.875rem;
         margin-bottom: 8px;
+        display: block;
     }
 
-    .btn-filter {
-        background: linear-gradient(135deg, #ff8a00 0%, #e67700 100%);
-        border: 2px solid #ff8a00;
-        color: #fff;
-        font-weight: 600;
-        padding: 10px 24px;
+    .form-control-modern {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #1f2937;
         border-radius: 8px;
-        transition: all 0.3s ease;
+        padding: 12px 16px;
+        width: 100%;
+        font-size: 0.9375rem;
+        transition: all 0.2s ease;
     }
 
-    .btn-filter:hover {
-        box-shadow: 0 0 20px rgba(255, 138, 0, 0.5);
-        transform: translateY(-2px);
-        color: #fff;
-    }
+        .form-control-modern:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
 
-    .btn-back {
-        background: rgba(255, 255, 255, 0.05);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
-        font-weight: 600;
-        padding: 10px 24px;
+    /* Filter Button */
+    .btn-filter-modern {
+        background: #3b82f6;
+        border: none;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 12px 28px;
         border-radius: 8px;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+        width: 100%;
     }
 
-    .btn-back:hover {
-        border-color: rgba(255, 138, 0, 0.5);
-        color: #ff8a00;
-        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+        .btn-filter-modern:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
+
+    /* Statistics Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        margin-bottom: 32px;
+    }
+
+    /* Stat Box */
+    .stat-box {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+            border-color: #3b82f6;
+        }
+
+        .stat-box h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        .stat-box p {
+            color: #6b7280;
+            margin: 0;
+            font-size: 0.9375rem;
+            font-weight: 500;
+        }
+
+        /* Stat Box Color Variants */
+        .stat-box.total {
+            border-color: #3b82f6;
+        }
+
+            .stat-box.total::before {
+                background: #3b82f6;
+            }
+
+            .stat-box.total h3 {
+                color: #3b82f6;
+            }
+
+        .stat-box.pending::before {
+            background: #f59e0b;
+        }
+
+        .stat-box.pending h3 {
+            color: #f59e0b;
+        }
+
+        .stat-box.approved::before {
+            background: #10b981;
+        }
+
+        .stat-box.approved h3 {
+            color: #10b981;
+        }
+
+        .stat-box.rejected::before {
+            background: #ef4444;
+        }
+
+        .stat-box.rejected h3 {
+            color: #ef4444;
+        }
+
+        .stat-box.completed::before {
+            background: #06b6d4;
+        }
+
+        .stat-box.completed h3 {
+            color: #06b6d4;
+        }
+
+        .stat-box.cancelled::before {
+            background: #6b7280;
+        }
+
+        .stat-box.cancelled h3 {
+            color: #6b7280;
+        }
+
+    /* Summary Card */
+    .summary-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+        .summary-card h6 {
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.125rem;
+        }
+
+            .summary-card h6 i {
+                margin-right: 8px;
+            }
+
+        .summary-card p {
+            color: #4b5563;
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+            .summary-card p:last-child {
+                margin-bottom: 0;
+            }
+
+        .summary-card strong {
+            font-weight: 600;
+        }
+
+    .date-highlight {
+        color: #3b82f6;
+        font-weight: 600;
+    }
+
+    .rate-approved {
+        color: #10b981;
+        font-weight: 600;
+    }
+
+    .rate-rejected {
+        color: #ef4444;
+        font-weight: 600;
+    }
+
+    .rate-completed {
+        color: #06b6d4;
+        font-weight: 600;
+    }
+
+    /* Empty State */
+    .empty-state-stats {
+        text-align: center;
+        padding: 80px 40px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+        .empty-state-stats i {
+            font-size: 4rem;
+            color: #3b82f6;
+            margin-bottom: 24px;
+            opacity: 0.3;
+        }
+
+        .empty-state-stats h5 {
+            color: #1f2937;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state-stats p {
+            color: #6b7280;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+    /* Responsive Design */
+    @@media (max-width: 1200px) {
+        .stats-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stats-page-header {
+            padding: 24px;
+        }
+
+            .stats-page-header h2 {
+                font-size: 1.75rem;
+            }
+    }
+
+    @@media (max-width: 768px) {
+        .stats-container {
+            padding: 20px 0;
+        }
+
+        .stats-page-header {
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+            .stats-page-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats-page-header .header-flex {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        .btn-back-modern {
+            width: 100%;
+            text-align: center;
+        }
+
+        .filter-form {
+            padding: 20px;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .stat-box {
+            padding: 20px;
+        }
+
+            .stat-box h3 {
+                font-size: 2rem;
+            }
+
+        .summary-card {
+            padding: 20px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .stats-page-header {
+            padding: 16px;
+        }
+
+            .stats-page-header h2 {
+                font-size: 1.25rem;
+            }
+
+        .filter-form {
+            padding: 16px;
+        }
+
+        .stat-box h3 {
+            font-size: 1.75rem;
+        }
+
+        .summary-card {
+            padding: 16px;
+        }
+
+        .empty-state-stats {
+            padding: 60px 20px;
+        }
     }
 </style>
 
 <div class="stats-container">
     <div class="container-fluid">
-        <div class="glass-card-stats">
-            <div class="stats-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5><i class="fas fa-chart-bar"></i> Booking Statistics</h5>
-                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-back btn-sm">
-                        <i class="fas fa-arrow-left"></i> Back to Dashboard
-                    </a>
-                </div>
+        <!-- Header -->
+        <div class="stats-page-header">
+            <div class="header-flex">
+                <h2>
+                    <i class="fas fa-chart-bar icon-header"></i>Booking Statistics
+                </h2>
+                <a asp-controller="Dashboard" asp-action="Index" class="btn-back-modern">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
             </div>
+        </div>
 
-            <!-- Date Filter -->
-            <form asp-controller="Dashboard" asp-action="BookingStats" method="get" class="filter-form">
+        <!-- Date Filter -->
+        <div class="filter-form">
+            <h6><i class="fas fa-filter"></i> Filter by Date Range</h6>
+            <form asp-controller="Dashboard" asp-action="BookingStats" method="get">
                 <div class="row">
-                    <div class="col-md-5">
-                        <label class="form-label">From Date</label>
-                        <input type="date" name="fromDate" class="form-control form-control-glass"
-                            value="@(fromDate?.ToString("yyyy-MM-dd"))" />
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label-modern">From Date</label>
+                        <input type="date" name="fromDate" class="form-control form-control-modern"
+                               value="@(fromDate?.ToString("yyyy-MM-dd"))" />
                     </div>
-                    <div class="col-md-5">
-                        <label class="form-label">To Date</label>
-                        <input type="date" name="toDate" class="form-control form-control-glass"
-                            value="@(toDate?.ToString("yyyy-MM-dd"))" />
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label-modern">To Date</label>
+                        <input type="date" name="toDate" class="form-control form-control-modern"
+                               value="@(toDate?.ToString("yyyy-MM-dd"))" />
                     </div>
-                    <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-filter w-100">
-                            <i class="fas fa-filter"></i> Filter
+                    <div class="col-md-2 mb-3 d-flex align-items-end">
+                        <button type="submit" class="btn-filter-modern">
+                            <i class="fas fa-filter"></i> Apply Filter
                         </button>
                     </div>
                 </div>
             </form>
-
-            @if (stats != null)
-            {
-                <!-- Statistics Cards -->
-                <div class="row">
-                    <div class="col-md-4 col-lg-2 mb-3">
-                        <div class="stat-box">
-                            <h3>@stats.Total</h3>
-                            <p>Total Bookings</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-2 mb-3">
-                        <div class="stat-box pending">
-                            <h3 style="color: #f59e0b;">@stats.Pending</h3>
-                            <p>Pending</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-2 mb-3">
-                        <div class="stat-box approved">
-                            <h3 style="color: #10b981;">@stats.Approved</h3>
-                            <p>Approved</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-2 mb-3">
-                        <div class="stat-box rejected">
-                            <h3 style="color: #ef4444;">@stats.Rejected</h3>
-                            <p>Rejected</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-2 mb-3">
-                        <div class="stat-box completed">
-                            <h3 style="color: #06b6d4;">@stats.Completed</h3>
-                            <p>Completed</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-2 mb-3">
-                        <div class="stat-box cancelled">
-                            <h3 style="color: #6b7280;">@stats.Cancelled</h3>
-                            <p>Cancelled</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Summary -->
-                <div
-                    style="background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 20px; margin-top: 24px; color: rgba(255, 255, 255, 0.9);">
-                    <h6 style="color: #ff8a00; margin-bottom: 16px;">
-                        <i class="fas fa-info-circle"></i> Summary
-                    </h6>
-                    <p>
-                        Showing statistics from <strong style="color: #06b6d4;">@fromDate?.ToString("MMM dd, yyyy")</strong>
-                        to <strong style="color: #06b6d4;">@toDate?.ToString("MMM dd, yyyy")</strong>
-                    </p>
-                    <p class="mb-0">
-                        <strong style="color: #10b981;">@((stats.Approved * 100.0 / (stats.Total == 0 ? 1 :
-                                                    stats.Total)).ToString("F1"))%</strong> approval rate |
-                        <strong style="color: #ef4444;">@((stats.Rejected * 100.0 / (stats.Total == 0 ? 1 :
-                                                    stats.Total)).ToString("F1"))%</strong> rejection rate |
-                        <strong style="color: #06b6d4;">@((stats.Completed * 100.0 / (stats.Total == 0 ? 1 :
-                                                    stats.Total)).ToString("F1"))%</strong> completion rate
-                    </p>
-                </div>
-            }
-            else
-            {
-                <div class="text-center py-5" style="color: rgba(255, 255, 255, 0.6);">
-                    <i class="fas fa-chart-bar" style="font-size: 4rem; opacity: 0.3; margin-bottom: 16px;"></i>
-                    <p>No statistics available for the selected period</p>
-                </div>
-            }
         </div>
+
+        @if (stats != null)
+        {
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-box total">
+                    <h3>@stats.Total</h3>
+                    <p>Total Bookings</p>
+                </div>
+                <div class="stat-box pending">
+                    <h3>@stats.Pending</h3>
+                    <p>Pending</p>
+                </div>
+                <div class="stat-box approved">
+                    <h3>@stats.Approved</h3>
+                    <p>Approved</p>
+                </div>
+                <div class="stat-box rejected">
+                    <h3>@stats.Rejected</h3>
+                    <p>Rejected</p>
+                </div>
+                <div class="stat-box completed">
+                    <h3>@stats.Completed</h3>
+                    <p>Completed</p>
+                </div>
+                <div class="stat-box cancelled">
+                    <h3>@stats.Cancelled</h3>
+                    <p>Cancelled</p>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="summary-card">
+                <h6>
+                    <i class="fas fa-info-circle"></i> Summary Report
+                </h6>
+                <p>
+                    Showing statistics from
+                    <span class="date-highlight">@fromDate?.ToString("MMM dd, yyyy")</span>
+                    to
+                    <span class="date-highlight">@toDate?.ToString("MMM dd, yyyy")</span>
+                </p>
+                <p>
+                    <span class="rate-approved">@((stats.Approved * 100.0 / (stats.Total == 0 ? 1 : stats.Total)).ToString("F1"))%</span> approval rate
+                    <span style="color: #d1d5db; margin: 0 8px;">|</span>
+                    <span class="rate-rejected">@((stats.Rejected * 100.0 / (stats.Total == 0 ? 1 : stats.Total)).ToString("F1"))%</span> rejection rate
+                    <span style="color: #d1d5db; margin: 0 8px;">|</span>
+                    <span class="rate-completed">@((stats.Completed * 100.0 / (stats.Total == 0 ? 1 : stats.Total)).ToString("F1"))%</span> completion rate
+                </p>
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div class="empty-state-stats">
+                <i class="fas fa-chart-bar"></i>
+                <h5>No Statistics Available</h5>
+                <p>No statistics available for the selected period. Please adjust your date range and try again.</p>
+            </div>
+        }
     </div>
 </div>
