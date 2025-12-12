@@ -8,114 +8,114 @@
     /* Page Container */
     .pending-approvals-container {
         min-height: 100vh;
+        background: #ffffff;
         padding: 40px 0;
     }
 
-    /* Glass Card */
-    .glass-card-pending {
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 138, 0, 0.2);
-        border-radius: 15px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    /* Main Card */
+    .approval-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         overflow: hidden;
-        transition: all 0.3s ease;
-    }
-
-    .glass-card-pending:hover {
-        border: 1px solid rgba(255, 138, 0, 0.4);
-        box-shadow: 0 12px 40px 0 rgba(255, 138, 0, 0.15);
+        margin-bottom: 30px;
     }
 
     /* Card Header */
-    .glass-card-header-pending {
-        background: rgba(255, 138, 0, 0.15);
-        border-bottom: 2px solid rgba(255, 138, 0, 0.3);
-        padding: 20px 24px;
+    .approval-card-header {
+        background: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 24px 28px;
     }
 
-    .glass-card-header-pending h6 {
-        color: #ff8a00;
-        font-weight: bold;
-        margin: 0;
-    }
+        .approval-card-header h4 {
+            color: #1f2937;
+            font-weight: 600;
+            margin: 0;
+            font-size: 1.5rem;
+        }
 
     /* Card Body */
-    .glass-card-body-pending {
-        padding: 24px;
+    .approval-card-body {
+        padding: 28px;
     }
 
     /* Booking Card */
     .booking-approval-card {
-        background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(100, 116, 139, 0.2);
-        border-radius: 12px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
         padding: 20px;
         margin-bottom: 20px;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
-    .booking-approval-card:hover {
-        border-color: rgba(255, 138, 0, 0.4);
-        box-shadow: 0 8px 24px rgba(255, 138, 0, 0.15);
-        transform: translateY(-2px);
-    }
+        .booking-approval-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
 
-    .booking-approval-card h5 {
-        color: #ea580c;
-        font-weight: bold;
-        margin-bottom: 12px;
-    }
+        .booking-approval-card h5 {
+            color: #1f2937;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.125rem;
+        }
 
-    .booking-approval-card .info-row {
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-        color: #475569;
-    }
+        .booking-approval-card .info-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #4b5563;
+            font-size: 0.9375rem;
+        }
 
-    .booking-approval-card .info-row i {
-        width: 24px;
-        color: #64748b;
-        margin-right: 8px;
-    }
+            .booking-approval-card .info-row i {
+                width: 24px;
+                color: #3b82f6;
+                margin-right: 8px;
+            }
 
-    .booking-approval-card .info-row strong {
-        color: #0c4a6e;
-        margin-right: 8px;
-    }
+            .booking-approval-card .info-row strong {
+                color: #374151;
+                margin-right: 8px;
+            }
 
     /* Status Badge */
     .badge-pending {
-        background: rgba(245, 158, 11, 0.25);
-        border: 1px solid rgba(245, 158, 11, 0.5);
+        background: #fef3c7;
+        border: 1px solid #fbbf24;
         color: #92400e;
         padding: 6px 12px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.875rem;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 0.8125rem;
     }
 
     /* Purpose Box */
     .purpose-box {
-        background: rgba(6, 182, 212, 0.1);
-        border: 1px solid rgba(6, 182, 212, 0.3);
+        background: #f0f9ff;
+        border: 1px solid #bfdbfe;
         border-radius: 8px;
         padding: 12px;
         margin: 12px 0;
     }
 
-    .purpose-box strong {
-        color: #0284c7;
-        display: block;
-        margin-bottom: 6px;
-    }
+        .purpose-box strong {
+            color: #1e40af;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9375rem;
+        }
 
-    .purpose-box p {
-        color: #334155;
-        margin: 0;
-        line-height: 1.6;
-    }
+        .purpose-box p {
+            color: #4b5563;
+            margin: 0;
+            line-height: 1.6;
+            font-size: 0.9375rem;
+        }
 
     /* Action Buttons */
     .action-section {
@@ -123,58 +123,79 @@
         gap: 12px;
         margin-top: 16px;
         padding-top: 16px;
-        border-top: 1px solid rgba(100, 116, 139, 0.2);
+        border-top: 1px solid #e5e7eb;
     }
 
     .btn-approve {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        border: 2px solid #10b981;
-        color: #fff;
-        font-weight: 600;
+        background: #10b981;
+        border: none;
+        color: #ffffff;
+        font-weight: 500;
         padding: 10px 20px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
     }
 
-    .btn-approve:hover {
-        box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
-        transform: translateY(-2px);
-        color: #fff;
-    }
+        .btn-approve:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            color: #ffffff;
+        }
 
     .btn-reject {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        border: 2px solid #ef4444;
-        color: #fff;
-        font-weight: 600;
+        background: #ef4444;
+        border: none;
+        color: #ffffff;
+        font-weight: 500;
         padding: 10px 20px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
     }
 
-    .btn-reject:hover {
-        box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
-        transform: translateY(-2px);
-        color: #fff;
-    }
+        .btn-reject:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            color: #ffffff;
+        }
 
     .btn-view-details {
-        background: rgba(100, 116, 139, 0.1);
-        border: 2px solid rgba(100, 116, 139, 0.3);
-        color: #334155;
-        font-weight: 600;
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        font-weight: 500;
         padding: 10px 20px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
     }
 
-    .btn-view-details:hover {
-        border-color: rgba(255, 138, 0, 0.5);
-        color: #ea580c;
-        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+        .btn-view-details:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+
+    .btn-primary-modern {
+        background: #3b82f6;
+        border: none;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
     }
+
+        .btn-primary-modern:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
 
     /* Admin Note Input */
     .admin-note-section {
@@ -182,63 +203,100 @@
     }
 
     .admin-note-input {
-        background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(100, 116, 139, 0.3);
-        border-radius: 8px;
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
         padding: 10px 12px;
         width: 100%;
-        color: #1e293b;
-        font-size: 0.9rem;
+        color: #1f2937;
+        font-size: 0.9375rem;
         margin-top: 8px;
+        transition: all 0.2s ease;
     }
 
-    .admin-note-input:focus {
-        border-color: rgba(255, 138, 0, 0.5);
-        outline: none;
-        box-shadow: 0 0 10px rgba(255, 138, 0, 0.2);
-    }
+        .admin-note-input:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
 
     .admin-note-label {
-        color: #475569;
-        font-weight: 600;
-        font-size: 0.9rem;
+        color: #374151;
+        font-weight: 500;
+        font-size: 0.875rem;
     }
 
     /* Empty State */
     .empty-state {
         text-align: center;
         padding: 60px 40px;
-        color: #64748b;
+        color: #6b7280;
     }
 
-    .empty-state i {
-        font-size: 4rem;
-        color: #94a3b8;
-        margin-bottom: 20px;
-    }
+        .empty-state i {
+            font-size: 4rem;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
 
-    .empty-state h5 {
-        color: #334155;
-        margin-bottom: 12px;
-    }
+        .empty-state h5 {
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
 
     /* Alert Messages */
-    .alert-glass-success {
-        background: rgba(16, 185, 129, 0.25);
-        border: 1px solid rgba(16, 185, 129, 0.5);
-        border-radius: 10px;
+    .alert-modern-success {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
         padding: 16px 20px;
-        color: #065f46;
+        color: #16a34a;
         margin-bottom: 20px;
     }
 
-    .alert-glass-danger {
-        background: rgba(239, 68, 68, 0.25);
-        border: 1px solid rgba(239, 68, 68, 0.5);
-        border-radius: 10px;
+    .alert-modern-danger {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
         padding: 16px 20px;
-        color: #991b1b;
+        color: #dc2626;
         margin-bottom: 20px;
+    }
+
+    /* Modal Styling */
+    .modal-modern .modal-content {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-modern .modal-header {
+        border-bottom: 1px solid #e5e7eb;
+        padding: 20px 24px;
+    }
+
+    .modal-modern .modal-title {
+        color: #1f2937;
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+
+    .modal-modern .modal-body {
+        padding: 24px;
+        color: #4b5563;
+    }
+
+    .modal-modern .modal-footer {
+        border-top: 1px solid #e5e7eb;
+        padding: 16px 24px;
+    }
+
+    /* Icon Styling */
+    .icon-primary {
+        color: #3b82f6;
     }
 
     /* Responsive */
@@ -247,9 +305,13 @@
             flex-direction: column;
         }
 
-        .action-section button,
-        .action-section a {
-            width: 100%;
+            .action-section button,
+            .action-section a {
+                width: 100%;
+            }
+
+        .approval-card-body {
+            padding: 20px;
         }
     }
 </style>
@@ -258,21 +320,21 @@
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
-                <div class="glass-card-pending">
-                    <div class="glass-card-header-pending">
+                <div class="approval-card">
+                    <div class="approval-card-header">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h6>
-                                <i class="fas fa-clock"></i> Pending Bookings for Approval
-                            </h6>
-                            <a asp-controller="Booking" asp-action="Index" class="btn btn-view-details btn-sm">
+                            <h4>
+                                <i class="fas fa-clock icon-primary"></i> Pending Bookings for Approval
+                            </h4>
+                            <a asp-controller="Booking" asp-action="Index" class="btn btn-primary-modern btn-sm">
                                 <i class="fas fa-list"></i> All Bookings
                             </a>
                         </div>
                     </div>
-                    <div class="glass-card-body-pending">
+                    <div class="approval-card-body">
                         @if (TempData["SuccessMessage"] != null)
                         {
-                            <div class="alert-glass-success alert-dismissible fade show" role="alert">
+                            <div class="alert-modern-success alert-dismissible fade show" role="alert">
                                 <i class="fas fa-check-circle"></i> <strong>Success!</strong> @TempData["SuccessMessage"]
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
@@ -280,7 +342,7 @@
 
                         @if (TempData["ErrorMessage"] != null)
                         {
-                            <div class="alert-glass-danger alert-dismissible fade show" role="alert">
+                            <div class="alert-modern-danger alert-dismissible fade show" role="alert">
                                 <i class="fas fa-exclamation-circle"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
@@ -295,7 +357,7 @@
                                         <div class="booking-approval-card">
                                             <div class="d-flex justify-content-between align-items-start mb-3">
                                                 <h5>
-                                                    <i class="fas fa-door-open"></i> @booking.RoomName
+                                                    <i class="fas fa-door-open icon-primary"></i> @booking.RoomName
                                                 </h5>
                                                 <span class="badge-pending">
                                                     <i class="fas fa-clock"></i> Pending
@@ -329,26 +391,25 @@
 
                                             <div class="info-row">
                                                 <i class="fas fa-hourglass-half"></i>
-                                                <strong>Duration:</strong> @((booking.EndTime -
-                                                                                        booking.StartTime).TotalHours.ToString("F1")) hours
+                                                <strong>Duration:</strong> @((booking.EndTime - booking.StartTime).TotalHours.ToString("F1")) hours
                                             </div>
 
                                             <div class="purpose-box">
-                                                <strong><i class="fas fa-comment"></i> Purpose:</strong>
+                                                <strong><i class="fas fa-comment icon-primary"></i> Purpose:</strong>
                                                 <p>@booking.Purpose</p>
                                             </div>
 
                                             <div class="action-section">
                                                 <button type="button" class="btn btn-approve flex-fill"
-                                                    onclick="approveBooking('@booking.Id')">
+                                                        onclick="approveBooking('@booking.Id')">
                                                     <i class="fas fa-check"></i> Approve
                                                 </button>
                                                 <button type="button" class="btn btn-reject flex-fill"
-                                                    onclick="showRejectModal('@booking.Id', '@booking.RoomName')">
+                                                        onclick="showRejectModal('@booking.Id', '@booking.RoomName')">
                                                     <i class="fas fa-times"></i> Reject
                                                 </button>
                                                 <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id"
-                                                    asp-route-fromAdmin="true" class="btn btn-view-details">
+                                                   asp-route-fromAdmin="true" class="btn btn-view-details">
                                                     <i class="fas fa-eye"></i> Details
                                                 </a>
                                             </div>
@@ -373,33 +434,30 @@
 </div>
 
 <!-- Reject Modal -->
-<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+<div class="modal fade modal-modern" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content"
-            style="background: rgba(30, 41, 59, 0.95); color: #e0e0e0; border: 1px solid rgba(255, 138, 0, 0.3);">
-            <div class="modal-header" style="border-bottom: 1px solid rgba(255, 138, 0, 0.3);">
-                <h5 class="modal-title" id="rejectModalLabel" style="color: #ff8a00;">
-                    <i class="fas fa-times-circle"></i> Reject Booking
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">
+                    <i class="fas fa-times-circle" style="color: #ef4444;"></i> Reject Booking
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="rejectForm" method="post">
                 @Html.AntiForgeryToken()
                 <div class="modal-body">
-                    <p style="color: #d1d5db;">
-                        You are about to reject the booking for <strong id="rejectRoomName"
-                            style="color: #ff8a00;"></strong>.
+                    <p>
+                        You are about to reject the booking for <strong id="rejectRoomName" style="color: #3b82f6;"></strong>.
                     </p>
                     <div class="admin-note-section">
                         <label for="rejectNote" class="admin-note-label">
-                            <i class="fas fa-comment"></i> Reason for Rejection <span class="text-danger">*</span>
+                            <i class="fas fa-comment icon-primary"></i> Reason for Rejection <span class="text-danger">*</span>
                         </label>
                         <textarea id="rejectNote" name="adminNote" class="admin-note-input" rows="4"
-                            placeholder="Please provide a reason for rejecting this booking..." required></textarea>
+                                  placeholder="Please provide a reason for rejecting this booking..." required></textarea>
                     </div>
                 </div>
-                <div class="modal-footer" style="border-top: 1px solid rgba(255, 138, 0, 0.3);">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-view-details" data-bs-dismiss="modal">
                         <i class="fas fa-arrow-left"></i> Cancel
                     </button>
