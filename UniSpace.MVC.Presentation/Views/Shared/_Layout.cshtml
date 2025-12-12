@@ -51,6 +51,15 @@
 
                         @if (Context.Session.GetString("AuthToken") != null)
                         {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="Index">
+                                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                                    </a>
+                                </li>
+                            }
+                            
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
                                     <i class="fas fa-calendar"></i> Bookings
@@ -78,8 +87,6 @@
                                                 class="fas fa-university"></i> Campuses</a></li>
                                     <li><a class="dropdown-item" asp-controller="Room" asp-action="Index"><i
                                                 class="fas fa-door-open"></i> All Rooms</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Room" asp-action="Available"><i
-                                                class="fas fa-check-circle"></i> Available Rooms</a></li>
 
                                     <li>
                                         <hr class="dropdown-divider" />

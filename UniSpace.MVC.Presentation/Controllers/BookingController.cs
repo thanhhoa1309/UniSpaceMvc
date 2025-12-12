@@ -101,7 +101,6 @@ namespace UniSpace.MVC.Presentation.Controllers
         }
 
         // GET: Booking/Create
-        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> Create(Guid? roomId)
         {
             try
@@ -130,7 +129,6 @@ namespace UniSpace.MVC.Presentation.Controllers
         // POST: Booking/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> Create(CreateBookingDto createDto)
         {
             if (!ModelState.IsValid)
@@ -373,7 +371,6 @@ namespace UniSpace.MVC.Presentation.Controllers
         }
 
         // GET: Booking/SearchRooms
-        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> SearchRooms(
             string? searchTerm = null,
             Guid? campusId = null,

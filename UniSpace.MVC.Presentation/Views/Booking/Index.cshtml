@@ -1,0 +1,515 @@
+@model IEnumerable<UniSpace.Bo.DTOs.BookingDTOs.BookingDto>
+@using UniSpace.Bo.Enums
+@{
+    ViewData["Title"] = "All Bookings";
+}
+
+<style>
+    .bookings-container {
+        min-height: 100vh;
+        padding: 40px 0;
+    }
+
+    .glass-card-bookings {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(20, 20, 30, 0.6);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+
+    .card-header-glass {
+        background: rgba(255, 138, 0, 0.15);
+        border-bottom: 2px solid rgba(255, 138, 0, 0.3);
+        padding: 20px 24px;
+    }
+
+    .card-header-glass h5 {
+        color: #ff8a00;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .card-body-glass {
+        padding: 24px;
+    }
+
+    /* Filter Section */
+    .filter-section {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .filter-section h6 {
+        color: #ff8a00;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    .form-control-glass,
+    .form-select-glass {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        border-radius: 8px;
+        padding: 10px 15px;
+    }
+
+    .form-control-glass:focus,
+    .form-select-glass:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 138, 0, 0.5);
+        color: #ffffff;
+        box-shadow: 0 0 10px rgba(255, 138, 0, 0.2);
+    }
+
+    .form-control-glass::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-select-glass option {
+        background: #1a1a2e;
+        color: #ffffff;
+    }
+
+    .form-label {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    /* Table Styles */
+    .table-glass {
+        color: #e0e0e0;
+        margin-bottom: 0;
+    }
+
+    .table-glass thead {
+        background: rgba(255, 138, 0, 0.1);
+        border-bottom: 2px solid rgba(255, 138, 0, 0.3);
+    }
+
+    .table-glass thead th {
+        color: #ff8a00;
+        font-weight: 600;
+        border: none;
+        padding: 16px 12px;
+        font-size: 0.9rem;
+    }
+
+    .table-glass tbody tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .table-glass tbody tr:hover {
+        background: rgba(255, 138, 0, 0.1);
+        transform: scale(1.01);
+    }
+
+    .table-glass tbody td {
+        padding: 16px 12px;
+        vertical-align: middle;
+        border: none;
+        font-size: 0.9rem;
+    }
+
+    /* Status Badges */
+    .badge-status {
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border: 1px solid;
+    }
+
+    .badge-pending {
+        background: rgba(245, 158, 11, 0.2);
+        border-color: rgba(245, 158, 11, 0.5);
+        color: #fbbf24;
+    }
+
+    .badge-approved {
+        background: rgba(16, 185, 129, 0.2);
+        border-color: rgba(16, 185, 129, 0.5);
+        color: #10b981;
+    }
+
+    .badge-rejected {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: rgba(239, 68, 68, 0.5);
+        color: #f87171;
+    }
+
+    .badge-completed {
+        background: rgba(6, 182, 212, 0.2);
+        border-color: rgba(6, 182, 212, 0.5);
+        color: #06b6d4;
+    }
+
+    .badge-cancelled {
+        background: rgba(156, 163, 175, 0.2);
+        border-color: rgba(156, 163, 175, 0.5);
+        color: #9ca3af;
+    }
+
+    /* Action Buttons */
+    .btn-filter {
+        background: linear-gradient(135deg, #ff8a00 0%, #e67700 100%);
+        border: 2px solid #ff8a00;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-filter:hover {
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.5);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-clear {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-clear:hover {
+        border-color: rgba(255, 138, 0, 0.5);
+        color: #ff8a00;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+    }
+
+    .btn-view {
+        background: rgba(6, 182, 212, 0.2);
+        border: 2px solid rgba(6, 182, 212, 0.4);
+        color: #06b6d4;
+        font-weight: 600;
+        padding: 6px 16px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-view:hover {
+        background: rgba(6, 182, 212, 0.3);
+        border-color: #06b6d4;
+        color: #06b6d4;
+        box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-back {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-weight: 600;
+        padding: 8px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn-back:hover {
+        border-color: rgba(255, 138, 0, 0.5);
+        color: #ff8a00;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+    }
+
+    /* Pagination */
+    .pagination-glass {
+        margin-top: 24px;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .pagination-glass .page-link {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+    .pagination-glass .page-link:hover {
+        background: rgba(255, 138, 0, 0.2);
+        border-color: rgba(255, 138, 0, 0.5);
+        color: #ff8a00;
+    }
+
+    .pagination-glass .page-item.active .page-link {
+        background: rgba(255, 138, 0, 0.3);
+        border-color: rgba(255, 138, 0, 0.6);
+        color: #ff8a00;
+    }
+
+    .pagination-glass .page-item.disabled .page-link {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .empty-state i {
+        font-size: 5rem;
+        margin-bottom: 20px;
+        opacity: 0.3;
+    }
+
+    .empty-state h5 {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 12px;
+    }
+
+    /* Alert */
+    .alert-glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        border: 1px solid;
+    }
+
+    .alert-glass-error {
+        background: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.4);
+        color: #ef4444;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .table-glass {
+            font-size: 0.85rem;
+        }
+
+        .table-glass thead th,
+        .table-glass tbody td {
+            padding: 12px 8px;
+        }
+    }
+</style>
+
+<div class="bookings-container">
+    <div class="container-fluid">
+        <div class="glass-card-bookings">
+            <div class="card-header-glass">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h5><i class="fas fa-calendar-check"></i> All Bookings Management</h5>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-back btn-sm">
+                            <i class="fas fa-arrow-left"></i> Back to Dashboard
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <div class="card-body-glass">
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert-glass alert-glass-error alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <!-- Filter Section -->
+                <div class="filter-section">
+                    <h6><i class="fas fa-filter"></i> Filter Bookings</h6>
+                    <form asp-controller="Booking" asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Search</label>
+                                <input type="text" name="search" class="form-control form-control-glass"
+                                    placeholder="Room, user, email..." value="@ViewBag.Search" />
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">Status</label>
+                                <select name="status" class="form-select form-select-glass">
+                                    <option value="">All Status</option>
+                                    <option value="0" selected="@(ViewBag.Status == BookingStatus.Pending)">Pending
+                                    </option>
+                                    <option value="1" selected="@(ViewBag.Status == BookingStatus.Approved)">Approved
+                                    </option>
+                                    <option value="2" selected="@(ViewBag.Status == BookingStatus.Rejected)">Rejected
+                                    </option>
+                                    <option value="3" selected="@(ViewBag.Status == BookingStatus.Completed)">Completed
+                                    </option>
+                                    <option value="4" selected="@(ViewBag.Status == BookingStatus.Cancelled)">Cancelled
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">From Date</label>
+                                <input type="date" name="fromDate" class="form-control form-control-glass"
+                                    value="@(ViewBag.FromDate?.ToString("yyyy-MM-dd"))" />
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">To Date</label>
+                                <input type="date" name="toDate" class="form-control form-control-glass"
+                                    value="@(ViewBag.ToDate?.ToString("yyyy-MM-dd"))" />
+                            </div>
+                            <div class="col-md-3 mb-3 d-flex align-items-end gap-2">
+                                <button type="submit" class="btn btn-filter flex-fill">
+                                    <i class="fas fa-search"></i> Filter
+                                </button>
+                                <a asp-controller="Booking" asp-action="Index" class="btn btn-clear flex-fill">
+                                    <i class="fas fa-times"></i> Clear
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                @if (Model != null && Model.Any())
+                {
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table class="table table-glass">
+                            <thead>
+                                <tr>
+                                    <th>Room</th>
+                                    <th>User</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var booking in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@booking.RoomName</strong><br>
+                                            <small style="color: rgba(255, 255, 255, 0.6);">@booking.CampusName</small>
+                                        </td>
+                                        <td>
+                                            <strong>@booking.UserName</strong><br>
+                                            <small style="color: rgba(255, 255, 255, 0.6);">@booking.UserEmail</small>
+                                        </td>
+                                        <td>
+                                            @booking.StartTime.ToString("MMM dd, yyyy")<br>
+                                            <strong style="color: #06b6d4;">@booking.StartTime.ToString("HH:mm")</strong>
+                                        </td>
+                                        <td>
+                                            @booking.EndTime.ToString("MMM dd, yyyy")<br>
+                                            <strong style="color: #06b6d4;">@booking.EndTime.ToString("HH:mm")</strong>
+                                        </td>
+                                        <td>
+                                            @{
+                                                var duration = booking.EndTime - booking.StartTime;
+                                                <strong style="color: #ff8a00;">@($"{duration.TotalHours:F1}h")</strong>
+                                            }
+                                        </td>
+                                        <td>
+                                            @{
+                                                var badgeClass = booking.Status switch
+                                                {
+                                                    BookingStatus.Pending => "badge-pending",
+                                                    BookingStatus.Approved => "badge-approved",
+                                                    BookingStatus.Rejected => "badge-rejected",
+                                                    BookingStatus.Completed => "badge-completed",
+                                                    BookingStatus.Cancelled => "badge-cancelled",
+                                                    _ => "badge-cancelled"
+                                                };
+                                            }
+                                            <span class="badge-status @badgeClass">
+                                                @booking.StatusDisplay
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @booking.CreatedAt.ToString("MMM dd, yyyy")<br>
+                                            <small
+                                                style="color: rgba(255, 255, 255, 0.6);">@booking.CreatedAt.ToString("HH:mm")</small>
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id"
+                                                asp-route-fromAdmin="true" class="btn btn-view">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    @if (ViewBag.TotalPages > 1)
+                    {
+                        <nav class="pagination-glass">
+                            <ul class="pagination">
+                                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                                    <a class="page-link" asp-controller="Booking" asp-action="Index"
+                                        asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-search="@ViewBag.Search"
+                                        asp-route-status="@ViewBag.Status" asp-route-fromDate="@ViewBag.FromDate"
+                                        asp-route-toDate="@ViewBag.ToDate">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+
+                                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                {
+                                    <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                                        <a class="page-link" asp-controller="Booking" asp-action="Index" asp-route-page="@i"
+                                            asp-route-search="@ViewBag.Search" asp-route-status="@ViewBag.Status"
+                                            asp-route-fromDate="@ViewBag.FromDate" asp-route-toDate="@ViewBag.ToDate">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+
+                                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                                    <a class="page-link" asp-controller="Booking" asp-action="Index"
+                                        asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-search="@ViewBag.Search"
+                                        asp-route-status="@ViewBag.Status" asp-route-fromDate="@ViewBag.FromDate"
+                                        asp-route-toDate="@ViewBag.ToDate">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <h5>No Bookings Found</h5>
+                        <p>There are no bookings matching your criteria.</p>
+                        @if (ViewBag.Search != null || ViewBag.Status != null || ViewBag.FromDate != null || ViewBag.ToDate
+                                            != null)
+                        {
+                            <a asp-controller="Booking" asp-action="Index" class="btn btn-filter mt-3">
+                                <i class="fas fa-times"></i> Clear Filters
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

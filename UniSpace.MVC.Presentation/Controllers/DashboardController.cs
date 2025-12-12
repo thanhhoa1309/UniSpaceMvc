@@ -37,10 +37,11 @@ namespace UniSpace.MVC.Presentation.Controllers
                 var pendingBookingsCount = await _bookingService.GetPendingBookingsCountAsync();
                 var pendingReportsCount = await _roomReportService.GetPendingReportsCountAsync();
 
-                // Get recent bookings
-                var recentBookings = await _bookingService.GetBookingsAsync(
+                // Get pending bookings for confirmation
+                var pendingBookings = await _bookingService.GetBookingsAsync(
                     pageNumber: 1,
-                    pageSize: 5);
+                    pageSize: 10,
+                    status: BookingStatus.Pending);
 
                 // Get recent reports
                 var recentReports = await _roomReportService.GetRoomReportsAsync(
@@ -48,13 +49,18 @@ namespace UniSpace.MVC.Presentation.Controllers
                     pageSize: 5,
                     status: ReportStatus.Open);
 
-                // Get campuses
-                var campuses = await _campusService.GetCampusesAsync(pageSize: 100);
+                // Get all campuses, rooms, and bookings for stats
+                var campuses = await _campusService.GetCampusesAsync(pageSize: 1000);
+                var rooms = await _roomService.GetRoomsAsync(pageSize: 1000);
+                var allBookings = await _bookingService.GetBookingsAsync(pageSize: 1000);
 
                 ViewBag.PendingBookingsCount = pendingBookingsCount;
                 ViewBag.PendingReportsCount = pendingReportsCount;
                 ViewBag.TotalCampuses = campuses.TotalCount;
-                ViewBag.RecentBookings = recentBookings;
+                ViewBag.TotalRooms = rooms.TotalCount;
+                ViewBag.TotalBookings = allBookings.TotalCount;
+                ViewBag.TotalSchedules = 0; // Will calculate if needed
+                ViewBag.PendingBookings = pendingBookings;
                 ViewBag.RecentReports = recentReports;
 
                 return View();
@@ -177,14 +183,14 @@ namespace UniSpace.MVC.Presentation.Controllers
                             pageSize: 10000,
                             fromDate: from,
                             toDate: to);
-                        
+
                         // TODO: Implement CSV/Excel export
                         TempData["InfoMessage"] = "Export functionality coming soon";
                         break;
 
                     case "reports":
                         var reports = await _roomReportService.GetRoomReportsAsync(pageSize: 10000);
-                        
+
                         // TODO: Implement CSV/Excel export
                         TempData["InfoMessage"] = "Export functionality coming soon";
                         break;
@@ -202,6 +208,50 @@ namespace UniSpace.MVC.Presentation.Controllers
                 TempData["ErrorMessage"] = "Error exporting data: " + ex.Message;
                 return RedirectToAction(nameof(Index));
             }
+        }
+
+        // POST: Dashboard/ApproveBooking
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveBooking(Guid id, string? adminNote)
+        {
+            try
+            {
+                await _bookingService.ApproveBookingAsync(id, adminNote);
+                TempData["SuccessMessage"] = "Booking approved successfully";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error approving booking: {id}");
+                TempData["ErrorMessage"] = ex.Message;
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Dashboard/RejectBooking
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RejectBooking(Guid id, string adminNote)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(adminNote))
+                {
+                    TempData["ErrorMessage"] = "Admin note is required when rejecting a booking";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                await _bookingService.RejectBookingAsync(id, adminNote);
+                TempData["SuccessMessage"] = "Booking rejected successfully";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error rejecting booking: {id}");
+                TempData["ErrorMessage"] = ex.Message;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

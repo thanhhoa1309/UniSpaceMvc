@@ -1,0 +1,847 @@
+@using UniSpace.Bo.Enums
+@using UniSpace.Bo.DTOs.BookingDTOs
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var pendingBookings = ViewBag.PendingBookings as UniSpace.Service.Utils.Pagination<BookingDto>;
+}
+
+<style>
+    /* Dashboard Container */
+    .dashboard-container {
+        min-height: 100vh;
+        padding: 40px 0;
+    }
+
+    /* Glass Header */
+    .glass-header {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(255, 138, 0, 0.1);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 15px;
+        padding: 24px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .glass-header h2 {
+        color: #ff8a00;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .glass-header p {
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0;
+    }
+
+    /* Stat Cards */
+    .stat-card-glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 15px;
+        padding: 24px;
+        height: 100%;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        background: rgba(20, 20, 30, 0.6);
+    }
+
+    .stat-card-glass::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--card-color);
+    }
+
+    .stat-card-glass:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(255, 138, 0, 0.2);
+        border-color: rgba(255, 138, 0, 0.4);
+    }
+
+    .stat-card-glass.card-orange {
+        --card-color: #ff8a00;
+    }
+
+    .stat-card-glass.card-cyan {
+        --card-color: #06b6d4;
+    }
+
+    .stat-card-glass.card-green {
+        --card-color: #10b981;
+    }
+
+    .stat-card-glass.card-purple {
+        --card-color: #8b5cf6;
+    }
+
+    .stat-icon {
+        font-size: 3rem;
+        opacity: 0.9;
+        margin-bottom: 16px;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 8px;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 12px;
+    }
+
+    .stat-footer a {
+        color: var(--card-color);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .stat-footer a:hover {
+        color: #ffffff;
+    }
+
+    /* Section Glass */
+    .section-glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(20, 20, 30, 0.6);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 15px;
+        padding: 24px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-header {
+        background: rgba(255, 138, 0, 0.1);
+        border: 1px solid rgba(255, 138, 0, 0.3);
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+    }
+
+    .section-header h5 {
+        color: #ff8a00;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    /* Booking Card */
+    .booking-card-glass {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(100, 116, 139, 0.2);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .booking-card-glass:hover {
+        border-color: rgba(255, 138, 0, 0.4);
+        box-shadow: 0 8px 24px rgba(255, 138, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .booking-card-glass h6 {
+        color: #ea580c;
+        font-weight: bold;
+        margin-bottom: 12px;
+        font-size: 1.1rem;
+    }
+
+    .booking-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        color: #475569;
+        font-size: 0.9rem;
+    }
+
+    .booking-info i {
+        width: 24px;
+        color: #64748b;
+        margin-right: 8px;
+    }
+
+    .booking-info strong {
+        color: #0c4a6e;
+        margin-right: 8px;
+    }
+
+    .purpose-text {
+        background: rgba(6, 182, 212, 0.1);
+        border: 1px solid rgba(6, 182, 212, 0.3);
+        border-radius: 8px;
+        padding: 12px;
+        margin: 12px 0;
+        color: #334155;
+        font-size: 0.9rem;
+    }
+
+    .booking-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(100, 116, 139, 0.2);
+        flex-wrap: wrap;
+    }
+
+    .admin-note-input {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(100, 116, 139, 0.3);
+        border-radius: 8px;
+        padding: 10px 12px;
+        width: 100%;
+        color: #1e293b;
+        font-size: 0.9rem;
+        margin-top: 8px;
+    }
+
+    .admin-note-input:focus {
+        border-color: rgba(255, 138, 0, 0.5);
+        outline: none;
+        box-shadow: 0 0 10px rgba(255, 138, 0, 0.2);
+    }
+
+    /* Action Buttons */
+    .btn-approve {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border: 2px solid #10b981;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-approve:hover {
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-reject {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        border: 2px solid #ef4444;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-reject:hover {
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-view {
+        background: rgba(100, 116, 139, 0.1);
+        border: 2px solid rgba(100, 116, 139, 0.3);
+        color: #334155;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-view:hover {
+        border-color: rgba(255, 138, 0, 0.5);
+        color: #ea580c;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+    }
+
+    .btn-neon {
+        background: transparent;
+        border: 2px solid currentColor;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-neon-orange {
+        color: #ff8a00;
+        border-color: #ff8a00;
+    }
+
+    .btn-neon-orange:hover {
+        background: #ff8a00;
+        color: #000;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.6);
+    }
+
+    .btn-neon-cyan {
+        color: #06b6d4;
+        border-color: #06b6d4;
+    }
+
+    .btn-neon-cyan:hover {
+        background: #06b6d4;
+        color: #000;
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+    }
+
+    .btn-neon-green {
+        color: #10b981;
+        border-color: #10b981;
+    }
+
+    .btn-neon-green:hover {
+        background: #10b981;
+        color: #000;
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+    }
+
+    .btn-neon-purple {
+        color: #8b5cf6;
+        border-color: #8b5cf6;
+    }
+
+    .btn-neon-purple:hover {
+        background: #8b5cf6;
+        color: #fff;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+    }
+
+    /* Quick Actions */
+    .quick-action-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+        color: #ffffff;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .quick-action-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 138, 0, 0.5);
+        transform: translateX(5px);
+        color: #ff8a00;
+    }
+
+    .quick-action-item.priority {
+        background: rgba(255, 138, 0, 0.1);
+        border-color: rgba(255, 138, 0, 0.3);
+    }
+
+    .quick-action-item.priority:hover {
+        background: rgba(255, 138, 0, 0.15);
+        border-color: rgba(255, 138, 0, 0.6);
+    }
+
+    .quick-action-item i {
+        font-size: 1.8rem;
+        margin-right: 16px;
+        min-width: 40px;
+    }
+
+    .quick-action-item strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1rem;
+    }
+
+    .quick-action-item small {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Module Cards */
+    .module-card {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .module-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 30px rgba(255, 138, 0, 0.2);
+        border-color: rgba(255, 138, 0, 0.3);
+    }
+
+    .module-card.priority {
+        border: 2px solid rgba(255, 138, 0, 0.5);
+        background: rgba(255, 138, 0, 0.05);
+    }
+
+    .module-card i {
+        font-size: 3.5rem;
+        margin-bottom: 16px;
+    }
+
+    .module-card h5 {
+        color: #ffffff;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .module-card p {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.875rem;
+        margin-bottom: 16px;
+    }
+
+    .pulse-badge {
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    @@keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+    }
+
+    /* Alert Glass */
+    .alert-glass {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        border: 1px solid;
+    }
+
+    .alert-glass-success {
+        background: rgba(16, 185, 129, 0.15);
+        border-color: rgba(16, 185, 129, 0.4);
+        color: #10b981;
+    }
+
+    .alert-glass-error {
+        background: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.4);
+        color: #ef4444;
+    }
+
+    .alert-glass-info {
+        background: rgba(59, 130, 246, 0.15);
+        border-color: rgba(59, 130, 246, 0.4);
+        color: #3b82f6;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 16px;
+        opacity: 0.5;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .stat-card-glass {
+            margin-bottom: 16px;
+        }
+
+        .module-card {
+            margin-bottom: 16px;
+        }
+
+        .booking-actions {
+            flex-direction: column;
+        }
+
+        .booking-actions button,
+        .booking-actions a {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="glass-header">
+            <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+            <p>Welcome back, @User.Identity?.Name | System Overview & Management</p>
+        </div>
+
+        <!-- Alert Messages -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert-glass alert-glass-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle"></i> <strong>Success!</strong> @TempData["SuccessMessage"]
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert-glass alert-glass-error alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stat-card-glass card-orange">
+                    <i class="fas fa-exclamation-triangle stat-icon" style="color: #ff8a00;"></i>
+                    <div class="stat-label">Pending Bookings</div>
+                    <div class="stat-value">@ViewBag.PendingBookingsCount</div>
+                    <div class="stat-footer">
+                        <a href="#pending-bookings-section">
+                            Review Now <i class="fas fa-arrow-down"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stat-card-glass card-cyan">
+                    <i class="fas fa-building stat-icon" style="color: #06b6d4;"></i>
+                    <div class="stat-label">Total Campuses</div>
+                    <div class="stat-value">@ViewBag.TotalCampuses</div>
+                    <div class="stat-footer">
+                        <a asp-controller="Campus" asp-action="Index">
+                            View Details <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stat-card-glass card-green">
+                    <i class="fas fa-door-open stat-icon" style="color: #10b981;"></i>
+                    <div class="stat-label">Total Rooms</div>
+                    <div class="stat-value">@ViewBag.TotalRooms</div>
+                    <div class="stat-footer">
+                        <a asp-controller="Room" asp-action="Index">
+                            View Details <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="stat-card-glass card-purple">
+                    <i class="fas fa-calendar-check stat-icon" style="color: #8b5cf6;"></i>
+                    <div class="stat-label">Total Bookings</div>
+                    <div class="stat-value">@ViewBag.TotalBookings</div>
+                    <div class="stat-footer">
+                        <a asp-controller="Booking" asp-action="Index">
+                            View All <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Bookings Section -->
+        <div class="row mb-4" id="pending-bookings-section">
+            <div class="col-md-12">
+                <div class="section-glass">
+                    <div class="section-header">
+                        <h5><i class="fas fa-clipboard-check"></i> Pending Bookings - Require Your Approval</h5>
+                    </div>
+
+                    @if (pendingBookings != null && pendingBookings.Any())
+                    {
+                        @foreach (var booking in pendingBookings)
+                        {
+                            <div class="booking-card-glass">
+                                <h6><i class="fas fa-door-open"></i> @booking.RoomName</h6>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="booking-info">
+                                            <i class="fas fa-user"></i>
+                                            <strong>User:</strong> @booking.UserName
+                                        </div>
+                                        <div class="booking-info">
+                                            <i class="fas fa-envelope"></i>
+                                            <strong>Email:</strong> @booking.UserEmail
+                                        </div>
+                                        <div class="booking-info">
+                                            <i class="fas fa-building"></i>
+                                            <strong>Campus:</strong> @booking.CampusName
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="booking-info">
+                                            <i class="fas fa-calendar"></i>
+                                            <strong>Start:</strong> @booking.StartTime.ToString("MMM dd, yyyy HH:mm")
+                                        </div>
+                                        <div class="booking-info">
+                                            <i class="fas fa-calendar-check"></i>
+                                            <strong>End:</strong> @booking.EndTime.ToString("MMM dd, yyyy HH:mm")
+                                        </div>
+                                        <div class="booking-info">
+                                            <i class="fas fa-clock"></i>
+                                            <strong>Duration:</strong> @((booking.EndTime -
+                                                                                booking.StartTime).TotalHours.ToString("F1")) hours
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (!string.IsNullOrEmpty(booking.Purpose))
+                                {
+                                    <div class="purpose-text">
+                                        <strong style="color: #0284c7;">Purpose:</strong> @booking.Purpose
+                                    </div>
+                                }
+
+                                <div class="booking-actions">
+                                    <form asp-controller="Dashboard" asp-action="ApproveBooking" method="post"
+                                        class="d-inline flex-fill">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@booking.Id" />
+                                        <div class="mb-2">
+                                            <input type="text" name="adminNote" class="admin-note-input"
+                                                placeholder="Optional admin note..." />
+                                        </div>
+                                        <button type="submit" class="btn btn-approve w-100">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                    </form>
+
+                                    <form asp-controller="Dashboard" asp-action="RejectBooking" method="post"
+                                        class="d-inline flex-fill" onsubmit="return validateRejectNote(this)">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@booking.Id" />
+                                        <div class="mb-2">
+                                            <input type="text" name="adminNote" class="admin-note-input reject-note"
+                                                placeholder="Required rejection reason..." required />
+                                        </div>
+                                        <button type="submit" class="btn btn-reject w-100">
+                                            <i class="fas fa-times"></i> Reject
+                                        </button>
+                                    </form>
+
+                                    <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id"
+                                        asp-route-fromAdmin="true" class="btn btn-view">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </a>
+                                </div>
+                            </div>
+                        }
+
+                        @if (ViewBag.PendingBookingsCount > 10)
+                        {
+                            <div class="text-center mt-3">
+                                <a asp-controller="Booking" asp-action="PendingApprovals" class="btn btn-neon btn-neon-orange">
+                                    <i class="fas fa-list"></i> View All @ViewBag.PendingBookingsCount Pending Bookings
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <i class="fas fa-check-circle"></i>
+                            <p>No pending bookings at the moment</p>
+                            <small style="color: rgba(255, 255, 255, 0.5);">All booking requests have been processed</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Module Management -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="section-glass">
+                    <div class="section-header">
+                        <h5><i class="fas fa-th"></i> Module Management</h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="module-card">
+                                <i class="fas fa-building" style="color: #06b6d4;"></i>
+                                <h5>Campus Management</h5>
+                                <p>Manage campuses and locations</p>
+                                <a asp-controller="Campus" asp-action="Index" class="btn btn-neon btn-neon-cyan">
+                                    <i class="fas fa-cog"></i> Manage
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="module-card">
+                                <i class="fas fa-door-open" style="color: #10b981;"></i>
+                                <h5>Room Management</h5>
+                                <p>Manage rooms and capacity</p>
+                                <a asp-controller="Room" asp-action="Index" class="btn btn-neon btn-neon-green">
+                                    <i class="fas fa-cog"></i> Manage
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="module-card">
+                                <i class="fas fa-calendar-week" style="color: #8b5cf6;"></i>
+                                <h5>Schedule Management</h5>
+                                <p>Manage schedules and courses</p>
+                                <a asp-controller="Schedule" asp-action="Index" class="btn btn-neon btn-neon-purple">
+                                    <i class="fas fa-cog"></i> Manage
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="module-card priority">
+                                <span class="badge bg-warning position-absolute top-0 end-0 m-2 pulse-badge">
+                                    <i class="fas fa-star"></i> Priority
+                                </span>
+                                <i class="fas fa-clipboard-check" style="color: #ff8a00;"></i>
+                                <h5>All Bookings</h5>
+                                <p>View and manage all bookings</p>
+                                <a asp-controller="Booking" asp-action="Index" class="btn btn-neon btn-neon-orange">
+                                    <i class="fas fa-list"></i> View All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="section-glass">
+                    <div class="section-header">
+                        <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
+                    </div>
+
+                    <a asp-controller="Booking" asp-action="PendingApprovals" class="quick-action-item priority">
+                        <i class="fas fa-exclamation-triangle" style="color: #ff8a00;"></i>
+                        <div>
+                            <strong>Review Pending Bookings</strong>
+                            <small>@ViewBag.PendingBookingsCount booking(s) awaiting approval</small>
+                        </div>
+                    </a>
+
+                    <a asp-controller="Campus" asp-action="Create" class="quick-action-item">
+                        <i class="fas fa-plus-circle" style="color: #06b6d4;"></i>
+                        <div>
+                            <strong>Add New Campus</strong>
+                            <small>Create a new campus location</small>
+                        </div>
+                    </a>
+
+                    <a asp-controller="Room" asp-action="Create" class="quick-action-item">
+                        <i class="fas fa-door-open" style="color: #10b981;"></i>
+                        <div>
+                            <strong>Add New Room</strong>
+                            <small>Register a new room</small>
+                        </div>
+                    </a>
+
+                    <a asp-controller="Schedule" asp-action="Create" class="quick-action-item">
+                        <i class="fas fa-calendar-plus" style="color: #8b5cf6;"></i>
+                        <div>
+                            <strong>Add New Schedule</strong>
+                            <small>Create a new schedule</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="section-glass">
+                    <div class="section-header">
+                        <h5><i class="fas fa-chart-line"></i> System Overview</h5>
+                    </div>
+
+                    <div style="color: rgba(255, 255, 255, 0.9); line-height: 1.8;">
+                        <p>
+                            <i class="fas fa-building" style="color: #06b6d4; margin-right: 8px;"></i>
+                            You are managing <strong style="color: #06b6d4;">@ViewBag.TotalCampuses campus(es)</strong>
+                        </p>
+                        <p>
+                            <i class="fas fa-door-open" style="color: #10b981; margin-right: 8px;"></i>
+                            with <strong style="color: #10b981;">@ViewBag.TotalRooms room(s)</strong>
+                        </p>
+                        <p>
+                            <i class="fas fa-calendar-check" style="color: #8b5cf6; margin-right: 8px;"></i>
+                            Total of <strong style="color: #8b5cf6;">@ViewBag.TotalBookings booking(s)</strong> in the
+                            system
+                        </p>
+                        <p>
+                            <i class="fas fa-exclamation-triangle" style="color: #ff8a00; margin-right: 8px;"></i>
+                            <strong style="color: #ff8a00;">@ViewBag.PendingBookingsCount pending booking(s)</strong>
+                            require your attention
+                        </p>
+
+                        <div class="mt-4">
+                            <a asp-controller="Booking" asp-action="BookingStats"
+                                class="btn btn-neon btn-neon-orange me-2 mb-2">
+                                <i class="fas fa-chart-bar"></i> View Statistics
+                            </a>
+                            <a asp-controller="RoomReport" asp-action="Index" class="btn btn-neon btn-neon-cyan mb-2">
+                                <i class="fas fa-flag"></i> View Reports
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateRejectNote(form) {
+        const noteInput = form.querySelector('.reject-note');
+        if (!noteInput.value.trim()) {
+            alert('Please provide a reason for rejection');
+            return false;
+        }
+        return confirm('Are you sure you want to reject this booking?');
+    }
+</script>

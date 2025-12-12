@@ -1,0 +1,255 @@
+@using UniSpace.Bo.Enums
+@{
+    ViewData["Title"] = "Booking Statistics";
+    var stats = ViewBag.Stats;
+    var fromDate = ViewBag.FromDate as DateTime?;
+    var toDate = ViewBag.ToDate as DateTime?;
+}
+
+<style>
+    .stats-container {
+        min-height: 100vh;
+        padding: 40px 0;
+    }
+
+    .glass-card-stats {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(20, 20, 30, 0.6);
+        border: 1px solid rgba(255, 138, 0, 0.2);
+        border-radius: 15px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .stats-header {
+        background: rgba(255, 138, 0, 0.1);
+        border: 1px solid rgba(255, 138, 0, 0.3);
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+    }
+
+    .stats-header h5 {
+        color: #ff8a00;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .stat-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .stat-box:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(255, 138, 0, 0.2);
+    }
+
+    .stat-box h3 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #ffffff;
+    }
+
+    .stat-box p {
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .stat-box.pending {
+        border-left: 4px solid #f59e0b;
+    }
+
+    .stat-box.approved {
+        border-left: 4px solid #10b981;
+    }
+
+    .stat-box.rejected {
+        border-left: 4px solid #ef4444;
+    }
+
+    .stat-box.completed {
+        border-left: 4px solid #06b6d4;
+    }
+
+    .stat-box.cancelled {
+        border-left: 4px solid #6b7280;
+    }
+
+    .filter-form {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .form-control-glass {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        border-radius: 8px;
+        padding: 10px 15px;
+    }
+
+    .form-control-glass:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 138, 0, 0.5);
+        color: #ffffff;
+        box-shadow: 0 0 10px rgba(255, 138, 0, 0.2);
+    }
+
+    .form-label {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+
+    .btn-filter {
+        background: linear-gradient(135deg, #ff8a00 0%, #e67700 100%);
+        border: 2px solid #ff8a00;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-filter:hover {
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.5);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .btn-back {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        border-color: rgba(255, 138, 0, 0.5);
+        color: #ff8a00;
+        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
+    }
+</style>
+
+<div class="stats-container">
+    <div class="container-fluid">
+        <div class="glass-card-stats">
+            <div class="stats-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5><i class="fas fa-chart-bar"></i> Booking Statistics</h5>
+                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-back btn-sm">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- Date Filter -->
+            <form asp-controller="Dashboard" asp-action="BookingStats" method="get" class="filter-form">
+                <div class="row">
+                    <div class="col-md-5">
+                        <label class="form-label">From Date</label>
+                        <input type="date" name="fromDate" class="form-control form-control-glass"
+                            value="@(fromDate?.ToString("yyyy-MM-dd"))" />
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label">To Date</label>
+                        <input type="date" name="toDate" class="form-control form-control-glass"
+                            value="@(toDate?.ToString("yyyy-MM-dd"))" />
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-filter w-100">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            @if (stats != null)
+            {
+                <!-- Statistics Cards -->
+                <div class="row">
+                    <div class="col-md-4 col-lg-2 mb-3">
+                        <div class="stat-box">
+                            <h3>@stats.Total</h3>
+                            <p>Total Bookings</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-2 mb-3">
+                        <div class="stat-box pending">
+                            <h3 style="color: #f59e0b;">@stats.Pending</h3>
+                            <p>Pending</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-2 mb-3">
+                        <div class="stat-box approved">
+                            <h3 style="color: #10b981;">@stats.Approved</h3>
+                            <p>Approved</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-2 mb-3">
+                        <div class="stat-box rejected">
+                            <h3 style="color: #ef4444;">@stats.Rejected</h3>
+                            <p>Rejected</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-2 mb-3">
+                        <div class="stat-box completed">
+                            <h3 style="color: #06b6d4;">@stats.Completed</h3>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-2 mb-3">
+                        <div class="stat-box cancelled">
+                            <h3 style="color: #6b7280;">@stats.Cancelled</h3>
+                            <p>Cancelled</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div
+                    style="background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 20px; margin-top: 24px; color: rgba(255, 255, 255, 0.9);">
+                    <h6 style="color: #ff8a00; margin-bottom: 16px;">
+                        <i class="fas fa-info-circle"></i> Summary
+                    </h6>
+                    <p>
+                        Showing statistics from <strong style="color: #06b6d4;">@fromDate?.ToString("MMM dd, yyyy")</strong>
+                        to <strong style="color: #06b6d4;">@toDate?.ToString("MMM dd, yyyy")</strong>
+                    </p>
+                    <p class="mb-0">
+                        <strong style="color: #10b981;">@((stats.Approved * 100.0 / (stats.Total == 0 ? 1 :
+                                                    stats.Total)).ToString("F1"))%</strong> approval rate |
+                        <strong style="color: #ef4444;">@((stats.Rejected * 100.0 / (stats.Total == 0 ? 1 :
+                                                    stats.Total)).ToString("F1"))%</strong> rejection rate |
+                        <strong style="color: #06b6d4;">@((stats.Completed * 100.0 / (stats.Total == 0 ? 1 :
+                                                    stats.Total)).ToString("F1"))%</strong> completion rate
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5" style="color: rgba(255, 255, 255, 0.6);">
+                    <i class="fas fa-chart-bar" style="font-size: 4rem; opacity: 0.3; margin-bottom: 16px;"></i>
+                    <p>No statistics available for the selected period</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
