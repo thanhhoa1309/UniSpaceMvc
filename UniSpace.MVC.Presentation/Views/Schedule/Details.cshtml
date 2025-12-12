@@ -2,51 +2,371 @@
 @{
     ViewData["Title"] = "Schedule Details";
 }
-<link rel="stylesheet" href="~/css/campus-cyber.css" />
 
-<header>Schedule Details</header>
+<style>
+    /* Page Container */
+    .details-schedule-container {
+        min-height: 100vh;
+        background: #f8f9fa;
+        padding: 40px 0;
+    }
 
-<div class="page-wrapper">
-    <div class="glass-box">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="text-cyber-info mb-0">@Model.Title</h2>
-            <span class="badge bg-cyber-primary fs-6">@Model.ScheduleTypeDisplay</span>
+    /* Header Section */
+    .schedule-details-header {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 32px 40px;
+        margin-bottom: 32px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    .title-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex: 1;
+    }
+
+    .title-icon {
+        background: #e0f2fe;
+        color: #3b82f6;
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+
+    .details-title {
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 1.75rem;
+        margin: 0;
+    }
+
+    .schedule-type-badge-large {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        border: 1px solid #bfdbfe;
+    }
+
+    /* Main Content Layout */
+    .details-layout {
+        display: grid;
+        grid-template-columns: 1fr 250px;
+        gap: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Info Cards Container */
+    .info-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Info Card */
+    .info-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease;
+    }
+
+        .info-card:hover {
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+    .info-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .info-card-icon {
+        background: #e0f2fe;
+        color: #3b82f6;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+
+    .info-card-title {
+        color: #3b82f6;
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 16px;
+    }
+
+    .info-label {
+        color: #6b7280;
+        font-weight: 500;
+        font-size: 0.9375rem;
+        min-width: 80px;
+    }
+
+    .info-value {
+        color: #1f2937;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        flex: 1;
+    }
+
+    /* Action Buttons Sidebar */
+    .action-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .action-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-action-full {
+        width: 100%;
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.9375rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-edit {
+        background: #3b82f6;
+        color: #ffffff;
+    }
+
+        .btn-edit:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
+
+    .btn-delete {
+        background: #ef4444;
+        color: #ffffff;
+    }
+
+        .btn-delete:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            color: #ffffff;
+        }
+
+    .btn-back {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+    }
+
+        .btn-back:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+
+    /* Responsive */
+    @@media (max-width: 992px) {
+        .details-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .action-sidebar {
+            order: -1;
+        }
+
+        .action-card {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-action-full {
+            flex: 1;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .schedule-details-header {
+            padding: 24px;
+        }
+
+        .details-title {
+            font-size: 1.5rem;
+        }
+
+        .header-content {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .action-card {
+            flex-direction: column;
+        }
+
+        .btn-action-full {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="details-schedule-container">
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="schedule-details-header">
+            <div class="header-content">
+                <div class="title-section">
+                    <div class="title-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h1 class="details-title">@Model.Title</h1>
+                </div>
+                <span class="schedule-type-badge-large">@Model.ScheduleTypeDisplay</span>
+            </div>
         </div>
 
-        <div class="row g-4 mb-4">
-            <div class="col-md-6">
-                <div class="cyber-card p-3 h-100">
-                    <h5 class="text-muted mb-3"><i class="fas fa-map-marker-alt me-2"></i> Location</h5>
-                    <p class="mb-1"><strong>Room:</strong> @Model.RoomName</p>
-                    <p class="mb-0"><strong>Campus:</strong> @Model.CampusName</p>
+        <!-- Main Content Layout -->
+        <div class="details-layout">
+            <!-- Left Column: Information Cards -->
+            <div class="info-cards-container">
+                <!-- Location Card -->
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <div class="info-card-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="info-card-title">Location</h3>
+                    </div>
+                    <div class="info-card-content">
+                        <div class="info-row">
+                            <span class="info-label">Room:</span>
+                            <span class="info-value">@Model.RoomName</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Campus:</span>
+                            <span class="info-value">@Model.CampusName</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timing Card -->
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <div class="info-card-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="info-card-title">Timing</h3>
+                    </div>
+                    <div class="info-card-content">
+                        <div class="info-row">
+                            <span class="info-label">Day:</span>
+                            <span class="info-value">@Model.DayOfWeekDisplay</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Time:</span>
+                            <span class="info-value">@Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duration Card -->
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <div class="info-card-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <h3 class="info-card-title">Duration</h3>
+                    </div>
+                    <div class="info-card-content">
+                        <div class="info-row">
+                            <span class="info-label">From:</span>
+                            <span class="info-value">@Model.StartDate.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">To:</span>
+                            <span class="info-value">@Model.EndDate.ToString("dd/MM/yyyy")</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="cyber-card p-3 h-100">
-                    <h5 class="text-muted mb-3"><i class="fas fa-clock me-2"></i> Timing</h5>
-                    <p class="mb-1"><strong>Day:</strong> @Model.DayOfWeekDisplay</p>
-                    <p class="mb-0"><strong>Time:</strong> @Model.StartTime.ToString(@"hh\:mm") -
-                        @Model.EndTime.ToString(@"hh\:mm")</p>
+            <!-- Right Column: Action Buttons -->
+            <div class="action-sidebar">
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="action-card">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-action-full btn-edit">
+                            <i class="fas fa-edit"></i> Edit Schedule
+                        </a>
+                    </div>
+
+                    <div class="action-card">
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-action-full btn-delete">
+                            <i class="fas fa-trash"></i> Delete Schedule
+                        </a>
+                    </div>
+                }
+
+                <div class="action-card">
+                    <a asp-action="Index" class="btn-action-full btn-back">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
                 </div>
             </div>
-
-            <div class="col-md-12">
-                <div class="cyber-card p-3">
-                    <h5 class="text-muted mb-3"><i class="fas fa-calendar-alt me-2"></i> Duration</h5>
-                    <p class="mb-0">Effective from <strong>@Model.StartDate.ToString("dd/MM/yyyy")</strong> to
-                        <strong>@Model.EndDate.ToString("dd/MM/yyyy")</strong></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-actions">
-            @if (User.IsInRole("Admin"))
-            {
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary">Edit</a>
-                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-danger">Delete</a>
-            }
-            <a asp-action="Index" class="btn-soft">Back to List</a>
         </div>
     </div>
 </div>

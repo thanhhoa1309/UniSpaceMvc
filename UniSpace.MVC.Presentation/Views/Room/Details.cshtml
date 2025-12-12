@@ -1,198 +1,602 @@
 @model UniSpace.Bo.DTOs.RoomDTOs.RoomDto
-
 @{
     ViewData["Title"] = "Room Details - " + Model.Name;
 }
 
-<div class="container py-5">
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb cyber-breadcrumb">
-            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li class="breadcrumb-item"><a asp-controller="Room" asp-action="Index">Rooms</a></li>
-            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
-        </ol>
-    </nav>
+<style>
+    /* Page Container */
+    .details-room-container {
+        min-height: 100vh;
+        background: #f8f9fa;
+        padding: 40px 0;
+    }
 
-    <!-- Detail Header -->
-    <div class="row align-items-center mb-5">
-        <div class="col-md-8">
-            <div class="d-flex align-items-center gap-3">
-                <h1 class="display-4 fw-bold text-cyber-gradient mb-0">@Model.Name</h1>
-                <span class="badge bg-cyber-primary fs-5">@Model.Type</span>
-            </div>
-            <p class="lead text-muted mt-2">
-                <i class="fas fa-map-marker-alt me-2"></i> @Model.CampusName
-            </p>
-        </div>
-        <div class="col-md-4 text-md-end">
-            @if (User.IsInRole("Admin"))
-            {
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-cyber-warning me-2">
-                    <i class="fas fa-edit me-1"></i> Edit
-                </a>
-                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-cyber-danger">
-                    <i class="fas fa-trash me-1"></i> Delete
-                </a>
+    /* Breadcrumb */
+    .modern-breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 24px;
+        font-size: 0.875rem;
+    }
+
+        .modern-breadcrumb .breadcrumb-item {
+            color: #6b7280;
+        }
+
+            .modern-breadcrumb .breadcrumb-item a {
+                color: #3b82f6;
+                text-decoration: none;
+                transition: color 0.2s;
             }
-        </div>
-    </div>
 
-    <!-- Detail Content -->
-    <div class="row g-4">
-        <!-- Left Column: Info -->
-        <div class="col-lg-8">
-            <div class="card cyber-card h-100">
-                <div class="card-header bg-transparent border-bottom border-secondary">
-                    <h4 class="card-title text-cyber-info mb-0">Detailed Information</h4>
+                .modern-breadcrumb .breadcrumb-item a:hover {
+                    color: #2563eb;
+                }
+
+            .modern-breadcrumb .breadcrumb-item.active {
+                color: #1f2937;
+                font-weight: 500;
+            }
+
+            .modern-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+                content: "/";
+                color: #9ca3af;
+            }
+
+    /* Hero Header */
+    .room-hero-header {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 40px;
+        margin-bottom: 32px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    .room-title-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    .title-group h1 {
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 2.25rem;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .room-type-badge {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        border: 1px solid #bfdbfe;
+    }
+
+    .location-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #6b7280;
+        font-size: 1.125rem;
+    }
+
+        .location-info i {
+            color: #3b82f6;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 12px;
+    }
+
+    /* Main Content Grid */
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 24px;
+        margin-bottom: 32px;
+    }
+
+    /* Info Card */
+    .info-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    .info-card-header {
+        margin-bottom: 28px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid #f3f4f6;
+    }
+
+        .info-card-header h4 {
+            color: #1f2937;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin: 0;
+        }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+
+    .info-field {
+        background: #f9fafb;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #f3f4f6;
+    }
+
+    .info-field-label {
+        color: #6b7280;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .info-field-value {
+        color: #1f2937;
+        font-size: 1.5rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .info-field-value .unit {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #6b7280;
+        }
+
+    .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .status-indicator i {
+            font-size: 1.75rem;
+        }
+
+    .status-active {
+        color: #16a34a;
+    }
+
+    .status-inactive {
+        color: #dc2626;
+    }
+
+    .description-section {
+        grid-column: 1 / -1;
+        margin-top: 8px;
+    }
+
+    .description-content {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        color: #4b5563;
+        line-height: 1.7;
+        font-size: 0.9375rem;
+    }
+
+    /* Sidebar */
+    .sidebar-section {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    /* Quick Stats Card */
+    .stats-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    .stats-card-header {
+        margin-bottom: 20px;
+    }
+
+        .stats-card-header h5 {
+            color: #1f2937;
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin: 0;
+        }
+
+    .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+    .stat-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #4b5563;
+        font-size: 0.9375rem;
+    }
+
+        .stat-label i {
+            font-size: 1.125rem;
+            color: #3b82f6;
+        }
+
+    .stat-value {
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .stat-badge {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 6px 14px;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border: 1px solid #bfdbfe;
+    }
+
+    /* Booking CTA Card */
+    .booking-cta-card {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        border-radius: 16px;
+        padding: 32px;
+        text-align: center;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+        .booking-cta-card h5 {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        .booking-cta-card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9375rem;
+            margin-bottom: 24px;
+        }
+
+    .btn-book-now {
+        background: #ffffff;
+        color: #3b82f6;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        width: 100%;
+        margin-bottom: 12px;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .btn-book-now:hover {
+            background: #f9fafb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            color: #2563eb;
+        }
+
+    .btn-view-schedule {
+        background: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: 500;
+        font-size: 0.9375rem;
+        width: 100%;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 25px;
+    }
+
+        .btn-view-schedule:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #ffffff;
+        }
+
+    /* Buttons */
+    .btn-edit {
+        background: #f59e0b;
+        border: none;
+        color: #ffffff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.9375rem;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-edit:hover {
+            background: #d97706;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            transform: translateY(-1px);
+            color: #ffffff;
+        }
+
+    .btn-delete {
+        background: #ef4444;
+        border: none;
+        color: #ffffff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.9375rem;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-delete:hover {
+            background: #dc2626;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            transform: translateY(-1px);
+            color: #ffffff;
+        }
+
+    /* Badge Variants */
+    .badge-success {
+        background: #dcfce7;
+        color: #15803d;
+        padding: 6px 14px;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border: 1px solid #bbf7d0;
+    }
+
+    .badge-danger {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 6px 14px;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border: 1px solid #fecaca;
+    }
+
+    /* Responsive */
+    @@media (max-width: 1024px) {
+        .details-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .sidebar-section {
+            order: 2;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .room-hero-header {
+            padding: 24px;
+        }
+
+        .title-group h1 {
+            font-size: 1.75rem;
+        }
+
+        .room-title-section {
+            flex-direction: column;
+        }
+
+        .action-buttons {
+            width: 100%;
+            flex-direction: column;
+        }
+
+            .action-buttons a {
+                width: 100%;
+                text-align: center;
+            }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .info-card {
+            padding: 24px;
+        }
+    }
+</style>
+
+<div class="details-room-container">
+    <div class="container py-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb modern-breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Room" asp-action="Index">Rooms</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+            </ol>
+        </nav>
+
+        <!-- Hero Header -->
+        <div class="room-hero-header">
+            <div class="room-title-section">
+                <div class="title-group">
+                    <h1>
+                        @Model.Name
+                        <span class="room-type-badge">@Model.Type</span>
+                    </h1>
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>@Model.CampusName</span>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row g-4">
-                        <div class="col-sm-6">
-                            <div class="info-item">
-                                <label class="text-muted small">Capacity</label>
-                                <div class="fs-4 fw-bold">@Model.Capacity <span
-                                        class="fs-6 fw-normal text-muted">people</span></div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="info-item">
-                                <label class="text-muted small">Room Status</label>
-                                <div class="d-flex align-items-center gap-2 mt-1">
-                                    @if (Model.RoomStatus == UniSpace.Bo.Enums.RoomStatus.Active)
-                                    {
-                                        <i class="fas fa-check-circle text-success fs-4"></i>
-                                        <span class="fs-5 text-success">Active</span>
-                                    }
-                                    else
-                                    {
-                                        <i class="fas fa-times-circle text-danger fs-4"></i>
-                                        <span class="fs-5 text-danger">Maintenance/Closed</span>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="info-item">
-                                <label class="text-muted small">Booking Status</label>
-                                <div class="fs-5">@Model.CurrentStatus</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="info-item">
-                                <label class="text-muted small">Pending Reports</label>
-                                <div class="fs-5 ms-3">
-                                    @if (Model.PendingReports > 0)
-                                    {
-                                        <span class="badge bg-danger rounded-pill">@Model.PendingReports issues</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-success rounded-pill">None</span>
-                                    }
-                                </div>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="action-buttons">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-delete">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="details-grid">
+            <!-- Left Column: Detailed Information -->
+            <div>
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <h4>Detailed Information</h4>
+                    </div>
+
+                    <div class="info-grid">
+                        <!-- Capacity -->
+                        <div class="info-field">
+                            <label class="info-field-label">Capacity</label>
+                            <div class="info-field-value">
+                                @Model.Capacity <span class="unit">people</span>
                             </div>
                         </div>
 
-                        <div class="col-12">
-                            <div class="info-item mt-3">
-                                <label class="text-muted small mb-2">Description</label>
-                                <p class="p-3 bg-dark bg-opacity-50 rounded border border-secondary text-light">
-                                    @(string.IsNullOrEmpty(Model.Description) ? "No description available for this room." :
-                                        Model.Description)
-                                </p>
+                        <!-- Room Status -->
+                        <div class="info-field">
+                            <label class="info-field-label">Room Status</label>
+                            <div class="info-field-value">
+                                @if (Model.RoomStatus == UniSpace.Bo.Enums.RoomStatus.Active)
+                                {
+                                    <div class="status-indicator">
+                                        <i class="fas fa-check-circle status-active"></i>
+                                        <span class="status-active">Active</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="status-indicator">
+                                        <i class="fas fa-times-circle status-inactive"></i>
+                                        <span class="status-inactive">Maintenance</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Booking Status -->
+                        <div class="info-field">
+                            <label class="info-field-label">Booking Status</label>
+                            <div class="info-field-value">
+                                @Model.CurrentStatus
+                            </div>
+                        </div>
+
+                        <!-- Pending Reports -->
+                        <div class="info-field">
+                            <label class="info-field-label">Pending Reports</label>
+                            <div class="info-field-value">
+                                @if (Model.PendingReports > 0)
+                                {
+                                    <span class="badge-danger">@Model.PendingReports issues</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-success">None</span>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="description-section">
+                            <label class="info-field-label">Description</label>
+                            <div class="description-content">
+                                @(string.IsNullOrEmpty(Model.Description) ? "No description available for this room." : Model.Description)
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Right Column: Stats / Actions -->
-        <div class="col-lg-4">
-            <div class="card cyber-card mb-4">
-                <div class="card-header bg-transparent border-bottom border-secondary">
-                    <h5 class="card-title text-cyber-info mb-0">Quick Stats</h5>
+            <!-- Right Column: Stats & CTA -->
+            <div class="sidebar-section">
+                <!-- Quick Stats -->
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <h5>Quick Stats</h5>
+                    </div>
+                    <div>
+                        <div class="stat-item">
+                            <div class="stat-label">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Total Bookings</span>
+                            </div>
+                            <div class="stat-value">
+                                <span class="stat-badge">@Model.TotalBookings</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">
+                                <i class="fas fa-clock"></i>
+                                <span>Created Date</span>
+                            </div>
+                            <div class="stat-value">
+                                @Model.CreatedAt.ToString("MM/dd/yyyy")
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <ul class="list-group list-group-flush bg-transparent">
-                        <li
-                            class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center px-0">
-                            <span><i class="fas fa-calendar-check me-2 text-primary"></i> Total Bookings</span>
-                            <span class="badge bg-primary rounded-pill">@Model.TotalBookings</span>
-                        </li>
-                        <li
-                            class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center px-0">
-                            <span><i class="fas fa-clock me-2 text-info"></i> Created Date</span>
-                            <span class="small font-monospace">@Model.CreatedAt.ToString("dd/MM/yyyy")</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
-            <!-- Booking Action -->
-            <div class="card cyber-card border-cyber-primary">
-                <div class="card-body text-center">
-                    <h5 class="card-title mb-3">Want to book this room?</h5>
-                    <p class="small text-muted mb-4">Check availability and book for your event instantly.</p>
+                <!-- Booking CTA -->
+                <div class="booking-cta-card">
+                    <h5>Want to book this room?</h5>
+                    <p>Check availability and book for your event instantly.</p>
                     <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@Model.Id"
-                        class="btn btn-lg btn-cyber-primary w-100 neon-shadow">
-                        <i class="fas fa-calendar-plus me-2"></i> Book Now
+                       class="btn-book-now">
+                        <i class="fas fa-calendar-plus"></i> Book Now
                     </a>
                     <a asp-controller="Schedule" asp-action="Index" asp-route-roomId="@Model.Id"
-                        class="btn btn-lg btn-outline-light w-100 mt-3">
-                        <i class="fas fa-calendar-alt me-2"></i> View Room Schedule
+                       class="btn-view-schedule">
+                        <i class="fas fa-calendar-alt"></i> View Room Schedule
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    /* Inline styles for Detail Page - should move to css file in production */
-    .cyber-card {
-        background: rgba(30, 30, 40, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        border-radius: 15px;
-        transition: transform 0.3s ease;
-    }
-
-    .cyber-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(64, 224, 208, 0.3);
-    }
-
-    .text-cyber-gradient {
-        background: linear-gradient(45deg, #00f260, #0575e6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .btn-cyber-primary {
-        background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
-        border: none;
-        color: white;
-        font-weight: 600;
-        transition: all 0.3s;
-    }
-
-    .btn-cyber-primary:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
-    }
-
-    .neon-shadow {
-        box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
-    }
-
-    .info-item label {
-        display: block;
-        margin-bottom: 0.25rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-size: 0.75rem;
-    }
-</style>

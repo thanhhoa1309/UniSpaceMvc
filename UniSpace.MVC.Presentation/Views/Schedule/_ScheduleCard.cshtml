@@ -1,46 +1,199 @@
 @model UniSpace.Bo.DTOs.ScheduleDTOs.ScheduleDto
 
-<div class="card cyber-card mb-3 h-100">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-            <h5 class="card-title text-cyber-info text-truncate" title="@Model.Title">@Model.Title</h5>
-            <span class="badge bg-cyber-primary">@Model.ScheduleTypeDisplay</span>
-        </div>
+<style>
+    .schedule-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
 
-        <div class="schedule-info mb-3">
-            <div class="d-flex align-items-center mb-1 text-muted">
-                <i class="fas fa-clock me-2 text-warning"></i>
-                <span>@Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")</span>
-            </div>
-            <div class="d-flex align-items-center mb-1 text-muted">
-                <i class="fas fa-calendar-alt me-2 text-success"></i>
-                <small>@Model.DayOfWeekDisplay</small>
-            </div>
-            <div class="d-flex align-items-center mb-1 text-muted">
-                <i class="fas fa-map-marker-alt me-2 text-danger"></i>
-                <small>@Model.RoomName</small>
-            </div>
-            <div class="d-flex align-items-center text-muted">
-                <i class="fas fa-university me-2 text-secondary"></i>
-                <small>@Model.CampusName</small>
-            </div>
-        </div>
+        .schedule-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+            transform: translateY(-4px);
+        }
 
-        <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top border-secondary">
-            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-light">
-                <i class="fas fa-eye"></i>
-            </a>
-            @if (User.IsInRole("Admin"))
-            {
-                <div class="btn-group btn-group-sm">
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </div>
-            }
+    .schedule-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .schedule-card-title {
+        color: #1f2937;
+        font-weight: 600;
+        font-size: 1.125rem;
+        margin: 0;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .schedule-type-badge {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        border: 1px solid #bfdbfe;
+        white-space: nowrap;
+    }
+
+    .schedule-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 16px;
+        flex: 1;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+        .info-row i {
+            width: 18px;
+            font-size: 1rem;
+        }
+
+    .icon-time {
+        color: #f59e0b;
+    }
+
+    .icon-calendar {
+        color: #10b981;
+    }
+
+    .icon-location {
+        color: #ef4444;
+    }
+
+    .icon-campus {
+        color: #6b7280;
+    }
+
+    .schedule-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 16px;
+        border-top: 1px solid #f3f4f6;
+        gap: 8px;
+    }
+
+    .btn-view {
+        background: #3b82f6;
+        border: none;
+        color: #ffffff;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+        .btn-view:hover {
+            background: #2563eb;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
+
+    .action-group {
+        display: flex;
+        gap: 6px;
+    }
+
+    .btn-edit {
+        background: #fef3c7;
+        border: 1px solid #fbbf24;
+        color: #92400e;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+        .btn-edit:hover {
+            background: #fde68a;
+            color: #78350f;
+        }
+
+    .btn-delete {
+        background: #fee2e2;
+        border: 1px solid #f87171;
+        color: #991b1b;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+        .btn-delete:hover {
+            background: #fecaca;
+            color: #7f1d1d;
+        }
+</style>
+
+<div class="schedule-card">
+    <div class="schedule-card-header">
+        <h5 class="schedule-card-title" title="@Model.Title">@Model.Title</h5>
+        <span class="schedule-type-badge">@Model.ScheduleTypeDisplay</span>
+    </div>
+
+    <div class="schedule-info">
+        <div class="info-row">
+            <i class="fas fa-clock icon-time"></i>
+            <span>@Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")</span>
         </div>
+        <div class="info-row">
+            <i class="fas fa-calendar-alt icon-calendar"></i>
+            <span>@Model.DayOfWeekDisplay</span>
+        </div>
+        <div class="info-row">
+            <i class="fas fa-map-marker-alt icon-location"></i>
+            <span>@Model.RoomName</span>
+        </div>
+        <div class="info-row">
+            <i class="fas fa-university icon-campus"></i>
+            <span>@Model.CampusName</span>
+        </div>
+    </div>
+
+    <div class="schedule-card-footer">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn-view">
+            <i class="fas fa-eye"></i> View
+        </a>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="action-group">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-delete" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        }
     </div>
 </div>

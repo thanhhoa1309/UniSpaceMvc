@@ -5,126 +5,330 @@
     var campuses = ViewBag.Campuses as IEnumerable<CampusDto>;
     var selectedRoom = ViewBag.SelectedRoom as UniSpace.Bo.DTOs.RoomDTOs.RoomDto;
 }
-<link rel="stylesheet" href="~/css/campus-cyber.css" />
 
-<header>Create New Schedule</header>
+<style>
+    .create-schedule-container {
+        min-height: 100vh;
+        background: #ffffff;
+        padding: 40px 0;
+    }
 
-<div class="page-wrapper form-wrapper">
-    <div class="glass-box">
-        <h2>Add Schedule</h2>
-        <p class="muted">Set up a new class or event schedule</p>
+    .page-header {
+        background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #e5e7eb;
+    }
 
-        @if (selectedRoom != null)
-        {
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i> Creating schedule for room: <strong>@selectedRoom.Name</strong>
-                (@selectedRoom.CampusName)
-            </div>
+        .page-header h1 {
+            color: #1f2937;
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
         }
 
-        <!-- Conflict Alert container -->
-        <div id="conflictAlert" class="alert alert-danger" style="display:none;">
-            <i class="fas fa-exclamation-triangle me-2"></i>
-            <span id="conflictMessage"></span>
+        .page-header p {
+            color: #6b7280;
+            font-size: 1rem;
+            margin: 8px 0 0 0;
+        }
+
+    .form-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .glass-box {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 32px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        .glass-box h2 {
+            color: #1f2937;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+    .muted {
+        color: #6b7280;
+        font-size: 0.9375rem;
+        margin-bottom: 24px;
+    }
+
+    .alert-info {
+        background: #f0f9ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 16px;
+        color: #1e40af;
+        margin-bottom: 24px;
+    }
+
+    .alert-danger {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 16px;
+        color: #dc2626;
+        margin-bottom: 24px;
+    }
+
+    .cyber-form .mb-3 {
+        margin-bottom: 24px;
+    }
+
+    .form-label {
+        color: #374151;
+        font-weight: 500;
+        font-size: 0.875rem;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+        .form-label i {
+            color: #3b82f6;
+            margin-right: 6px;
+        }
+
+    .form-control {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 12px 16px;
+        width: 100%;
+        font-size: 0.9375rem;
+        color: #1f2937;
+        transition: all 0.2s ease;
+    }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+    .text-danger {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 6px;
+        display: block;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 32px;
+    }
+
+    .btn-strong {
+        background: #3b82f6;
+        border: none;
+        color: #ffffff;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+    }
+
+        .btn-strong:hover:not(:disabled) {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-strong:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+    .btn-soft {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+    }
+
+        .btn-soft:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+
+    .icon-primary {
+        color: #3b82f6;
+    }
+
+    @@media (max-width: 768px) {
+        .glass-box {
+            padding: 24px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-strong,
+        .btn-soft {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="create-schedule-container">
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1><i class="fas fa-plus-circle icon-primary"></i> Create New Schedule</h1>
+            <p>Set up a new class or event schedule</p>
         </div>
 
-        <form asp-action="Create" method="post" class="cyber-form">
-            @if (selectedRoom != null)
-            {
-                <input type="hidden" asp-for="RoomId" value="@selectedRoom.Id" />
-            }
-            else
-            {
-                <div class="mb-3">
-                    <label asp-for="RoomId" class="form-label">Select Room</label>
-                    <select asp-for="RoomId" class="form-control">
-                        <option value="">-- Select Room --</option>
-                        @if (ViewBag.Rooms != null)
-                        {
-                            foreach (var r in ViewBag.Rooms as IEnumerable<UniSpace.Bo.DTOs.RoomDTOs.RoomDto>)
-                            {
-                                <option value="@r.Id">@r.Name (@r.CampusName)</option>
-                            }
-                        }
-                    </select>
-                    <span asp-validation-for="RoomId" class="text-danger small"></span>
-                </div>
-            }
+        <div class="form-wrapper">
+            <div class="glass-box">
+                <h2>Schedule Information</h2>
+                <p class="muted">Fill in the information below to add a new schedule</p>
 
-            <div class="mb-3">
-                <label asp-for="Title" class="form-label">Title / Subject</label>
-                <input asp-for="Title" class="form-control" placeholder="e.g. Mathematics 101" />
-                <span asp-validation-for="Title" class="text-danger small"></span>
-            </div>
+                @if (selectedRoom != null)
+                {
+                    <div class="alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Creating schedule for room: <strong>@selectedRoom.Name</strong>
+                        (@selectedRoom.CampusName)
+                    </div>
+                }
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="ScheduleType" class="form-label">Type</label>
-                    <select asp-for="ScheduleType" class="form-control"
-                        asp-items="Html.GetEnumSelectList<UniSpace.Bo.Enums.ScheduleType>()">
-                    </select>
-                    <span asp-validation-for="ScheduleType" class="text-danger small"></span>
+                <div id="conflictAlert" class="alert-danger" style="display:none;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <span id="conflictMessage"></span>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="DayOfWeek" class="form-label">Day of Week</label>
-                    <select asp-for="DayOfWeek" class="form-control">
-                        <option value="1">Monday</option>
-                        <option value="2">Tuesday</option>
-                        <option value="3">Wednesday</option>
-                        <option value="4">Thursday</option>
-                        <option value="5">Friday</option>
-                        <option value="6">Saturday</option>
-                        <option value="0">Sunday</option>
-                    </select>
-                    <span asp-validation-for="DayOfWeek" class="text-danger small"></span>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="StartTime" class="form-label">Start Time</label>
-                    <input asp-for="StartTime" type="time" class="form-control" />
-                    <span asp-validation-for="StartTime" class="text-danger small"></span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="EndTime" class="form-label">End Time</label>
-                    <input asp-for="EndTime" type="time" class="form-control" />
-                    <span asp-validation-for="EndTime" class="text-danger small"></span>
-                </div>
-            </div>
+                <form asp-action="Create" method="post" class="cyber-form">
+                    @if (selectedRoom != null)
+                    {
+                        <input type="hidden" asp-for="RoomId" value="@selectedRoom.Id" />
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+                            <label asp-for="RoomId" class="form-label">
+                                <i class="fas fa-door-open"></i> Select Room <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="RoomId" class="form-control" required>
+                                <option value="">-- Select Room --</option>
+                                @if (ViewBag.Rooms != null)
+                                {
+                                    foreach (var r in ViewBag.Rooms as IEnumerable<UniSpace.Bo.DTOs.RoomDTOs.RoomDto>)
+                                    {
+                                        <option value="@r.Id">@r.Name (@r.CampusName)</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="RoomId" class="text-danger small"></span>
+                        </div>
+                    }
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="StartDate" class="form-label">Effective From</label>
-                    <input asp-for="StartDate" type="date" class="form-control"
-                        value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                    <span asp-validation-for="StartDate" class="text-danger small"></span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="EndDate" class="form-label">Effective To</label>
-                    <input asp-for="EndDate" type="date" class="form-control"
-                        value="@DateTime.Now.AddMonths(4).ToString("yyyy-MM-dd")" />
-                    <span asp-validation-for="EndDate" class="text-danger small"></span>
-                </div>
-            </div>
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">
+                            <i class="fas fa-heading"></i> Title / Subject <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Title" class="form-control" placeholder="e.g. Mathematics 101" required />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn-strong">Create</button>
-                <a asp-action="Index" class="btn-soft">Cancel</a>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ScheduleType" class="form-label">
+                                <i class="fas fa-tag"></i> Type <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="ScheduleType" class="form-control"
+                                    asp-items="Html.GetEnumSelectList<UniSpace.Bo.Enums.ScheduleType>()" required>
+                            </select>
+                            <span asp-validation-for="ScheduleType" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="DayOfWeek" class="form-label">
+                                <i class="fas fa-calendar-week"></i> Day of Week <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="DayOfWeek" class="form-control" required>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                                <option value="0">Sunday</option>
+                            </select>
+                            <span asp-validation-for="DayOfWeek" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="StartTime" class="form-label">
+                                <i class="fas fa-clock"></i> Start Time <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="StartTime" type="time" class="form-control" required />
+                            <span asp-validation-for="StartTime" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="EndTime" class="form-label">
+                                <i class="fas fa-clock"></i> End Time <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="EndTime" type="time" class="form-control" required />
+                            <span asp-validation-for="EndTime" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="StartDate" class="form-label">
+                                <i class="fas fa-calendar-alt"></i> Effective From <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="StartDate" type="date" class="form-control"
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                            <span asp-validation-for="StartDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="EndDate" class="form-label">
+                                <i class="fas fa-calendar-alt"></i> Effective To <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="EndDate" type="date" class="form-control"
+                                   value="@DateTime.Now.AddMonths(4).ToString("yyyy-MM-dd")" required />
+                            <span asp-validation-for="EndDate" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-strong">
+                            <i class="fas fa-save"></i> Create Schedule
+                        </button>
+                        <a asp-action="Index" class="btn-soft">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/css/campus-cyber.js"></script>
     <script>
         $(document).ready(function () {
-
-            // Real-time conflict checking inputs
-
-            // Real-time conflict checking inputs
             const inputs = '#RoomId, #DayOfWeek, #StartTime, #EndTime, #StartDate, #EndDate';
             $(inputs).on('change', function () {
                 checkConflict();
@@ -142,7 +346,7 @@
                     $.ajax({
                         url: '@Url.Action("CheckConflict")',
                         type: 'GET',
-                        container: null, // Avoid jQuery mobile issues
+                        container: null,
                         data: {
                             roomId: roomId,
                             dayOfWeek: dayOfWeek,

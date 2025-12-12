@@ -5,44 +5,198 @@
     var roomId = ViewBag.RoomId as Guid?;
 }
 
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="display-6 fw-bold">Daily Schedule</h2>
-            <p class="text-muted">Viewing schedule for @targetDate.ToString("dddd, dd MMMM yyyy")</p>
-        </div>
-        <div class="d-flex gap-2">
-            <a asp-action="Calendar" asp-route-date="@targetDate.AddDays(-1).ToString("yyyy-MM-dd")"
-                asp-route-roomId="@roomId" class="btn btn-outline-secondary">
-                <i class="fas fa-chevron-left"></i> Previous Day
-            </a>
-            <input type="date" class="form-control" value="@targetDate.ToString("yyyy-MM-dd")"
-                onchange="window.location.href='@Url.Action("Calendar")?roomId=@roomId&date='+this.value">
-            <a asp-action="Calendar" asp-route-date="@targetDate.AddDays(1).ToString("yyyy-MM-dd")"
-                asp-route-roomId="@roomId" class="btn btn-outline-secondary">
-                Next Day <i class="fas fa-chevron-right"></i>
-            </a>
-            <a asp-action="Index" class="btn btn-primary ms-3">List View</a>
-        </div>
-    </div>
+<style>
+    /* Page Container */
+    .calendar-page-container {
+        min-height: 100vh;
+        background: #ffffff;
+        padding: 40px 0;
+    }
 
-    @if (!Model.Any())
-    {
-        <div class="text-center py-5">
-            <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
-            <h3>No classes or events scheduled for this day</h3>
-            <p class="text-muted">Try selecting a different date or check the weekly schedule.</p>
-        </div>
+    /* Header Section */
+    .calendar-header {
+        background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 32px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
-    else
-    {
-        <div class="row g-4">
-            @foreach (var item in Model.OrderBy(s => s.StartTime))
-            {
-                <div class="col-md-6 col-lg-4">
-                    <partial name="_ScheduleCard" model="item" />
-                </div>
+
+    .calendar-title {
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .calendar-subtitle {
+        color: #6b7280;
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    /* Navigation Controls */
+    .calendar-controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-nav {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+    }
+
+        .btn-nav:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+
+    .date-picker {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 10px 16px;
+        color: #1f2937;
+        font-size: 0.9375rem;
+        transition: all 0.2s ease;
+    }
+
+        .date-picker:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+    .btn-primary-calendar {
+        background: #3b82f6;
+        border: none;
+        color: #ffffff;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+        margin-left: auto;
+    }
+
+        .btn-primary-calendar:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
+
+    /* Empty State */
+    .empty-state-calendar {
+        text-align: center;
+        padding: 80px 40px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        .empty-state-calendar i {
+            font-size: 4rem;
+            color: #3b82f6;
+            margin-bottom: 24px;
+            opacity: 0.3;
+        }
+
+        .empty-state-calendar h3 {
+            color: #1f2937;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state-calendar p {
+            color: #6b7280;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .calendar-header {
+            padding: 24px;
+        }
+
+        .calendar-title {
+            font-size: 1.5rem;
+        }
+
+        .calendar-controls {
+            flex-direction: column;
+            width: 100%;
+        }
+
+            .calendar-controls .btn-nav,
+            .calendar-controls .date-picker,
+            .calendar-controls .btn-primary-calendar {
+                width: 100%;
             }
-        </div>
     }
+</style>
+
+<div class="calendar-page-container">
+    <div class="container-fluid py-4">
+        <div class="calendar-header">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                <div>
+                    <h2 class="calendar-title">
+                        <i class="fas fa-calendar-day" style="color: #3b82f6;"></i> Daily Schedule
+                    </h2>
+                    <p class="calendar-subtitle">Viewing schedule for @targetDate.ToString("dddd, dd MMMM yyyy")</p>
+                </div>
+                <div class="calendar-controls">
+                    <a asp-action="Calendar" asp-route-date="@targetDate.AddDays(-1).ToString("yyyy-MM-dd")"
+                       asp-route-roomId="@roomId" class="btn-nav">
+                        <i class="fas fa-chevron-left"></i> Previous Day
+                    </a>
+                    <input type="date" class="date-picker" value="@targetDate.ToString("yyyy-MM-dd")"
+                           onchange="window.location.href='@Url.Action("Calendar")?roomId=@roomId&date='+this.value">
+                    <a asp-action="Calendar" asp-route-date="@targetDate.AddDays(1).ToString("yyyy-MM-dd")"
+                       asp-route-roomId="@roomId" class="btn-nav">
+                        Next Day <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a asp-action="Index" class="btn-primary-calendar">
+                        <i class="fas fa-list"></i> List View
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="empty-state-calendar">
+                <i class="fas fa-calendar-times"></i>
+                <h3>No classes or events scheduled for this day</h3>
+                <p>Try selecting a different date or check the weekly schedule.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var item in Model.OrderBy(s => s.StartTime))
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <partial name="_ScheduleCard" model="item" />
+                    </div>
+                }
+            </div>
+        }
+    </div>
 </div>

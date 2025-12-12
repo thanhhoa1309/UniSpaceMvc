@@ -2,31 +2,198 @@
 @{
     ViewData["Title"] = "Delete Campus";
 }
-<link rel="stylesheet" href="~/css/campus-cyber.css" />
 
-<header>Delete Campus</header>
+<style>
+    /* Page Container */
+    .delete-campus-container {
+        min-height: 100vh;
+        background: #ffffff;
+        padding: 40px 0;
+    }
 
-<div class="page-wrapper">
-    <div class="glass-box delete-box">
-        <h2 class="danger-text">Are you sure you want to delete?</h2>
-        <p class="muted">This action will hide the campus from the system.</p>
+    /* Header */
+    .page-header {
+        background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 1px solid #fee2e2;
+    }
 
-        <dl class="row mb-3">
-            <dt class="col-sm-3">Name</dt>
-            <dd class="col-sm-9">@Model.Name</dd>
+        .page-header h1 {
+            color: #dc2626;
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
+        }
 
-            <dt class="col-sm-3">Address</dt>
-            <dd class="col-sm-9">@Model.Address</dd>
-        </dl>
+        .page-header p {
+            color: #991b1b;
+            font-size: 1rem;
+            margin: 8px 0 0 0;
+        }
 
-        <form asp-action="Delete" method="post" class="form-actions">
-            <input type="hidden" asp-for="Id" />
-            <button type="submit" class="btn-danger strong w100">Delete</button>
-            <a asp-action="Index" class="btn-soft w100">Cancel</a>
-        </form>
+    /* Delete Wrapper */
+    .delete-wrapper {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* Delete Box */
+    .delete-box {
+        background: #ffffff;
+        border: 2px solid #fecaca;
+        border-radius: 12px;
+        padding: 32px;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
+    }
+
+    .danger-text {
+        color: #dc2626;
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+    }
+
+    .muted {
+        color: #6b7280;
+        font-size: 0.9375rem;
+        margin-bottom: 24px;
+    }
+
+    /* Details List */
+    .row {
+        margin-bottom: 24px;
+        padding: 20px;
+        background: #fef2f2;
+        border-radius: 8px;
+        border: 1px solid #fee2e2;
+    }
+
+    dt {
+        color: #991b1b;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.875rem;
+    }
+
+    dd {
+        color: #1f2937;
+        font-weight: 500;
+        margin-bottom: 12px;
+        font-size: 0.9375rem;
+    }
+
+    /* Form Actions */
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+        flex-direction: column;
+    }
+
+    .btn-danger.strong {
+        background: #ef4444;
+        border: none;
+        color: #ffffff;
+        padding: 14px 28px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+        .btn-danger.strong:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+    .btn-soft.w100 {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+        width: 100%;
+        text-align: center;
+    }
+
+        .btn-soft.w100:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+
+    /* Warning Icon */
+    .warning-icon {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+        .warning-icon i {
+            font-size: 4rem;
+            color: #ef4444;
+            opacity: 0.3;
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .delete-box {
+            padding: 24px;
+        }
+    }
+</style>
+
+<div class="delete-campus-container">
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1><i class="fas fa-exclamation-triangle"></i> Delete Campus</h1>
+            <p>This action cannot be undone</p>
+        </div>
+
+        <div class="delete-wrapper">
+            <div class="delete-box">
+                <div class="warning-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+
+                <h2 class="danger-text">Are you sure you want to delete?</h2>
+                <p class="muted">This action will remove the campus from the system. Please review the details below before confirming.</p>
+
+                <dl class="row mb-3">
+                    <dt class="col-sm-3">
+                        <i class="fas fa-university"></i> Name
+                    </dt>
+                    <dd class="col-sm-9">@Model.Name</dd>
+
+                    <dt class="col-sm-3">
+                        <i class="fas fa-map-marker-alt"></i> Address
+                    </dt>
+                    <dd class="col-sm-9">@Model.Address</dd>
+
+                    <dt class="col-sm-3">
+                        <i class="fas fa-door-open"></i> Total Rooms
+                    </dt>
+                    <dd class="col-sm-9">@Model.TotalRooms</dd>
+                </dl>
+
+                <form asp-action="Delete" method="post" class="form-actions">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn-danger strong w100">
+                        <i class="fas fa-trash"></i> Confirm Delete
+                    </button>
+                    <a asp-action="Index" class="btn-soft w100">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
-
-@section Scripts {
-    <script src="~/css/campus-cyber.js"></script>
-}

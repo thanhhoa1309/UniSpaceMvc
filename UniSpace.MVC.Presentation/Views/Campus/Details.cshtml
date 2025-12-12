@@ -3,50 +3,248 @@
     ViewData["Title"] = "Campus Details";
 }
 
-<link rel="stylesheet" href="~/css/campus-cyber.css" />
+<style>
+    /* Page Container */
+    .details-campus-container {
+        min-height: 100vh;
+        background: #ffffff;
+        padding: 40px 0;
+    }
 
-<div class="campus-hero small-hero">
-    <h1 class="hero-title">Campus Details</h1>
-    <p class="hero-sub">View detailed information about the campus</p>
-</div>
+    /* Hero Section */
+    .campus-hero {
+        background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+        border-radius: 12px;
+        padding: 40px;
+        margin-bottom: 30px;
+        border: 1px solid #e5e7eb;
+    }
 
-<div class="details-wrapper">
-    <div class="campus-details-card">
+    .hero-title {
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
 
-        <h2 class="details-title">@Model.Name</h2>
-        <p class="details-sub">@Model.Address</p>
+    .hero-sub {
+        color: #6b7280;
+        font-size: 1rem;
+        margin: 0;
+    }
 
-        <div class="details-grid">
-            <div class="details-row">
-                <label class="details-label">Name:</label>
-                <div class="details-value">@Model.Name</div>
-            </div>
+    /* Details Wrapper */
+    .details-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+    }
 
-            <div class="details-row">
-                <label class="details-label">Address:</label>
-                <div class="details-value">@Model.Address</div>
-            </div>
+    /* Details Card */
+    .campus-details-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 32px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
 
-            <div class="details-row">
-                <label class="details-label">Total Rooms:</label>
-                <div class="details-value">@Model.TotalRooms</div>
-            </div>
+    .details-title {
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 1.75rem;
+        margin-bottom: 8px;
+    }
 
-            <div class="details-row">
-                <label class="details-label">Created Date:</label>
-                <div class="details-value">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
-            </div>
+    .details-sub {
+        color: #6b7280;
+        font-size: 1.125rem;
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 2px solid #f3f4f6;
+    }
+
+    /* Details Grid */
+    .details-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 32px;
+    }
+
+    .details-row {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 20px;
+        padding: 16px;
+        background: #f9fafb;
+        border-radius: 8px;
+        border: 1px solid #f3f4f6;
+    }
+
+    .details-label {
+        color: #6b7280;
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+
+        .details-label i {
+            color: #3b82f6;
+            margin-right: 8px;
+        }
+
+    .details-value {
+        color: #1f2937;
+        font-weight: 600;
+        font-size: 0.9375rem;
+    }
+
+    /* Details Actions */
+    .details-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding-top: 24px;
+        border-top: 2px solid #f3f4f6;
+    }
+
+    .btn-primary {
+        background: #3b82f6;
+        border: none;
+        color: #ffffff;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+    }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
+
+    .btn-danger {
+        background: #ef4444;
+        border: none;
+        color: #ffffff;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+    }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            color: #ffffff;
+        }
+
+    .btn-soft {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+    }
+
+        .btn-soft:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .details-row {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .campus-details-card {
+            padding: 24px;
+        }
+
+        .details-actions {
+            flex-direction: column;
+        }
+
+        .btn-primary,
+        .btn-danger,
+        .btn-soft {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="details-campus-container">
+    <div class="container-fluid">
+        <div class="campus-hero">
+            <h1 class="hero-title">
+                <i class="fas fa-info-circle" style="color: #3b82f6;"></i> Campus Details
+            </h1>
+            <p class="hero-sub">View detailed information about the campus</p>
         </div>
 
-        <div class="details-actions">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary">Edit</a>
-            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-danger">Delete</a>
-            <a asp-action="Index" class="btn-soft">Back</a>
-        </div>
+        <div class="details-wrapper">
+            <div class="campus-details-card">
+                <h2 class="details-title">@Model.Name</h2>
+                <p class="details-sub">
+                    <i class="fas fa-map-marker-alt" style="color: #3b82f6;"></i> @Model.Address
+                </p>
 
+                <div class="details-grid">
+                    <div class="details-row">
+                        <label class="details-label">
+                            <i class="fas fa-university"></i> Name:
+                        </label>
+                        <div class="details-value">@Model.Name</div>
+                    </div>
+
+                    <div class="details-row">
+                        <label class="details-label">
+                            <i class="fas fa-map-marker-alt"></i> Address:
+                        </label>
+                        <div class="details-value">@Model.Address</div>
+                    </div>
+
+                    <div class="details-row">
+                        <label class="details-label">
+                            <i class="fas fa-door-open"></i> Total Rooms:
+                        </label>
+                        <div class="details-value">@Model.TotalRooms</div>
+                    </div>
+
+                    <div class="details-row">
+                        <label class="details-label">
+                            <i class="fas fa-calendar"></i> Created Date:
+                        </label>
+                        <div class="details-value">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                    </div>
+                </div>
+
+                <div class="details-actions">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-danger">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                    <a asp-action="Index" class="btn-soft">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-@section Scripts {
-    <script src="~/js/campus-cyber.js"></script>
-}

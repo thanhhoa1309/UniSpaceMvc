@@ -1,8 +1,3 @@
-/* ============================================================
-   CAMPUS UI — CYBER + CLEAN MERGED STYLE (FINAL BEAUTY FIX)
-   ============================================================ */
-
-/* Base font rules -------------------------------------------------- */
 html {
     font-size: 14px;
 }
@@ -24,14 +19,12 @@ body {
     line-height: 1.5;
 }
 
-/* Remove UL bullets (Fix dot issue) -------------------------------- */
 ul, li {
     list-style: none !important;
     margin: 0;
     padding: 0;
 }
 
-/* Focus styles ----------------------------------------------------- */
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
@@ -40,24 +33,21 @@ ul, li {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-/* CAMPUS HERO — phiên bản nhỏ gọn */
 .campus-hero {
     background: linear-gradient(135deg, #2563eb, #38bdf8);
     color: #fff;
-    border-radius: 14px;     /* giảm bo góc */
-    padding: 16px 20px;      /* giảm padding = nhỏ xuống */
+    border-radius: 14px;         
+    padding: 16px 20px;            
     box-shadow: 0 10px 26px rgba(37, 99, 235, 0.20);
     margin-bottom: 18px;
 }
 
-/* Hero title smaller */
 .campus-hero h1 {
-    font-size: 1.7rem;       /* nhỏ hơn */
+    font-size: 1.7rem;          
     font-weight: 800;
     margin-bottom: 6px;
 }
 
-/* Sub text giảm khoảng cách */
 .sub-text {
     margin-top: 2px;
     margin-bottom: 0;
@@ -65,16 +55,14 @@ ul, li {
     font-size: 0.95rem;
 }
 
-/* Giảm spacing giữa hero-left và hero-right */
 .hero-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px; /* nhỏ hơn */
+    gap: 12px;    
 }
 
 
-/* Tags ------------------------------------------------------------- */
 .tag-strip {
     display: flex;
     flex-wrap: wrap;
@@ -101,7 +89,6 @@ ul, li {
     border: none;
 }
 
-/* SEARCH BAR ------------------------------------------------------- */
 .search-bar-hero {
     background: #fff;
     border-radius: 14px;
@@ -142,7 +129,6 @@ ul, li {
     transform: translateY(-2px);
 }
 
-/* CAMPUS FEED LIST MODE (vertical centered) ------------------------- */
 .campus-feed {
     display: flex;
     flex-direction: column;
@@ -152,7 +138,6 @@ ul, li {
     margin-top: 25px;
 }
 
-/* CARD ITEM -------------------------------------------------------- */
 .campus-item,
 .campus-card {
     width: 100%;
@@ -175,7 +160,6 @@ ul, li {
     margin: 6px 0;
 }
 
-/* Buttons ---------------------------------------------------------- */
 .neon-btn {
     background: linear-gradient(90deg, #2563eb, #8b5cf6);
     color: white !important;
@@ -190,7 +174,6 @@ ul, li {
     box-shadow: 0 0 18px rgba(59, 130, 246, 0.45);
 }
 
-/* Pagination (NO DOTS — Modern) ------------------------------------ */
 .pagination-modern {
     display: flex;
     justify-content: center;
@@ -233,7 +216,6 @@ ul, li {
     pointer-events: none;
 }
 
-/* EXTRA SPACING BETWEEN TEXT LINES INSIDE CAMPUS ITEMS */
 .campus-item p,
 .campus-item .meta,
 .campus-card p,
@@ -243,18 +225,16 @@ ul, li {
     line-height: 1.55;
 }
 
-/* More spacing between blocks inside card */
 .campus-item > *:not(:last-child),
 .campus-card > *:not(:last-child) {
     margin-bottom: 10px;
 }
 
-/* HERO RIGHT — kiểu A: dạng CỘT, spacing thoáng */
 .hero-right {
     display: flex;
-    flex-direction: column;  /* xếp xuống dưới */
-    align-items: flex-end;   /* canh phải cho đẹp */
-    gap: 12px;               /* GIÃN CÁCH GIỮA CÁC DÒNG */
+    flex-direction: column;      
+    align-items: flex-end;        
+    gap: 12px;                     
     margin-left: 20px;
 }
 
@@ -264,27 +244,20 @@ ul, li {
     font-weight: 600;
 }
 
-.hero-right .neon-btn {
-    margin-top: 6px; /* tạo breathing space thêm */
-}
-
-/* CAMPUS FEED — Tên campus to & đậm hơn */
 .campus-feed .campus-item h5 {
-    font-size: 1.5rem;     /* to hơn (20px) */
-    font-weight: 800;       /* đậm nhất */
-    color: #0f172a;         /* đen đậm */
-    margin-bottom: 6px;     /* giãn nhẹ */
+    font-size: 1.5rem;         
+    font-weight: 800;          
+    color: #0f172a;            
+    margin-bottom: 6px;        
 }
 
-/* Meta (địa chỉ, ngày tạo...) nhỏ & nhẹ hơn */
 .campus-feed .campus-item .meta {
-    font-size: 0.95rem;     /* nhỏ hơn 1 chút */
-    color: #6b7280;         /* xám dễ nhìn */
+    font-size: 0.95rem;          
+    color: #6b7280;             
     font-weight: 500;
     margin-bottom: 4px;
 }
 
-/* Small hero like Index */
 .small-hero {
     padding: 16px 20px;
     border-radius: 14px;
@@ -299,14 +272,12 @@ ul, li {
     opacity: .9;
 }
 
-/* Wrapper center */
 .details-wrapper {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-/* Main card */
 .campus-details-card {
     width: 100%;
     max-width: 700px;
@@ -317,7 +288,6 @@ ul, li {
     box-shadow: 0 12px 32px rgba(0,0,0,0.08);
 }
 
-/* Title + subtitle */
 .details-title {
     font-size: 1.45rem;
     font-weight: 800;
@@ -331,7 +301,6 @@ ul, li {
     font-size: 0.95rem;
 }
 
-/* Info grid */
 .details-grid {
     display: flex;
     flex-direction: column;
@@ -357,7 +326,6 @@ ul, li {
     color: #0f172a;
 }
 
-/* Action buttons */
 .details-actions {
     display: flex;
     gap: 12px;

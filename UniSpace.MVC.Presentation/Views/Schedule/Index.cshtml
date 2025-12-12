@@ -3,128 +3,370 @@
     ViewData["Title"] = "Schedules";
 }
 
-<div class="schedule-hero">
-    <div class="hero-flex">
-        <div class="hero-left">
-            <div class="badges mb-1">
-                <span class="badge">Schedule</span>
-                <span class="small" style="opacity:.95">Manage academic schedules</span>
-            </div>
-            <h1>Schedule List</h1>
-            <p class="sub-text">View and manage all class and event schedules.</p>
-        </div>
-        <div class="hero-right">
-            <div class="badge-soft shimmer">Total: @Model.TotalCount</div>
-            <div class="badge-soft">Page: @ViewBag.CurrentPage / @ViewBag.TotalPages</div>
-            <div class="d-flex gap-2">
-                <a asp-action="Calendar" class="btn neon-btn-secondary">
-                    <i class="fas fa-calendar-alt me-2"></i> Calendar View
-                </a>
-                @if (User.IsInRole("Admin"))
-                {
-                    <a class="btn neon-btn" asp-action="Create">+ Add Schedule</a>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- SEARCH & FILTER -->
-<div class="search-bar-hero search-floating">
-    <form asp-action="Index" method="get" class="search-flex">
-        <i class="fa fa-search"></i>
-        <input type="text" name="search" value="@ViewBag.Search" placeholder="Search by title..." />
-
-        <select name="scheduleType">
-            <option value="">All Types</option>
-            @foreach (UniSpace.Bo.Enums.ScheduleType t in Enum.GetValues(typeof(UniSpace.Bo.Enums.ScheduleType)))
-            {
-                var isSelected = ViewBag.ScheduleType != null && ViewBag.ScheduleType == t;
-                @if (isSelected)
-                {
-                    <option value="@t" selected>@t</option>
-                }
-                else
-                {
-                    <option value="@t">@t</option>
-                }
-            }
-        </select>
-
-        <select name="dayOfWeek">
-            <option value="">All Days</option>
-            <option value="1" selected="@(ViewBag.DayOfWeek == 1)">Monday</option>
-            <option value="2" selected="@(ViewBag.DayOfWeek == 2)">Tuesday</option>
-            <option value="3" selected="@(ViewBag.DayOfWeek == 3)">Wednesday</option>
-            <option value="4" selected="@(ViewBag.DayOfWeek == 4)">Thursday</option>
-            <option value="5" selected="@(ViewBag.DayOfWeek == 5)">Friday</option>
-            <option value="6" selected="@(ViewBag.DayOfWeek == 6)">Saturday</option>
-            <option value="0" selected="@(ViewBag.DayOfWeek == 0)">Sunday</option>
-        </select>
-
-        <button type="submit" class="btn-search">Search</button>
-    </form>
-</div>
-
-
-<div class="container mt-4">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var item in Model)
-        {
-            <div class="col">
-                <partial name="_ScheduleCard" model="item" />
-            </div>
-        }
-    </div>
-</div>
-
-<!-- PAGINATION -->
-<nav aria-label="Schedule pagination" class="pagination-wrapper mt-4">
-    <ul class="pagination-modern">
-        <li class="pg-item @(ViewBag.CurrentPage <= 1 ? "disabled" : "")">
-            <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-search="@ViewBag.Search">
-                <i class="fa fa-chevron-left"></i> Previous
-            </a>
-        </li>
-
-        @for (int i = 1; i <= (int)(ViewBag.TotalPages ?? 1); i++)
-        {
-            <li class="pg-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                <a asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search">@i</a>
-            </li>
-        }
-
-        <li class="pg-item @(ViewBag.CurrentPage >= (int)(ViewBag.TotalPages ?? 1) ? "disabled" : "")">
-            <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-search="@ViewBag.Search">
-                Next <i class="fa fa-chevron-right"></i>
-            </a>
-        </li>
-    </ul>
-</nav>
-
 <style>
-    .schedule-hero {
-        background: radial-gradient(circle at top right, #3a1c71, #d76d77, #ffaf7b);
-        /* Example gradient */
-        position: relative;
-        padding: 4rem 2rem 5rem;
-        border-radius: 0 0 40px 40px;
-        color: #fff;
-        margin-bottom: 2rem;
-        overflow: hidden;
+    /* Page Container */
+    .schedule-page-container {
+        min-height: 100vh;
+        background: #ffffff;
+        padding: 40px 0;
     }
+
+    /* Hero Section */
+    .schedule-hero {
+        background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+        border-radius: 12px;
+        padding: 40px;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+
+    .hero-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-left h1 {
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+    }
+
+    .badges {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .badge {
+        background: #3b82f6;
+        color: #ffffff;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .sub-text {
+        color: #6b7280;
+        font-size: 1.125rem;
+        margin: 0;
+    }
+
+    .hero-right {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .badge-soft {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        color: #4b5563;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .shimmer {
+        animation: shimmer 2s infinite;
+    }
+
+    @@keyframes shimmer {
+        0%, 100% {
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        50% {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+        }
+    }
+
+    .neon-button {
+        background: #3b82f6;
+        color: #ffffff;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+    }
+
+        .neon-button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            color: #ffffff;
+        }
 
     .neon-btn-secondary {
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(5px);
-        transition: all 0.3s ease;
+        background: #ffffff;
+        color: #3b82f6;
+        border: 1px solid #3b82f6;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
     }
 
-    .neon-btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        .neon-btn-secondary:hover {
+            background: #f0f9ff;
+            color: #2563eb;
+            border-color: #2563eb;
+        }
+
+    /* Search Bar */
+    .search-bar-hero {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 24px;
+    }
+
+    .search-flex {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+        .search-flex i {
+            color: #3b82f6;
+            font-size: 1.25rem;
+        }
+
+        .search-flex input,
+        .search-flex select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #1f2937;
+            font-size: 0.9375rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-flex input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-flex select {
+            min-width: 150px;
+        }
+
+            .search-flex input:focus,
+            .search-flex select:focus {
+                outline: none;
+                border-color: #3b82f6;
+                background: #ffffff;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            }
+
+        .search-flex input::placeholder {
+            color: #9ca3af;
+        }
+
+    .btn-search {
+        background: #3b82f6;
+        color: #ffffff;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+    }
+
+        .btn-search:hover {
+            background: #2563eb;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+    /* Pagination */
+    .pagination-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .pagination-modern {
+        display: flex;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .pg-item a {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        color: #4b5563;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-weight: 500;
+        font-size: 0.9375rem;
+    }
+
+        .pg-item a:hover {
+            background: #f9fafb;
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+    .pg-item.active a {
+        background: #3b82f6;
+        color: #ffffff;
+        border-color: #3b82f6;
+    }
+
+    .pg-item.disabled a {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .hero-flex {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .hero-left h1 {
+            font-size: 2rem;
+        }
+
+        .search-flex {
+            flex-direction: column;
+        }
+
+            .search-flex input,
+            .search-flex select,
+            .btn-search {
+                width: 100%;
+            }
     }
 </style>
+
+<div class="schedule-page-container">
+    <div class="container-fluid">
+        <div class="schedule-hero">
+            <div class="hero-flex">
+                <div class="hero-left">
+                    <div class="badges mb-1">
+                        <span class="badge">Schedule</span>
+                        <span class="small" style="opacity:.95; color: #6b7280;">Manage academic schedules</span>
+                    </div>
+                    <h1>Schedule List</h1>
+                    <p class="sub-text">View and manage all class and event schedules.</p>
+                </div>
+                <div class="hero-right">
+                    <div class="badge-soft shimmer">Total: @Model.TotalCount</div>
+                    <div class="badge-soft">Page: @ViewBag.CurrentPage / @ViewBag.TotalPages</div>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Calendar" class="btn neon-btn-secondary">
+                            <i class="fas fa-calendar-alt me-2"></i> Calendar View
+                        </a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="btn neon-button" asp-action="Create">
+                                <i class="fas fa-plus"></i> Add Schedule
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEARCH & FILTER -->
+        <div class="search-bar-hero">
+            <form asp-action="Index" method="get" class="search-flex">
+                <i class="fa fa-search"></i>
+                <input type="text" name="search" value="@ViewBag.Search" placeholder="Search by title..." />
+
+                <select name="scheduleType">
+                    <option value="">All Types</option>
+                    @foreach (UniSpace.Bo.Enums.ScheduleType t in Enum.GetValues(typeof(UniSpace.Bo.Enums.ScheduleType)))
+                    {
+                        var isSelected = ViewBag.ScheduleType != null && ViewBag.ScheduleType == t;
+                        @if (isSelected)
+                        {
+                            <option value="@t" selected>@t</option>
+                        }
+                        else
+                        {
+                            <option value="@t">@t</option>
+                        }
+                    }
+                </select>
+
+                <select name="dayOfWeek">
+                    <option value="">All Days</option>
+                    <option value="1" selected="@(ViewBag.DayOfWeek == 1)">Monday</option>
+                    <option value="2" selected="@(ViewBag.DayOfWeek == 2)">Tuesday</option>
+                    <option value="3" selected="@(ViewBag.DayOfWeek == 3)">Wednesday</option>
+                    <option value="4" selected="@(ViewBag.DayOfWeek == 4)">Thursday</option>
+                    <option value="5" selected="@(ViewBag.DayOfWeek == 5)">Friday</option>
+                    <option value="6" selected="@(ViewBag.DayOfWeek == 6)">Saturday</option>
+                    <option value="0" selected="@(ViewBag.DayOfWeek == 0)">Sunday</option>
+                </select>
+
+                <button type="submit" class="btn-search">Search</button>
+            </form>
+        </div>
+
+        <div class="container mt-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @foreach (var item in Model)
+                {
+                    <div class="col">
+                        <partial name="_ScheduleCard" model="item" />
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- PAGINATION -->
+        <nav aria-label="Schedule pagination" class="pagination-wrapper mt-4">
+            <ul class="pagination-modern">
+                <li class="pg-item @(ViewBag.CurrentPage <= 1 ? "disabled" : "")">
+                    <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-search="@ViewBag.Search">
+                        <i class="fa fa-chevron-left"></i> Previous
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= (int)(ViewBag.TotalPages ?? 1); i++)
+                {
+                    <li class="pg-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search">@i</a>
+                    </li>
+                }
+
+                <li class="pg-item @(ViewBag.CurrentPage >= (int)(ViewBag.TotalPages ?? 1) ? "disabled" : "")">
+                    <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-search="@ViewBag.Search">
+                        Next <i class="fa fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

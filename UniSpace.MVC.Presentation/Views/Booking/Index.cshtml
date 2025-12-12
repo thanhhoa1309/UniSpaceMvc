@@ -5,331 +5,354 @@
 }
 
 <style>
+    /* Page Container */
     .bookings-container {
         min-height: 100vh;
+        background: #ffffff;
         padding: 40px 0;
     }
 
-    .glass-card-bookings {
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        background: rgba(20, 20, 30, 0.6);
-        border: 1px solid rgba(255, 138, 0, 0.2);
-        border-radius: 15px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    /* Main Card */
+    .bookings-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         overflow: hidden;
-        margin-bottom: 24px;
+        margin-bottom: 30px;
     }
 
-    .card-header-glass {
-        background: rgba(255, 138, 0, 0.15);
-        border-bottom: 2px solid rgba(255, 138, 0, 0.3);
-        padding: 20px 24px;
+    /* Card Header */
+    .bookings-card-header {
+        background: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 24px 28px;
     }
 
-    .card-header-glass h5 {
-        color: #ff8a00;
-        font-weight: bold;
-        margin: 0;
-    }
+        .bookings-card-header h4 {
+            color: #1f2937;
+            font-weight: 600;
+            margin: 0;
+            font-size: 1.5rem;
+        }
 
-    .card-body-glass {
-        padding: 24px;
+    /* Card Body */
+    .bookings-card-body {
+        padding: 28px;
     }
 
     /* Filter Section */
     .filter-section {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
         padding: 20px;
         margin-bottom: 24px;
     }
 
-    .filter-section h6 {
-        color: #ff8a00;
-        font-weight: 600;
-        margin-bottom: 16px;
-    }
+        .filter-section h6 {
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
 
-    .form-control-glass,
-    .form-select-glass {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #ffffff;
-        border-radius: 8px;
+    .form-control-modern,
+    .form-select-modern {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #1f2937;
+        border-radius: 6px;
         padding: 10px 15px;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
     }
 
-    .form-control-glass:focus,
-    .form-select-glass:focus {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 138, 0, 0.5);
-        color: #ffffff;
-        box-shadow: 0 0 10px rgba(255, 138, 0, 0.2);
-    }
+        .form-control-modern:focus,
+        .form-select-modern:focus {
+            background: #ffffff;
+            border-color: #3b82f6;
+            color: #1f2937;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            outline: none;
+        }
 
-    .form-control-glass::placeholder {
-        color: rgba(255, 255, 255, 0.5);
-    }
+        .form-control-modern::placeholder {
+            color: #9ca3af;
+        }
 
-    .form-select-glass option {
-        background: #1a1a2e;
-        color: #ffffff;
-    }
-
-    .form-label {
-        color: rgba(255, 255, 255, 0.9);
+    .form-label-modern {
+        color: #374151;
         font-weight: 500;
         margin-bottom: 8px;
-        font-size: 0.9rem;
+        font-size: 0.875rem;
     }
 
     /* Table Styles */
-    .table-glass {
-        color: #e0e0e0;
+    .table-modern {
+        color: #4b5563;
         margin-bottom: 0;
     }
 
-    .table-glass thead {
-        background: rgba(255, 138, 0, 0.1);
-        border-bottom: 2px solid rgba(255, 138, 0, 0.3);
-    }
+        .table-modern thead {
+            background: #f9fafb;
+            border-bottom: 2px solid #e5e7eb;
+        }
 
-    .table-glass thead th {
-        color: #ff8a00;
-        font-weight: 600;
-        border: none;
-        padding: 16px 12px;
-        font-size: 0.9rem;
-    }
+            .table-modern thead th {
+                color: #3b82f6;
+                font-weight: 600;
+                border: none;
+                padding: 16px 12px;
+                font-size: 0.875rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
 
-    .table-glass tbody tr {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.3s ease;
-    }
+        .table-modern tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+            transition: all 0.2s ease;
+        }
 
-    .table-glass tbody tr:hover {
-        background: rgba(255, 138, 0, 0.1);
-        transform: scale(1.01);
-    }
+            .table-modern tbody tr:hover {
+                background: #f9fafb;
+            }
 
-    .table-glass tbody td {
-        padding: 16px 12px;
-        vertical-align: middle;
-        border: none;
-        font-size: 0.9rem;
-    }
+        .table-modern tbody td {
+            padding: 16px 12px;
+            vertical-align: middle;
+            border: none;
+            font-size: 0.9375rem;
+        }
+
+        .table-modern strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .table-modern .text-muted {
+            color: #6b7280 !important;
+            font-size: 0.875rem;
+        }
 
     /* Status Badges */
-    .badge-status {
+    .badge-status-modern {
         padding: 6px 12px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.85rem;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 0.8125rem;
         border: 1px solid;
     }
 
-    .badge-pending {
-        background: rgba(245, 158, 11, 0.2);
-        border-color: rgba(245, 158, 11, 0.5);
-        color: #fbbf24;
+    .badge-pending-modern {
+        background: #fef3c7;
+        border-color: #fbbf24;
+        color: #92400e;
     }
 
-    .badge-approved {
-        background: rgba(16, 185, 129, 0.2);
-        border-color: rgba(16, 185, 129, 0.5);
-        color: #10b981;
+    .badge-approved-modern {
+        background: #dcfce7;
+        border-color: #22c55e;
+        color: #15803d;
     }
 
-    .badge-rejected {
-        background: rgba(239, 68, 68, 0.2);
-        border-color: rgba(239, 68, 68, 0.5);
-        color: #f87171;
+    .badge-rejected-modern {
+        background: #fee2e2;
+        border-color: #f87171;
+        color: #991b1b;
     }
 
-    .badge-completed {
-        background: rgba(6, 182, 212, 0.2);
-        border-color: rgba(6, 182, 212, 0.5);
-        color: #06b6d4;
+    .badge-completed-modern {
+        background: #dbeafe;
+        border-color: #60a5fa;
+        color: #1e40af;
     }
 
-    .badge-cancelled {
-        background: rgba(156, 163, 175, 0.2);
-        border-color: rgba(156, 163, 175, 0.5);
-        color: #9ca3af;
+    .badge-cancelled-modern {
+        background: #f3f4f6;
+        border-color: #9ca3af;
+        color: #4b5563;
     }
 
     /* Action Buttons */
-    .btn-filter {
-        background: linear-gradient(135deg, #ff8a00 0%, #e67700 100%);
-        border: 2px solid #ff8a00;
-        color: #fff;
-        font-weight: 600;
+    .btn-filter-modern {
+        background: #3b82f6;
+        border: none;
+        color: #ffffff;
+        font-weight: 500;
         padding: 10px 24px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
     }
 
-    .btn-filter:hover {
-        box-shadow: 0 0 20px rgba(255, 138, 0, 0.5);
-        transform: translateY(-2px);
-        color: #fff;
-    }
+        .btn-filter-modern:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
 
-    .btn-clear {
-        background: rgba(255, 255, 255, 0.05);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
-        font-weight: 600;
+    .btn-clear-modern {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        font-weight: 500;
         padding: 10px 24px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
     }
 
-    .btn-clear:hover {
-        border-color: rgba(255, 138, 0, 0.5);
-        color: #ff8a00;
-        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
-    }
+        .btn-clear-modern:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
 
-    .btn-view {
-        background: rgba(6, 182, 212, 0.2);
-        border: 2px solid rgba(6, 182, 212, 0.4);
-        color: #06b6d4;
-        font-weight: 600;
+    .btn-view-modern {
+        background: #3b82f6;
+        border: none;
+        color: #ffffff;
+        font-weight: 500;
         padding: 6px 16px;
         border-radius: 6px;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
     }
 
-    .btn-view:hover {
-        background: rgba(6, 182, 212, 0.3);
-        border-color: #06b6d4;
-        color: #06b6d4;
-        box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-    }
+        .btn-view-modern:hover {
+            background: #2563eb;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
 
-    .btn-back {
-        background: rgba(255, 255, 255, 0.05);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
-        font-weight: 600;
+    .btn-back-modern {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        font-weight: 500;
         padding: 8px 20px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        border-radius: 6px;
+        transition: all 0.2s ease;
         text-decoration: none;
+        font-size: 0.9375rem;
     }
 
-    .btn-back:hover {
-        border-color: rgba(255, 138, 0, 0.5);
-        color: #ff8a00;
-        box-shadow: 0 0 20px rgba(255, 138, 0, 0.2);
-    }
+        .btn-back-modern:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
 
     /* Pagination */
-    .pagination-glass {
+    .pagination-modern {
         margin-top: 24px;
         display: flex;
         justify-content: center;
         gap: 8px;
     }
 
-    .pagination-glass .page-link {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #ffffff;
-        padding: 8px 16px;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-    }
+        .pagination-modern .page-link {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            color: #4b5563;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 0.9375rem;
+        }
 
-    .pagination-glass .page-link:hover {
-        background: rgba(255, 138, 0, 0.2);
-        border-color: rgba(255, 138, 0, 0.5);
-        color: #ff8a00;
-    }
+            .pagination-modern .page-link:hover {
+                background: #f9fafb;
+                border-color: #3b82f6;
+                color: #3b82f6;
+            }
 
-    .pagination-glass .page-item.active .page-link {
-        background: rgba(255, 138, 0, 0.3);
-        border-color: rgba(255, 138, 0, 0.6);
-        color: #ff8a00;
-    }
+        .pagination-modern .page-item.active .page-link {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
 
-    .pagination-glass .page-item.disabled .page-link {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
+        .pagination-modern .page-item.disabled .page-link {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f9fafb;
+        }
 
     /* Empty State */
-    .empty-state {
+    .empty-state-modern {
         text-align: center;
         padding: 60px 20px;
-        color: rgba(255, 255, 255, 0.6);
+        color: #6b7280;
     }
 
-    .empty-state i {
-        font-size: 5rem;
-        margin-bottom: 20px;
-        opacity: 0.3;
-    }
+        .empty-state-modern i {
+            font-size: 4rem;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
 
-    .empty-state h5 {
-        color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 12px;
-    }
+        .empty-state-modern h5 {
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
 
     /* Alert */
-    .alert-glass {
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 10px;
+    .alert-modern-error {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
         padding: 16px 20px;
         margin-bottom: 20px;
-        border: 1px solid;
+        color: #dc2626;
     }
 
-    .alert-glass-error {
-        background: rgba(239, 68, 68, 0.15);
-        border-color: rgba(239, 68, 68, 0.4);
-        color: #ef4444;
+    /* Icon Styling */
+    .icon-primary {
+        color: #3b82f6;
     }
 
     /* Responsive */
     @@media (max-width: 768px) {
-        .table-glass {
-            font-size: 0.85rem;
+        .table-modern {
+            font-size: 0.875rem;
         }
 
-        .table-glass thead th,
-        .table-glass tbody td {
-            padding: 12px 8px;
+            .table-modern thead th,
+            .table-modern tbody td {
+                padding: 12px 8px;
+            }
+
+        .bookings-card-body {
+            padding: 20px;
         }
     }
 </style>
 
 <div class="bookings-container">
     <div class="container-fluid">
-        <div class="glass-card-bookings">
-            <div class="card-header-glass">
+        <div class="bookings-card">
+            <div class="bookings-card-header">
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
-                    <h5><i class="fas fa-calendar-check"></i> All Bookings Management</h5>
+                    <h4><i class="fas fa-calendar-check icon-primary"></i> All Bookings Management</h4>
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-back btn-sm">
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-back-modern btn-sm">
                             <i class="fas fa-arrow-left"></i> Back to Dashboard
                         </a>
                     }
                 </div>
             </div>
 
-            <div class="card-body-glass">
+            <div class="bookings-card-body">
                 @if (TempData["ErrorMessage"] != null)
                 {
-                    <div class="alert-glass alert-glass-error alert-dismissible fade show" role="alert">
+                    <div class="alert-modern-error alert-dismissible fade show" role="alert">
                         <i class="fas fa-exclamation-circle"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 }
 
@@ -339,41 +362,36 @@
                     <form asp-controller="Booking" asp-action="Index" method="get">
                         <div class="row">
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Search</label>
-                                <input type="text" name="search" class="form-control form-control-glass"
-                                    placeholder="Room, user, email..." value="@ViewBag.Search" />
+                                <label class="form-label-modern">Search</label>
+                                <input type="text" name="search" class="form-control form-control-modern"
+                                       placeholder="Room, user, email..." value="@ViewBag.Search" />
                             </div>
                             <div class="col-md-2 mb-3">
-                                <label class="form-label">Status</label>
-                                <select name="status" class="form-select form-select-glass">
+                                <label class="form-label-modern">Status</label>
+                                <select name="status" class="form-select form-select-modern">
                                     <option value="">All Status</option>
-                                    <option value="0" selected="@(ViewBag.Status == BookingStatus.Pending)">Pending
-                                    </option>
-                                    <option value="1" selected="@(ViewBag.Status == BookingStatus.Approved)">Approved
-                                    </option>
-                                    <option value="2" selected="@(ViewBag.Status == BookingStatus.Rejected)">Rejected
-                                    </option>
-                                    <option value="3" selected="@(ViewBag.Status == BookingStatus.Completed)">Completed
-                                    </option>
-                                    <option value="4" selected="@(ViewBag.Status == BookingStatus.Cancelled)">Cancelled
-                                    </option>
+                                    <option value="0" selected="@(ViewBag.Status == BookingStatus.Pending)">Pending</option>
+                                    <option value="1" selected="@(ViewBag.Status == BookingStatus.Approved)">Approved</option>
+                                    <option value="2" selected="@(ViewBag.Status == BookingStatus.Rejected)">Rejected</option>
+                                    <option value="3" selected="@(ViewBag.Status == BookingStatus.Completed)">Completed</option>
+                                    <option value="4" selected="@(ViewBag.Status == BookingStatus.Cancelled)">Cancelled</option>
                                 </select>
                             </div>
                             <div class="col-md-2 mb-3">
-                                <label class="form-label">From Date</label>
-                                <input type="date" name="fromDate" class="form-control form-control-glass"
-                                    value="@(ViewBag.FromDate?.ToString("yyyy-MM-dd"))" />
+                                <label class="form-label-modern">From Date</label>
+                                <input type="date" name="fromDate" class="form-control form-control-modern"
+                                       value="@(ViewBag.FromDate?.ToString("yyyy-MM-dd"))" />
                             </div>
                             <div class="col-md-2 mb-3">
-                                <label class="form-label">To Date</label>
-                                <input type="date" name="toDate" class="form-control form-control-glass"
-                                    value="@(ViewBag.ToDate?.ToString("yyyy-MM-dd"))" />
+                                <label class="form-label-modern">To Date</label>
+                                <input type="date" name="toDate" class="form-control form-control-modern"
+                                       value="@(ViewBag.ToDate?.ToString("yyyy-MM-dd"))" />
                             </div>
                             <div class="col-md-3 mb-3 d-flex align-items-end gap-2">
-                                <button type="submit" class="btn btn-filter flex-fill">
+                                <button type="submit" class="btn btn-filter-modern flex-fill">
                                     <i class="fas fa-search"></i> Filter
                                 </button>
-                                <a asp-controller="Booking" asp-action="Index" class="btn btn-clear flex-fill">
+                                <a asp-controller="Booking" asp-action="Index" class="btn btn-clear-modern flex-fill">
                                     <i class="fas fa-times"></i> Clear
                                 </a>
                             </div>
@@ -385,7 +403,7 @@
                 {
                     <!-- Table -->
                     <div class="table-responsive">
-                        <table class="table table-glass">
+                        <table class="table table-modern">
                             <thead>
                                 <tr>
                                     <th>Room</th>
@@ -404,50 +422,49 @@
                                     <tr>
                                         <td>
                                             <strong>@booking.RoomName</strong><br>
-                                            <small style="color: rgba(255, 255, 255, 0.6);">@booking.CampusName</small>
+                                            <small class="text-muted">@booking.CampusName</small>
                                         </td>
                                         <td>
                                             <strong>@booking.UserName</strong><br>
-                                            <small style="color: rgba(255, 255, 255, 0.6);">@booking.UserEmail</small>
+                                            <small class="text-muted">@booking.UserEmail</small>
                                         </td>
                                         <td>
                                             @booking.StartTime.ToString("MMM dd, yyyy")<br>
-                                            <strong style="color: #06b6d4;">@booking.StartTime.ToString("HH:mm")</strong>
+                                            <strong style="color: #3b82f6;">@booking.StartTime.ToString("HH:mm")</strong>
                                         </td>
                                         <td>
                                             @booking.EndTime.ToString("MMM dd, yyyy")<br>
-                                            <strong style="color: #06b6d4;">@booking.EndTime.ToString("HH:mm")</strong>
+                                            <strong style="color: #3b82f6;">@booking.EndTime.ToString("HH:mm")</strong>
                                         </td>
                                         <td>
                                             @{
                                                 var duration = booking.EndTime - booking.StartTime;
-                                                <strong style="color: #ff8a00;">@($"{duration.TotalHours:F1}h")</strong>
+                                                <strong style="color: #3b82f6;">@($"{duration.TotalHours:F1}h")</strong>
                                             }
                                         </td>
                                         <td>
                                             @{
                                                 var badgeClass = booking.Status switch
                                                 {
-                                                    BookingStatus.Pending => "badge-pending",
-                                                    BookingStatus.Approved => "badge-approved",
-                                                    BookingStatus.Rejected => "badge-rejected",
-                                                    BookingStatus.Completed => "badge-completed",
-                                                    BookingStatus.Cancelled => "badge-cancelled",
-                                                    _ => "badge-cancelled"
+                                                    BookingStatus.Pending => "badge-pending-modern",
+                                                    BookingStatus.Approved => "badge-approved-modern",
+                                                    BookingStatus.Rejected => "badge-rejected-modern",
+                                                    BookingStatus.Completed => "badge-completed-modern",
+                                                    BookingStatus.Cancelled => "badge-cancelled-modern",
+                                                    _ => "badge-cancelled-modern"
                                                 };
                                             }
-                                            <span class="badge-status @badgeClass">
+                                            <span class="badge-status-modern @badgeClass">
                                                 @booking.StatusDisplay
                                             </span>
                                         </td>
                                         <td>
                                             @booking.CreatedAt.ToString("MMM dd, yyyy")<br>
-                                            <small
-                                                style="color: rgba(255, 255, 255, 0.6);">@booking.CreatedAt.ToString("HH:mm")</small>
+                                            <small class="text-muted">@booking.CreatedAt.ToString("HH:mm")</small>
                                         </td>
                                         <td>
                                             <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id"
-                                                asp-route-fromAdmin="true" class="btn btn-view">
+                                               asp-route-fromAdmin="true" class="btn btn-view-modern">
                                                 <i class="fas fa-eye"></i> View
                                             </a>
                                         </td>
@@ -460,13 +477,13 @@
                     <!-- Pagination -->
                     @if (ViewBag.TotalPages > 1)
                     {
-                        <nav class="pagination-glass">
+                        <nav class="pagination-modern">
                             <ul class="pagination">
                                 <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
                                     <a class="page-link" asp-controller="Booking" asp-action="Index"
-                                        asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-search="@ViewBag.Search"
-                                        asp-route-status="@ViewBag.Status" asp-route-fromDate="@ViewBag.FromDate"
-                                        asp-route-toDate="@ViewBag.ToDate">
+                                       asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-search="@ViewBag.Search"
+                                       asp-route-status="@ViewBag.Status" asp-route-fromDate="@ViewBag.FromDate"
+                                       asp-route-toDate="@ViewBag.ToDate">
                                         <i class="fas fa-chevron-left"></i>
                                     </a>
                                 </li>
@@ -475,8 +492,8 @@
                                 {
                                     <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
                                         <a class="page-link" asp-controller="Booking" asp-action="Index" asp-route-page="@i"
-                                            asp-route-search="@ViewBag.Search" asp-route-status="@ViewBag.Status"
-                                            asp-route-fromDate="@ViewBag.FromDate" asp-route-toDate="@ViewBag.ToDate">
+                                           asp-route-search="@ViewBag.Search" asp-route-status="@ViewBag.Status"
+                                           asp-route-fromDate="@ViewBag.FromDate" asp-route-toDate="@ViewBag.ToDate">
                                             @i
                                         </a>
                                     </li>
@@ -484,9 +501,9 @@
 
                                 <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
                                     <a class="page-link" asp-controller="Booking" asp-action="Index"
-                                        asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-search="@ViewBag.Search"
-                                        asp-route-status="@ViewBag.Status" asp-route-fromDate="@ViewBag.FromDate"
-                                        asp-route-toDate="@ViewBag.ToDate">
+                                       asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-search="@ViewBag.Search"
+                                       asp-route-status="@ViewBag.Status" asp-route-fromDate="@ViewBag.FromDate"
+                                       asp-route-toDate="@ViewBag.ToDate">
                                         <i class="fas fa-chevron-right"></i>
                                     </a>
                                 </li>
@@ -496,14 +513,13 @@
                 }
                 else
                 {
-                    <div class="empty-state">
+                    <div class="empty-state-modern">
                         <i class="fas fa-calendar-times"></i>
                         <h5>No Bookings Found</h5>
                         <p>There are no bookings matching your criteria.</p>
-                        @if (ViewBag.Search != null || ViewBag.Status != null || ViewBag.FromDate != null || ViewBag.ToDate
-                                            != null)
+                        @if (ViewBag.Search != null || ViewBag.Status != null || ViewBag.FromDate != null || ViewBag.ToDate != null)
                         {
-                            <a asp-controller="Booking" asp-action="Index" class="btn btn-filter mt-3">
+                            <a asp-controller="Booking" asp-action="Index" class="btn btn-filter-modern mt-3">
                                 <i class="fas fa-times"></i> Clear Filters
                             </a>
                         }

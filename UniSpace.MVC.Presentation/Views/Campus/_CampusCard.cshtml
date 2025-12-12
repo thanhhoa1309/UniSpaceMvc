@@ -1,19 +1,155 @@
 @model UniSpace.Bo.DTOs.CampusDTOs.CampusDto
+
+<style>
+    .campus-item {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+        .campus-item:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .campus-item h5 {
+            color: #1f2937;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin: 0;
+        }
+
+    .badge-rooms {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        border: 1px solid #bfdbfe;
+    }
+
+    .meta {
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin-top: 6px;
+    }
+
+        .meta i {
+            color: #3b82f6;
+            margin-right: 6px;
+        }
+
+    .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn-soft {
+        background: #3b82f6;
+        border: none;
+        color: #ffffff;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+        .btn-soft:hover {
+            background: #2563eb;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
+
+    .btn-outline-secondary {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+        .btn-outline-secondary:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+
+    .btn-danger {
+        background: #ef4444;
+        border: none;
+        color: #ffffff;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+        }
+
+    .fade-up {
+        animation: fadeUp 0.5s ease;
+    }
+
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
 <div class="campus-item fade-up" role="article" aria-labelledby="campus-@Model.Id" tabindex="0">
     <div style="flex:1;min-width:0">
-        <div style="display:flex;align-items:center;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <h5 id="campus-@Model.Id" class="mb-0">@Model.Name</h5>
-            <span class="badge-rooms">Rooms: @Model.TotalRooms</span>
+            <span class="badge-rooms">
+                <i class="fas fa-door-open"></i> @Model.TotalRooms Rooms
+            </span>
         </div>
-        <div class="meta">@Model.Address</div>
-        <div class="meta">Created at @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+        <div class="meta">
+            <i class="fas fa-map-marker-alt"></i>@Model.Address
+        </div>
+        <div class="meta">
+            <i class="fas fa-calendar"></i>Created at @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+        </div>
     </div>
 
     <div class="actions" role="group" aria-label="Campus actions">
-        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-soft" title="Details">Details</a>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary" title="Edit">Edit</a>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-soft" title="Details">
+            <i class="fas fa-eye"></i> Details
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary" title="Edit">
+            <i class="fas fa-edit"></i> Edit
+        </a>
         <form asp-action="Delete" asp-route-id="@Model.Id" method="get" style="margin:0">
-            <button type="submit" class="btn btn-danger" title="Delete">Delete</button>
+            <button type="submit" class="btn btn-danger" title="Delete">
+                <i class="fas fa-trash"></i> Delete
+            </button>
         </form>
     </div>
 </div>
