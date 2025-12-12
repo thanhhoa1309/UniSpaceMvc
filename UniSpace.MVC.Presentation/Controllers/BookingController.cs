@@ -62,7 +62,6 @@ namespace UniSpace.MVC.Presentation.Controllers
         }
 
         // GET: Booking/MyBookings
-        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> MyBookings()
         {
             try
